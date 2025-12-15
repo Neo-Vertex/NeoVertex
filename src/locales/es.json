@@ -264,5 +264,20 @@
                 "description": "Este es un entorno simulado para demostrar la interactividad y el diseño visual de los sistemas desarrollados por NeoVertex."
             }
         }
+    },
+    "chat": {
+        "greeting": "¡Hola! Soy la IA de NeoVertex. ¿Cómo puedo ayudarte a escalar tu negocio hoy?",
+        "welcome": "¡Bienvenido!",
+        "description": "Por favor, complete sus datos para iniciar el chat.",
+        "namePlaceholder": "Nombre",
+        "phonePlaceholder": "Teléfono",
+        "emailPlaceholder": "Correo electrónico",
+        "countryPlaceholder": "País",
+        "startChat": "Iniciar Chat",
+        "typing": "Escribiendo...",
+        "inputPlaceholder": "Escribe tu mensaje...",
+        "userStartMessage": "Hola, me llamo {{name}} y me gustaría saber más sobre NeoVertex",
+        "error": "Lo siento, ocurrió un error al iniciar el chat. Inténtalo de nuevo.",
+        "errorMessage": "Lo siento, ocurrió un error al procesar tu mensaje. Inténtalo más tarde."
     }
 }
