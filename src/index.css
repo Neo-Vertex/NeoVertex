@@ -27,24 +27,37 @@
   --font-body: 'Inter', sans-serif;
 }
 
-@keyframes liquid-gold {
+@keyframes liquid-gold-flow {
   0% {
     background-position: 0% 50%;
   }
 
+  50% {
+    background-position: 100% 50%;
+  }
+
   100% {
-    background-position: 200% 50%;
+    background-position: 0% 50%;
   }
 }
 
 .text-liquid-gold {
-  background: linear-gradient(90deg, #D4AF37 0%, #F4CF57 25%, #FFFFE0 50%, #F4CF57 75%, #D4AF37 100%);
-  background-size: 200% auto;
+  background: linear-gradient(90deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C, #BF953F);
+  background-size: 300% auto;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: liquid-gold 3s linear infinite;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  animation: liquid-gold-flow 3s linear infinite;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  font-weight: 800;
+}
+
+.bg-liquid-gold {
+  background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C, #BF953F);
+  background-size: 300% 300%;
+  animation: liquid-gold-flow 3s ease infinite;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .text-liquid-purple {

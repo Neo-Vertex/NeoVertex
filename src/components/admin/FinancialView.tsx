@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, TrendingUp, TrendingDown, DollarSign, Calendar, CreditCard, User, RefreshCw } from 'lucide-react';
+import { Plus, Trash2, TrendingUp, TrendingDown, DollarSign, Calendar, CreditCard, User } from 'lucide-react';
 import Button from '../Button';
 import { supabase } from '../../services/supabase';
 import type { FinancialRecord, Expense } from '../../types';
@@ -11,7 +11,6 @@ interface FinancialViewProps {
 
 const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
     const [records, setRecords] = useState<FinancialRecord[]>([]);
-    const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'summary' | 'income' | 'expense'>('summary');
     const [exchangeRates, setExchangeRates] = useState<any>(null);
 
@@ -33,14 +32,12 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
     }, []);
 
     const loadRecords = async () => {
-        setLoading(true);
         const { data } = await supabase
             .from('financial_records')
             .select('*')
             .order('date', { ascending: false });
 
         if (data) setRecords(data);
-        setLoading(false);
     };
 
     const fetchRates = async () => {

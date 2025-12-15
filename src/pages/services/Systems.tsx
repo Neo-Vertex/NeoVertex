@@ -1,17 +1,17 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import { services } from '../../data/services';
 import { LayoutDashboard, Settings, Users, Network, BarChart3, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
 import MatrixEffect from '../../components/MatrixEffect';
 
 // Página de Desenvolvimento de Sistemas (Tema: Azul)
 const Systems: React.FC = () => {
     // Hook de tradução para textos multilíngues
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     // Busca os dados do serviço "systems" (conteúdo estático)
     const service = services.find(s => s.id === 'systems');
@@ -108,7 +108,7 @@ const Systems: React.FC = () => {
 
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button
-                        onClick={() => window.open('https://api.whatsapp.com/send?phone=5511999999999', '_blank')}
+                        onClick={() => navigate('/demo/login')}
                         style={{
                             fontSize: '1.2rem',
                             padding: '1.2rem 3rem',
@@ -124,7 +124,7 @@ const Systems: React.FC = () => {
                             gap: '0.5rem'
                         }}
                     >
-                        {service.cta} <ArrowRight size={20} />
+                        {t('services.systems.cta')} <ArrowRight size={20} />
                     </Button>
                 </div>
             </div>

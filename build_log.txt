@@ -1,0 +1,16 @@
+
+> neovertex@0.0.0 build
+> tsc -b && vite build
+
+src/components/admin/AssociatesView.tsx(15,97): error TS6133: 'handleRemindUser' is declared but its value is never read.
+src/components/admin/CreateAssociateForm.tsx(12,68): error TS6133: 'onCancel' is declared but its value is never read.
+src/components/admin/FinancialView.tsx(2,90): error TS6133: 'RefreshCw' is declared but its value is never read.
+src/components/admin/FinancialView.tsx(14,12): error TS6133: 'loading' is declared but its value is never read.
+src/components/admin/ProjectManager.tsx(204,11): error TS6133: 'handleStopTimer' is declared but its value is never read.
+src/components/admin/ProjectManager.tsx(277,23): error TS6133: 'error' is declared but its value is never read.
+src/components/admin/ProjectManager.tsx(741,87): error TS2322: Type '"secondary"' is not assignable to type '"primary" | "outline" | undefined'.
+src/components/admin/ProjectManager.tsx(791,89): error TS2322: Type '"secondary"' is not assignable to type '"primary" | "outline" | undefined'.
+src/components/admin/SettingsView.tsx(99,23): error TS6133: 'error' is declared but its value is never read.
+src/components/admin/SettingsView.tsx(121,23): error TS6133: 'error' is declared but its value is never read.
+src/components/associate/AssociateMessagesView.tsx(27,95): error TS6133: 'payload' is declared but its value is never read.
+src/components/associate/AssociateMessagesView.tsx(119,39): error TS6133: 'user' is declared but its value is never read.

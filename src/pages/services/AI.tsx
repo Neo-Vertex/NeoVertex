@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../../components/Button';
 import { services } from '../../data/services';
-import { Bot, Zap, LineChart, Sparkles, ArrowRight } from 'lucide-react';
+import { Bot, Zap, LineChart, Sparkles, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import MatrixEffect from '../../components/MatrixEffect';
@@ -108,7 +108,7 @@ const AI: React.FC = () => {
 
                 <div style={{ textAlign: 'center', marginTop: '5rem' }}>
                     <Button
-                        onClick={() => window.open('https://api.whatsapp.com/send?phone=5511999999999', '_blank')}
+                        onClick={() => window.dispatchEvent(new Event('open-chat'))}
                         style={{
                             fontSize: '1.5rem',
                             padding: '1.5rem 4rem',
@@ -123,7 +123,7 @@ const AI: React.FC = () => {
                             gap: '0.8rem'
                         }}
                     >
-                        {`> ${service.cta} _`} <ArrowRight size={20} />
+                        {`> ${t('services.ai.chat_cta')} _`} <MessageCircle size={20} />
                     </Button>
                 </div>
             </div>

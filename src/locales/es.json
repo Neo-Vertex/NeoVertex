@@ -11,15 +11,91 @@
         "subtitle": "No somos solo consultores. Somos creadores de tecnología. Desarrollamos Agentes de IA exclusivos y sistemas integrados que eliminan el trabajo manual y ponen a su empresa en piloto automático de eficiencia.",
         "cta": "Agendar Consultoría Estratégica"
     },
-    "whyUs": {
-        "title": "Liderado por quien entiende de <1>Código</1> y de <3>Negocios</3>.",
-        "description": "\"En NeoVertex, no entregamos soluciones genéricas. Yo, <1>Nelson Araujo</1>, garantizo personalmente que cada línea de código y cada agente de IA esté diseñado específicamente para la arquitectura de su negocio. Aportamos la honestidad de un socio y la precisión de una máquina.\"",
-        "cta": "Hablar con Nelson Araujo"
+    "about": {
+        "title": "SOBRE <1>NEOVERTEX</1>",
+        "description": "NeoVertex es una consultora de alto rendimiento especializada en transformación empresarial a través de inteligencia estratégica y tecnología avanzada. Nuestro enfoque combina tres pilares fundamentales:",
+        "pillars": {
+            "vision": {
+                "title": "VISIÓN ESTRATÉGICA EXTERNA",
+                "description": "El enfoque en los problemas del día a día a menudo hace invisibles las soluciones innovadoras. Aportamos la mirada externa que transforma los desafíos operativos en palancas de crecimiento."
+            },
+            "tech": {
+                "title": "Tecnología a Medida",
+                "description": "Desarrollamos Agentes de IA y sistemas exclusivos para su negocio"
+            },
+            "execution": {
+                "title": "Ejecución Implacable",
+                "description": "Transformamos la estrategia en resultados medibles"
+            }
+        }
+    },
+    "philosophy": {
+        "quote": "En NeoVertex, creemos que cada empresa tiene un potencial inexplorado. Nuestra misión es revelar este potencial a través de una visión externa quirúrgica combinada con tecnología de punta. No somos solo consultores - somos los arquitectos de su próxima fase de crecimiento.",
+        "author": "Nelson Araujo, CEO y Fundador"
+    },
+    "differentials": {
+        "title": "LA DIFERENCIA <1>NEOVERTEX</1>",
+        "items": {
+            "vision": {
+                "title": "Visión desde Fuera, Resultados por Dentro",
+                "description": "Mientras está inmerso en el día a día, nosotros vemos el panorama completo. Identificamos cuellos de botella ocultos, oportunidades perdidas y caminos no explorados."
+            },
+            "tech": {
+                "title": "Tecnología que Habla su Idioma",
+                "description": "Desarrollamos Agentes de IA y sistemas que entienden los matices de su negocio. Cada línea de código está pensada para resolver sus desafíos específicos."
+            },
+            "consulting": {
+                "title": "Consultoría Ejecutiva, No Teórica",
+                "description": "Nuestros consultores tienen ADN emprendedor. Ya han construido, escalado y vendido empresas. Sabemos lo que funciona porque ya lo hemos hecho funcionar."
+            },
+            "roi": {
+                "title": "ROI Garantizado",
+                "description": "Nuestros proyectos se pagan solos. Medimos el éxito por el aumento de la facturación, la reducción de costos y la ganancia de eficiencia operativa."
+            }
+        }
+    },
+    "process": {
+        "title": "CÓMO TRANSFORMAMOS SU <1>NEGOCIO</1>",
+        "phases": [
+            {
+                "title": "FASE 1: DIAGNÓSTICO 360°",
+                "items": [
+                    "Análisis profundo de procesos, personas y tecnología",
+                    "Mapeo de oportunidades y amenazas",
+                    "Benchmarking con líderes de su sector"
+                ]
+            },
+            {
+                "title": "FASE 2: ESTRATEGIA PERSONALIZADA",
+                "items": [
+                    "Plan de acción con ganancias rápidas y proyectos estructurantes",
+                    "Definición de KPI y objetivos claros",
+                    "Hoja de ruta tecnológica alineada con los objetivos"
+                ]
+            },
+            {
+                "title": "FASE 3: IMPLEMENTACIÓN ASISTIDA",
+                "items": [
+                    "Desarrollo de sistemas e IA a medida",
+                    "Seguimiento semanal de resultados",
+                    "Ajustes en tiempo real basados en datos"
+                ]
+            },
+            {
+                "title": "FASE 4: ESCALA Y OPTIMIZACIÓN",
+                "items": [
+                    "Automatización de procesos maduros",
+                    "Expansión de soluciones exitosas",
+                    "Preparación para el próximo ciclo de crecimiento"
+                ]
+            }
+        ]
     },
     "services": {
         "title": "TRANSFORMACIÓN DIGITAL QUE GENERA RESULTADOS",
         "subtitle": "Desde la consultoría estratégica hasta el desarrollo web, somos el socio completo para acelerar su crecimiento. Unimos inteligencia de negocios y tecnología avanzada para llevar a su empresa al siguiente nivel de rendimiento y rentabilidad.",
         "slogan_text": "Reach your Peak. Conecta tecnología y estrategia para alcanzar resultados extraordinarios.",
+        "viewDetails": "Ver Detalles →",
         "consulting": {
             "title": "CONSULTORÍA ESTRATÉGICA",
             "description": "Análisis profundo de su negocio con diagnósticos precisos y planes de acción personalizados. Nuestro equipo identifica oportunidades de crecimiento y optimización, garantizando decisiones basadas en datos y resultados medibles.",
@@ -45,6 +121,7 @@
         "ai": {
             "title": "INTELIGENCIA ARTIFICIAL Y AUTOMATIZACIÓN",
             "description": "Implementamos soluciones de IA y automatización de procesos que revolucionan su operación. Reduzca costos, elimine errores y libere a su equipo para actividades estratégicas con tecnología de punta.",
+            "chat_cta": "Di Hola a nuestra IA",
             "details": {
                 "agents": {
                     "title": "Agentes Inteligentes",
@@ -67,6 +144,7 @@
         "systems": {
             "title": "GESTIÓN INTEGRADA Y ERP",
             "description": "Centralice toda la gestión de su negocio en una plataforma única e inteligente. Desde finanzas hasta ventas, ofrecemos sistemas que conectan todos los sectores de su empresa en tiempo real.",
+            "cta": "Simulador de Sistema",
             "details": {
                 "erp": {
                     "title": "ERP Personalizado",
@@ -146,5 +224,45 @@
     },
     "footer": {
         "rights": "Todos los derechos reservados."
+    },
+    "demo": {
+        "login": {
+            "title": "Portal del Cliente",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "submit": "Acceder al Sistema",
+            "loading": "Accediendo...",
+            "disclaimer": "* Ambiente de demostración",
+            "back": "Volver"
+        },
+        "dashboard": {
+            "sidebar": {
+                "dashboard": "Tablero",
+                "clients": "Clientes",
+                "projects": "Proyectos",
+                "financial": "Financiero",
+                "settings": "Configuración",
+                "logout": "Salir"
+            },
+            "profile": {
+                "name": "Visitante Demo",
+                "role": "Acceso Limitado"
+            },
+            "header": {
+                "title": "Tablero General",
+                "search": "Buscar..."
+            },
+            "kpi": {
+                "revenue": "Ingresos Totales",
+                "revenue_value": "€ 1.2M",
+                "clients": "Nuevos Clientes",
+                "projects": "Proyectos Activos",
+                "satisfaction": "Satisfacción"
+            },
+            "chart": {
+                "title": "Análisis de Rendimiento en Tiempo Real",
+                "description": "Este es un entorno simulado para demostrar la interactividad y el diseño visual de los sistemas desarrollados por NeoVertex."
+            }
+        }
     }
 }

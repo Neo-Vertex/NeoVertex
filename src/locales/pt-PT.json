@@ -25,7 +25,8 @@
         },
         "ai": {
             "title": "INTELIGÊNCIA ARTIFICIAL & AUTOMAÇÃO",
-            "description": "Implementamos soluções de IA e automação de processos que revolucionam a sua operação. Reduza custos, elimine erros e liberte a sua equipa para atividades estratégicas com tecnologia de ponta."
+            "description": "Implementamos soluções de IA e automação de processos que revolucionam a sua operação. Reduza custos, elimine erros e liberte a sua equipa para atividades estratégicas com tecnologia de ponta.",
+            "chat_cta": "Diga Olá à nossa IA"
         },
         "erp": {
             "title": "GESTÃO INTEGRADA & ERP",
@@ -73,5 +74,45 @@
     },
     "footer": {
         "rights": "Todos os direitos reservados."
+    },
+    "demo": {
+        "login": {
+            "title": "Portal do Cliente",
+            "email": "Email",
+            "password": "Senha",
+            "submit": "Aceder Sistema",
+            "loading": "A a aceder...",
+            "disclaimer": "* Ambiente de demonstração",
+            "back": "Voltar"
+        },
+        "dashboard": {
+            "sidebar": {
+                "dashboard": "Dashboard",
+                "clients": "Clientes",
+                "projects": "Projetos",
+                "financial": "Financeiro",
+                "settings": "Definições",
+                "logout": "Sair"
+            },
+            "profile": {
+                "name": "Visitante Demo",
+                "role": "Acesso Limitado"
+            },
+            "header": {
+                "title": "Dashboard Geral",
+                "search": "Pesquisar..."
+            },
+            "kpi": {
+                "revenue": "Receita Total",
+                "revenue_value": "€ 1.2M",
+                "clients": "Novos Clientes",
+                "projects": "Projetos Ativos",
+                "satisfaction": "Satisfação"
+            },
+            "chart": {
+                "title": "Análise de Performance em Tempo Real",
+                "description": "Este é um ambiente simulado para demonstrar a interatividade e o design visual dos sistemas desenvolvidos pela NeoVertex."
+            }
+        }
     }
 }

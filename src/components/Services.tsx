@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Bot, LineChart, Globe, LayoutDashboard } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { Bot, LineChart, Globe, LayoutDashboard, BarChart3, Users } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { services } from '../data/services';
 
@@ -16,6 +16,8 @@ const Services: React.FC = () => {
             case 'Globe': return <Globe size={size} />;
             case 'LayoutDashboard': return <LayoutDashboard size={size} />;
             case 'Bot': return <Bot size={size} />;
+            case 'BarChart3': return <BarChart3 size={size} />;
+            case 'Users': return <Users size={size} />;
             default: return <LineChart size={size} />;
         }
     };
@@ -30,7 +32,9 @@ const Services: React.FC = () => {
                     transition={{ duration: 0.6 }}
                     style={{ textAlign: 'center', marginBottom: '4rem' }}
                 >
-                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>{t('services.title')}</h2>
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
+                        <Trans i18nKey="services.title" components={{ 1: <span style={{ color: 'var(--color-primary)' }} /> }} />
+                    </h2>
                     <p style={{ color: 'var(--color-text-muted)', maxWidth: '800px', margin: '0 auto' }}>
                         {t('services.subtitle')}
                     </p>
@@ -87,12 +91,12 @@ const Services: React.FC = () => {
                             }}>
                                 {getIcon(service.icon, 40)}
                             </div>
-                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{service.title}</h3>
+                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t(`services.${service.id}.title`)}</h3>
                             <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                                {service.description}
+                                {t(`services.${service.id}.description`)}
                             </p>
                             <div style={{ color: service.theme.primary, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                Ver Detalhes →
+                                {t('services.viewDetails')}
                             </div>
                         </motion.div>
                     ))}

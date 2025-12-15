@@ -11,15 +11,91 @@
         "subtitle": "Nous ne sommes pas seulement des consultants. Nous sommes des créateurs de technologie. Nous développons des Agents IA exclusifs et des systèmes intégrés qui éliminent le travail manuel et mettent votre entreprise en pilote automatique d'efficacité.",
         "cta": "Planifier une Consultation Stratégique"
     },
-    "whyUs": {
-        "title": "Dirigé par ceux qui comprennent le <1>Code</1> et les <3>Affaires</3>.",
-        "description": "\"Chez NeoVertex, nous ne livrons pas de solutions standard. Moi, <1>Nelson Araujo</1>, je garantis personnellement que chaque ligne de code et chaque agent IA est conçu spécifiquement pour l'architecture de votre entreprise. Nous apportons l'honnêteté d'un partenaire et la précision d'une machine.\"",
-        "cta": "Parler avec Nelson Araujo"
+    "about": {
+        "title": "À PROPOS DE <1>NEOVERTEX</1>",
+        "description": "NeoVertex est un cabinet de conseil de haute performance spécialisé dans la transformation d'entreprise grâce à l'intelligence stratégique et à la technologie avancée. Notre approche combine trois piliers fondamentaux :",
+        "pillars": {
+            "vision": {
+                "title": "VISION STRATÉGIQUE EXTERNE",
+                "description": "Se concentrer sur les problèmes quotidiens rend souvent invisibles les solutions innovantes. Nous apportons le regard extérieur qui transforme les défis opérationnels en leviers de croissance."
+            },
+            "tech": {
+                "title": "Technologie Sur Mesure",
+                "description": "Nous développons des Agents IA et des systèmes exclusifs pour votre entreprise"
+            },
+            "execution": {
+                "title": "Exécution Implacable",
+                "description": "Nous transformons la stratégie en résultats mesurables"
+            }
+        }
+    },
+    "philosophy": {
+        "quote": "Chez NeoVertex, nous croyons que chaque entreprise a un potentiel inexploité. Notre mission est de révéler ce potentiel grâce à une vision externe chirurgicale combinée à une technologie de pointe. Nous ne sommes pas seulement des consultants - nous sommes les architectes de votre prochaine phase de croissance.",
+        "author": "Nelson Araujo, PDG & Fondateur"
+    },
+    "differentials": {
+        "title": "LA DIFFÉRENCE <1>NEOVERTEX</1>",
+        "items": {
+            "vision": {
+                "title": "Vision de l'Extérieur, Résultats de l'Intérieur",
+                "description": "Pendant que vous êtes immergé dans le quotidien, nous voyons le panorama complet. Nous identifions les goulots d'étranglement cachés, les opportunités perdues et les chemins inexplorés."
+            },
+            "tech": {
+                "title": "Technologie qui Parle Votre Langue",
+                "description": "Nous développons des Agents IA et des systèmes qui comprennent les nuances de votre entreprise. Chaque ligne de code est pensée pour résoudre vos défis spécifiques."
+            },
+            "consulting": {
+                "title": "Conseil Exécutif, Pas Théorique",
+                "description": "Nos consultants ont l'ADN entrepreneurial. Ils ont déjà construit, mis à l'échelle et vendu des entreprises. Nous savons ce qui fonctionne car nous l'avons fait fonctionner."
+            },
+            "roi": {
+                "title": "ROI Garanti",
+                "description": "Nos projets s'autofinancent. Nous mesurons le succès par l'augmentation du chiffre d'affaires, la réduction des coûts et le gain d'efficacité opérationnelle."
+            }
+        }
+    },
+    "process": {
+        "title": "COMMENT NOUS TRANSFORMONS VOTRE <1>ENTREPRISE</1>",
+        "phases": [
+            {
+                "title": "PHASE 1 : DIAGNOSTIC 360°",
+                "items": [
+                    "Analyse approfondie des processus, des personnes et de la technologie",
+                    "Cartographie des opportunités et des menaces",
+                    "Benchmarking avec les leaders de votre secteur"
+                ]
+            },
+            {
+                "title": "PHASE 2 : STRATÉGIE PERSONNALISÉE",
+                "items": [
+                    "Plan d'action avec des gains rapides et des projets structurants",
+                    "Définition de KPI et d'objectifs clairs",
+                    "Feuille de route technologique alignée sur les objectifs"
+                ]
+            },
+            {
+                "title": "PHASE 3 : MISE EN ŒUVRE ASSISTÉE",
+                "items": [
+                    "Développement de systèmes et d'IA sur mesure",
+                    "Suivi hebdomadaire des résultats",
+                    "Ajustements en temps réel basés sur les données"
+                ]
+            },
+            {
+                "title": "PHASE 4 : ÉCHELLE ET OPTIMISATION",
+                "items": [
+                    "Automatisation des processus matures",
+                    "Expansion des solutions réussies",
+                    "Préparation pour le prochain cycle de croissance"
+                ]
+            }
+        ]
     },
     "services": {
         "title": "TRANSFORMATION NUMÉRIQUE QUI GÉNÈRE DES RÉSULTATS",
         "subtitle": "Du conseil stratégique au développement web, nous sommes le partenaire complet pour accélérer votre croissance. Nous unissons l'intelligence d'affaires et la technologie avancée pour amener votre entreprise au niveau supérieur de performance et de rentabilité.",
         "slogan_text": "Reach your Peak. Connectez technologie et stratégie pour obtenir des résultats extraordinaires.",
+        "viewDetails": "Voir Détails →",
         "consulting": {
             "title": "CONSEIL STRATÉGIQUE",
             "description": "Analyse approfondie de votre entreprise avec des diagnostics précis et des plans d'action personnalisés. Notre équipe identifie les opportunités de croissance et d'optimisation, garantissant des décisions basées sur des données et des résultats mesurables.",
@@ -45,6 +121,7 @@
         "ai": {
             "title": "INTELLIGENCE ARTIFICIELLE & AUTOMATISATION",
             "description": "Nous mettons en œuvre des solutions d'IA et d'automatisation des processus qui révolutionnent votre opération. Réduisez les coûts, éliminez les erreurs et libérez votre équipe pour des activités stratégiques avec une technologie de pointe.",
+            "chat_cta": "Dites Bonjour à notre IA",
             "details": {
                 "agents": {
                     "title": "Agents Intelligents",
@@ -67,6 +144,7 @@
         "systems": {
             "title": "GESTION INTÉGRÉE & ERP",
             "description": "Centralisez toute la gestion de votre entreprise sur une plateforme unique et intelligente. De la finance au commercial, nous proposons des systèmes qui connectent tous les secteurs de votre entreprise en temps réel.",
+            "cta": "Simulateur de Système",
             "details": {
                 "erp": {
                     "title": "ERP Personnalisé",
@@ -146,5 +224,45 @@
     },
     "footer": {
         "rights": "Tous droits réservés."
+    },
+    "demo": {
+        "login": {
+            "title": "Portail Client",
+            "email": "Email",
+            "password": "Mot de passe",
+            "submit": "Accéder au Système",
+            "loading": "Accès en cours...",
+            "disclaimer": "* Environnement de démonstration",
+            "back": "Retour"
+        },
+        "dashboard": {
+            "sidebar": {
+                "dashboard": "Tableau de Bord",
+                "clients": "Clients",
+                "projects": "Projets",
+                "financial": "Financier",
+                "settings": "Paramètres",
+                "logout": "Quitter"
+            },
+            "profile": {
+                "name": "Visiteur Démo",
+                "role": "Accès Limité"
+            },
+            "header": {
+                "title": "Tableau de Bord Général",
+                "search": "Rechercher..."
+            },
+            "kpi": {
+                "revenue": "Revenu Total",
+                "revenue_value": "CHF 1.2M",
+                "clients": "Nouveaux Clients",
+                "projects": "Projets Actifs",
+                "satisfaction": "Satisfaction"
+            },
+            "chart": {
+                "title": "Analyse de Performance en Temps Réel",
+                "description": "Ceci est un environnement simulé pour démontrer l'interactivité et le design visuel des systèmes développés par NeoVertex."
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Sidebar from '../components/Sidebar';
-import { Calendar, Clock, AlertTriangle, CheckCircle, Package, Settings, Globe, Link as LinkIcon } from 'lucide-react';
+import { Calendar, Clock, AlertTriangle, CheckCircle, Package, Settings, Globe, Link as LinkIcon, Menu } from 'lucide-react';
 import { paymentService } from '../services/payment';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../services/supabase';
@@ -45,12 +45,14 @@ const AssociateDashboard: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showLanguageModal, setShowLanguageModal] = useState(false);
     const [activeSection, setActiveSection] = useState('projects');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     /**
      * Fetches the authenticated user's data, profile, projects, and available products.
      * Also handles language initialization based on user profile.
      */
     useEffect(() => {
+        // ... (keep existing useEffect logic)
         const fetchUserData = async () => {
             setIsLoading(true);
             const timeoutId = setTimeout(() => setIsLoading(false), 5000); // Failsafe timeout
@@ -129,6 +131,7 @@ const AssociateDashboard: React.FC = () => {
         fetchUserData();
     }, [navigate, i18n]);
 
+    // ... (keep helper functions)
     const handleLogout = async () => {
         await supabase.auth.signOut();
         navigate('/login');
@@ -146,17 +149,11 @@ const AssociateDashboard: React.FC = () => {
         return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: currency }).format(value);
     };
 
-    /**
-     * Initiates a checkout session for a monthly subscription renewal.
-     */
     const handleRequestSubscription = async (project: Project) => {
         const fee = (project.value || 0) * 0.10; // 10% for monthly subscription
         await paymentService.createCheckoutSession(project.id, 'subscription', fee);
     };
 
-    /**
-     * Initiates a checkout session for buying additional development hours.
-     */
     const handleBuyHours = async (project: Project) => {
         const hourlyRate = (project.value || 0) * 0.05; // 5% for hourly rate
         await paymentService.createCheckoutSession(project.id, 'hourly', hourlyRate);
@@ -174,6 +171,7 @@ const AssociateDashboard: React.FC = () => {
         if (diffDays <= 7) return { status: 'warning', text: `Vence em ${diffDays} dias`, color: '#fbbf24' };
         return { status: 'active', text: `Ativa até ${endDate.toLocaleDateString('pt-BR')}`, color: '#4ade80' };
     };
+
 
     const [logs, setLogs] = useState<any[]>([]);
     const [isLogsModalOpen, setIsLogsModalOpen] = useState(false);
@@ -214,8 +212,10 @@ const AssociateDashboard: React.FC = () => {
                 logo={colabBrand?.logo_url || "/logo.png"}
                 userEmail={userEmail}
                 activeSection={activeSection}
-                onNavigate={setActiveSection}
+                onNavigate={(id) => { setActiveSection(id); setIsSidebarOpen(false); }}
                 onLogout={handleLogout}
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
                 menuItems={[
                     { id: 'projects', label: 'Meus Projetos', icon: Calendar },
                     { id: 'products', label: 'Produtos & Serviços', icon: Package },
@@ -225,7 +225,7 @@ const AssociateDashboard: React.FC = () => {
             />
 
             <div className="flex-1 flex flex-col z-10 relative h-screen overflow-hidden">
-                <main className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-[var(--color-primary)] scrollbar-track-transparent">
+                <main className="flex-1 overflow-y-auto p-4 md:p-8 scrollbar-thin scrollbar-thumb-[var(--color-primary)] scrollbar-track-transparent">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -233,13 +233,21 @@ const AssociateDashboard: React.FC = () => {
                         className="max-w-7xl mx-auto"
                     >
                         {/* Header Content */}
-                        <div className="flex items-center justify-between mb-8">
-                            <div>
-                                <h2 className="text-3xl font-bold text-white mb-2">Bem-vindo, Associado!</h2>
-                                <p className="text-[var(--color-text-muted)]">Gerencie seus projetos e contrate novos serviços.</p>
+                        <div className="flex items-center justify-between mb-8 gap-4">
+                            <div className="flex items-center gap-4">
+                                <button
+                                    onClick={() => setIsSidebarOpen(true)}
+                                    className="p-2 md:hidden text-white hover:bg-white/10 rounded-lg"
+                                >
+                                    <Menu size={24} />
+                                </button>
+                                <div>
+                                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Bem-vindo, Associado!</h2>
+                                    <p className="text-[var(--color-text-muted)] text-sm md:text-base">Gerencie seus projetos e contrate novos serviços.</p>
+                                </div>
                             </div>
                             {colabBrand && (
-                                <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-lg border border-white/10 backdrop-blur-sm">
+                                <div className="hidden md:flex items-center gap-3 bg-white/5 px-4 py-2 rounded-lg border border-white/10 backdrop-blur-sm">
                                     <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider">Parceria</span>
                                     <div className="h-8 w-[1px] bg-white/10"></div>
                                     <span className="font-bold text-white">{colabBrand.name}</span>

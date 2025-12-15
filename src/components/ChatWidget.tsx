@@ -46,6 +46,13 @@ const ChatWidget: React.FC = () => {
         scrollToBottom();
     }, [messages, isOpen]);
 
+    // Listen for custom event to open chat
+    useEffect(() => {
+        const handleOpenChat = () => setIsOpen(true);
+        window.addEventListener('open-chat', handleOpenChat);
+        return () => window.removeEventListener('open-chat', handleOpenChat);
+    }, []);
+
     const handleSendMessage = async (e: React.FormEvent) => {
         // ... (keep handleSendMessage logic same as before, no changes needed here but including for context if needed, wait, I can just replace the top part)
         e.preventDefault();
@@ -108,7 +115,7 @@ const ChatWidget: React.FC = () => {
                     width: '60px',
                     height: '60px',
                     borderRadius: '50%',
-                    background: isGold ? liquidGoldGradient : themeColor, // Use gradient if gold
+                    background: isGold ? undefined : themeColor, // Use gradient if gold
                     color: '#000', // Ensure contrast is always high (black on neon)
                     border: 'none',
                     boxShadow: `0 4px 20px ${themeColor}66`, // 40% opacity
@@ -118,6 +125,7 @@ const ChatWidget: React.FC = () => {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}
+                className={isGold ? "bg-liquid-gold" : ""}
             >
                 {isOpen ? <X size={24} color="#fff" /> : <MessageCircle size={28} color="#fff" />}
             </motion.button>

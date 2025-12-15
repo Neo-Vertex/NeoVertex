@@ -1,6 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { LogOut } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LogOut, X } from 'lucide-react';
 
 interface MenuItem {
     id: string;
@@ -17,6 +16,8 @@ interface SidebarProps {
     onNavigate: (id: string) => void;
     onLogout: () => void;
     userEmail?: string;
+    isOpen?: boolean;
+    onClose?: () => void;
 }
 
 /**
@@ -26,93 +27,105 @@ interface SidebarProps {
  * Supports configurable menu items, active state highlighting, badges, and user info display.
  * Designed with a glassmorphism aesthetic.
  */
-const Sidebar: React.FC<SidebarProps> = ({ title, logo, menuItems, activeSection, onNavigate, onLogout, userEmail }) => {
+const Sidebar: React.FC<SidebarProps> = ({ title, logo, menuItems, activeSection, onNavigate, onLogout, userEmail, isOpen, onClose }) => {
     return (
-        <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            className="h-[95vh] my-auto ml-6 w-72 bg-[#050505] rounded-[2.5rem] flex flex-col shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-[rgba(255,255,255,0.03)] relative z-20 overflow-hidden"
-        >
-            {/* Background Glow */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[rgba(212,175,55,0.03)] to-transparent pointer-events-none" />
+        <>
+            {/* Mobile Overlay */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+                    />
+                )}
+            </AnimatePresence>
 
-            {/* Header / Logo */}
-            <div className="p-8 pb-4 flex flex-col items-center text-center">
-                {logo && <img src={logo} alt="Logo" className="h-12 mb-4 object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]" />}
-                {title && <h2 className="text-xl font-bold text-white tracking-wider">{title}</h2>}
-                {userEmail && <p className="text-xs text-[var(--color-text-muted)] mt-2">{userEmail}</p>}
-            </div>
-
-            {/* Menu Items */}
-            <div className="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-hide">
-                {menuItems.map((item) => {
-                    const isActive = activeSection === item.id;
-                    const Icon = item.icon;
-
-                    return (
-                        <button
-                            key={item.id}
-                            onClick={() => onNavigate(item.id)}
-                            className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 group relative overflow-hidden ${isActive
-                                ? 'text-[var(--color-primary)]'
-                                : 'text-[var(--color-text-muted)] hover:text-white'
-                                }`}
-                        >
-                            {/* Active Background Indicator */}
-                            {isActive && (
-                                <motion.div
-                                    layoutId="activeTab"
-                                    className="absolute inset-0 bg-[rgba(212,175,55,0.08)]"
-                                    initial={false}
-                                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                />
-                            )}
-
-                            {/* Icon */}
-                            <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${isActive
-                                ? 'bg-[rgba(212,175,55,0.1)] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
-                                : 'bg-transparent group-hover:bg-white/5'
-                                }`}>
-                                <Icon size={20} />
-                            </div>
-
-                            {/* Label */}
-                            <span className={`relative z-10 font-medium text-base tracking-wide ${isActive ? 'font-bold' : ''}`}>
-                                {item.label}
-                            </span>
-
-                            {/* Badge */}
-                            {item.badge && item.badge > 0 && (
-                                <span className="absolute right-4 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg animate-pulse">
-                                    {item.badge}
-                                </span>
-                            )}
-
-                            {/* Active Dot Indicator (Right side) - Only show if no badge */}
-                            {isActive && (!item.badge || item.badge === 0) && (
-                                <motion.div
-                                    layoutId="activeDot"
-                                    className="absolute right-4 w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_10px_var(--color-primary)]"
-                                />
-                            )}
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* Footer / Logout */}
-            <div className="p-6 mt-auto">
+            <motion.aside
+                initial={false}
+                className={`
+                    fixed md:relative z-50 
+                    h-screen
+                    w-[280px]
+                    bg-[#0a0a0a] 
+                    border-r border-[rgba(255,255,255,0.05)]
+                    flex flex-col
+                    transition-transform duration-300 ease-in-out
+                    ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+                `}
+            >
+                {/* Mobile Close Button */}
                 <button
-                    onClick={onLogout}
-                    className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 group"
+                    onClick={onClose}
+                    className="absolute top-4 right-4 p-2 text-white/50 hover:text-white md:hidden z-50"
                 >
-                    <div className="p-2 rounded-xl bg-red-500/5 group-hover:bg-red-500/20 transition-colors">
-                        <LogOut size={20} />
-                    </div>
-                    <span className="font-medium">Sair</span>
+                    <X size={24} />
                 </button>
-            </div>
-        </motion.div>
+
+                {/* Header / Logo */}
+                <div className="p-8 border-b border-[rgba(255,255,255,0.05)] flex flex-col items-center">
+                    {logo ? (
+                        <img src={logo} alt="Logo" className="h-10 mb-4 object-contain" />
+                    ) : (
+                        <h2 className="text-2xl font-bold bg-gradient-to-r from-[var(--color-primary)] to-[#fff] bg-clip-text text-transparent font-heading">
+                            NEOVERTEX
+                        </h2>
+                    )}
+                    {title && !logo && <span className="text-xs tracking-[0.2em] text-[var(--color-text-muted)]">{title}</span>}
+                    {userEmail && <p className="text-xs text-[var(--color-text-muted)] mt-2">{userEmail}</p>}
+                </div>
+
+                {/* Menu Items */}
+                <div className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
+                    {menuItems.map((item) => {
+                        const isActive = activeSection === item.id;
+                        const Icon = item.icon;
+
+                        return (
+                            <button
+                                key={item.id}
+                                onClick={() => {
+                                    onNavigate(item.id);
+                                    if (onClose) onClose();
+                                }}
+                                className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 group relative ${isActive
+                                    ? 'bg-[rgba(212,175,55,0.1)] text-[var(--color-primary)] font-semibold'
+                                    : 'text-[#888] hover:bg-white/5 hover:text-white'
+                                    }`}
+                            >
+                                {/* Icon */}
+                                <Icon size={20} className={isActive ? 'text-[var(--color-primary)]' : 'text-current'} />
+
+                                {/* Label */}
+                                <span className="text-base tracking-wide">
+                                    {item.label}
+                                </span>
+
+                                {/* Badge */}
+                                {item.badge && item.badge > 0 && (
+                                    <span className="absolute right-4 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">
+                                        {item.badge}
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Footer / Logout */}
+                <div className="p-4 border-t border-[rgba(255,255,255,0.05)]">
+                    <button
+                        onClick={onLogout}
+                        className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-200"
+                    >
+                        <LogOut size={20} />
+                        <span className="font-medium">Sair</span>
+                    </button>
+                </div>
+            </motion.aside>
+        </>
     );
 };
 

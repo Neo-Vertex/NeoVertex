@@ -96,7 +96,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
     // Product Handlers
     const handleAddProduct = async (e: React.FormEvent) => {
         e.preventDefault();
-        const { data, error } = await supabase.from('products').insert([{
+        const { data } = await supabase.from('products').insert([{
             name: newProductName,
             description: newProductDesc,
             base_value: parseFloat(newProductValue)
@@ -118,7 +118,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
     // Colab Handlers
     const handleAddColab = async (e: React.FormEvent) => {
         e.preventDefault();
-        const { data, error } = await supabase.from('colab_brands').insert([{
+        const { data } = await supabase.from('colab_brands').insert([{
             name: newColabName,
             logo_url: newColabLogo
         }]).select().single();

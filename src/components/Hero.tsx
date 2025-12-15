@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Button from './Button';
+
 import { useTranslation, Trans } from 'react-i18next';
 
 const Hero: React.FC = () => {
@@ -73,11 +73,7 @@ const Hero: React.FC = () => {
                         {t('hero.subtitle')}
                     </p>
 
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                        <Button icon onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                            {t('hero.cta')}
-                        </Button>
-                    </div>
+
                 </motion.div>
             </div>
         </section>

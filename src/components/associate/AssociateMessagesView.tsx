@@ -24,7 +24,7 @@ const AssociateMessagesView: React.FC = () => {
         // Subscribe to new messages
         const subscription = supabase
             .channel('associate_messages')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => {
                 loadMessages();
             })
             .subscribe();
@@ -116,12 +116,7 @@ const AssociateMessagesView: React.FC = () => {
                     </div>
                 ) : (
                     messages.map(msg => {
-                        const { data: { user } } = supabase.auth.getUser() as any; // Hacky sync check, better to use state
-                        // Actually we need to check against current user id stored in state or context
-                        // For simplicity, let's assume we know who is who based on sender_id
-                        // But we don't have user id here easily without async.
-                        // Let's rely on the fact that if I sent it, it's me.
-                        // Wait, I need the current user ID to know if "isMe".
+
                         return (
                             <MessageBubble key={msg.id} message={msg} />
                         );

@@ -11,15 +11,91 @@
         "subtitle": "We are not just consultants. We are technology creators. We develop exclusive AI Agents and integrated systems that eliminate manual work and put your company on efficiency autopilot.",
         "cta": "Schedule Strategic Consulting"
     },
-    "whyUs": {
-        "title": "Led by those who understand <1>Code</1> and <3>Business</3>.",
-        "description": "\"At NeoVertex, we don't deliver off-the-shelf solutions. I, <1>Nelson Araujo</1>, personally guarantee that every line of code and every AI agent is designed specifically for your business architecture. We bring the honesty of a partner and the precision of a machine.\"",
-        "cta": "Talk to Nelson Araujo"
+    "about": {
+        "title": "ABOUT <1>NEOVERTEX</1>",
+        "description": "NeoVertex is a high-performance consultancy specializing in business transformation through strategic intelligence and advanced technology. Our approach combines three fundamental pillars:",
+        "pillars": {
+            "vision": {
+                "title": "EXTERNAL STRATEGIC VISION",
+                "description": "Focusing on day-to-day problems often makes innovative solutions invisible. We bring the external view that transforms operational challenges into growth levers."
+            },
+            "tech": {
+                "title": "Tailored Technology",
+                "description": "We develop AI Agents and exclusive systems for your business"
+            },
+            "execution": {
+                "title": "Relentless Execution",
+                "description": "We transform strategy into measurable results"
+            }
+        }
+    },
+    "philosophy": {
+        "quote": "At NeoVertex, we believe that every company has untapped potential. Our mission is to reveal this potential through a surgical external view combined with cutting-edge technology. We are not just consultants - we are the architects of your next growth phase.",
+        "author": "Nelson Araujo, CEO & Founder"
+    },
+    "differentials": {
+        "title": "THE <1>NEOVERTEX</1> DIFFERENCE",
+        "items": {
+            "vision": {
+                "title": "Outside View, Inside Results",
+                "description": "While you are immersed in the day-to-day, we see the complete picture. We identify hidden bottlenecks, lost opportunities, and unexplored paths."
+            },
+            "tech": {
+                "title": "Technology That Speaks Your Language",
+                "description": "We develop AI Agents and systems that understand the nuances of your business. Every line of code is thought out to solve your specific challenges."
+            },
+            "consulting": {
+                "title": "Executive Consulting, Not Theoretical",
+                "description": "Our consultants have entrepreneurial DNA. They have already built, scaled, and sold companies. We know what works because we have made it work."
+            },
+            "roi": {
+                "title": "Guaranteed ROI",
+                "description": "Our projects pay for themselves. We measure success in revenue increase, cost reduction, and operational efficiency gain."
+            }
+        }
+    },
+    "process": {
+        "title": "HOW WE TRANSFORM YOUR <1>BUSINESS</1>",
+        "phases": [
+            {
+                "title": "PHASE 1: 360° DIAGNOSIS",
+                "items": [
+                    "Deep analysis of processes, people, and technology",
+                    "Mapping of opportunities and threats",
+                    "Benchmarking with leaders in your sector"
+                ]
+            },
+            {
+                "title": "PHASE 2: CUSTOMIZED STRATEGY",
+                "items": [
+                    "Action plan with quick wins and structural projects",
+                    "Definition of KPIs and clear goals",
+                    "Technological roadmap aligned with objectives"
+                ]
+            },
+            {
+                "title": "PHASE 3: ASSISTED IMPLEMENTATION",
+                "items": [
+                    "Development of systems and AI tailored to you",
+                    "Weekly monitoring of results",
+                    "Real-time adjustments based on data"
+                ]
+            },
+            {
+                "title": "PHASE 4: SCALE AND OPTIMIZATION",
+                "items": [
+                    "Automation of mature processes",
+                    "Expansion of successful solutions",
+                    "Preparation for the next growth cycle"
+                ]
+            }
+        ]
     },
     "services": {
         "title": "DIGITAL TRANSFORMATION THAT DRIVES RESULTS",
         "subtitle": "From strategic consulting to web development, we are the complete partner to accelerate your growth. We unite business intelligence and advanced technology to take your company to the next level of performance and profitability.",
         "slogan_text": "Reach your Peak. Connect technology and strategy to achieve extraordinary results.",
+        "viewDetails": "View Details →",
         "consulting": {
             "title": "STRATEGIC CONSULTING",
             "description": "Deep analysis of your business with precise diagnostics and customized action plans. Our team identifies growth and optimization opportunities, ensuring data-driven decisions and measurable results.",
@@ -45,6 +121,7 @@
         "ai": {
             "title": "ARTIFICIAL INTELLIGENCE & AUTOMATION",
             "description": "Revolutionize your operation with the power of Artificial Intelligence. We develop autonomous agents and automations that work 24/7 for your company - reducing operational costs, eliminating administrative errors, and freeing your team to focus on what truly matters: strategy and growth.",
+            "chat_cta": "Say Hi to our AI",
             "details": {
                 "agents": {
                     "title": "Intelligent Agents",
@@ -67,6 +144,7 @@
         "systems": {
             "title": "SYSTEMS DEVELOPMENT",
             "description": "Forget manual spreadsheets and rigid software. We create the operating system tailored to your business. Centralize finance, inventory, HR, and sales intp a single, secure platform accessible from anywhere, designed exclusively for your workflows.",
+            "cta": "System Simulator",
             "details": {
                 "erp": {
                     "title": "Custom ERP",
@@ -145,6 +223,47 @@
         "sending": "Sending..."
     },
     "footer": {
-        "rights": "All rights reserved."
+        "rights": "All rights reserved.",
+        "brand_text": "'Reach your Peak' is a registered trademark of NeoVertex. Transforming vision into results through strategic intelligence and advanced technology."
+    },
+    "demo": {
+        "login": {
+            "title": "Client Portal",
+            "email": "Email",
+            "password": "Password",
+            "submit": "Access System",
+            "loading": "Accessing...",
+            "disclaimer": "* Demo Environment",
+            "back": "Back"
+        },
+        "dashboard": {
+            "sidebar": {
+                "dashboard": "Dashboard",
+                "clients": "Clients",
+                "projects": "Projects",
+                "financial": "Financial",
+                "settings": "Settings",
+                "logout": "Logout"
+            },
+            "profile": {
+                "name": "Demo Visitor",
+                "role": "Limited Access"
+            },
+            "header": {
+                "title": "General Dashboard",
+                "search": "Search..."
+            },
+            "kpi": {
+                "revenue": "Total Revenue",
+                "revenue_value": "$ 1.2M",
+                "clients": "New Clients",
+                "projects": "Active Projects",
+                "satisfaction": "Satisfaction"
+            },
+            "chart": {
+                "title": "Real-Time Performance Analysis",
+                "description": "This is a simulated environment to demonstrate the interactivity and visual design of systems developed by NeoVertex."
+            }
+        }
     }
 }

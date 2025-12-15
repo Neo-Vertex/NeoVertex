@@ -274,15 +274,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
     const handleAddProject = async () => {
         if (!newProjectService || !newProjectValue || !newProjectHours) return;
 
-        const { data, error } = await supabase.from('projects').insert([{
-            user_id: associate.id,
-            service: newProjectService,
-            value: parseFloat(newProjectValue),
-            currency: newProjectCurrency,
-            hours_balance: parseFloat(newProjectHours),
-            maintenance_end_date: newProjectMaintenance || null,
-            project_url: newProjectUrl || null,
-            status: 'active'
+        const { data } = await supabase.from('projects').insert([{
         }]).select().single();
 
         if (data) {
@@ -517,7 +509,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                         {formatTime(timerDuration)}
                                     </div>
                                     <p className="text-[var(--color-text-muted)]">Em andamento: {projects.find(p => p.id === activeTimer.projectId)?.service}</p>
-                                    <Button onClick={() => setIsStopModalOpen(true)} className="w-full bg-red-500 hover:bg-red-600 border-red-500 text-white justify-center">
+                                    <Button onClick={handleStopTimer} className="w-full bg-red-500 hover:bg-red-600 border-red-500 text-white justify-center">
                                         <Square size={18} fill="currentColor" className="mr-2" /> Parar Timer
                                     </Button>
                                 </div>
@@ -738,7 +730,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                     />
                                 </div>
                                 <div className="flex gap-3 justify-end">
-                                    <Button onClick={() => setIsStopModalOpen(false)} variant="secondary">Cancelar</Button>
+                                    <Button onClick={() => setIsStopModalOpen(false)} variant="outline">Cancelar</Button>
                                     <Button onClick={confirmStopTimer}>Confirmar e Salvar</Button>
                                 </div>
                             </div>
@@ -788,7 +780,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                     />
                                 </div>
                                 <div className="flex gap-3 justify-end">
-                                    <Button onClick={() => setIsManualEntryOpen(false)} variant="secondary">Cancelar</Button>
+                                    <Button onClick={() => setIsManualEntryOpen(false)} variant="outline">Cancelar</Button>
                                     <Button onClick={handleManualEntry}>Salvar Lançamento</Button>
                                 </div>
                             </div>

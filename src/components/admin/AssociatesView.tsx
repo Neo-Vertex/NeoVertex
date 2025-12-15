@@ -12,7 +12,7 @@ interface AssociatesViewProps {
     onNewAssociate: () => void;
 }
 
-const AssociatesView: React.FC<AssociatesViewProps> = ({ associates, allProjects, startEditing, handleRemindUser, onNewAssociate }) => {
+const AssociatesView: React.FC<AssociatesViewProps> = ({ associates, allProjects, startEditing, onNewAssociate }) => {
 
     return (
         <div className="space-y-6">

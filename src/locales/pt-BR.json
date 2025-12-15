@@ -7,19 +7,95 @@
         "login": "Login"
     },
     "hero": {
-        "title": "Alcance o <1>seu Topo</1>",
-        "subtitle": "Não somos apenas consultoria. Somos criadores de tecnologia. Desenvolvemos Agentes de IA exclusivos e sistemas integrados que eliminam o trabalho manual e colocam sua empresa no piloto automático da eficiência.",
-        "cta": "Agendar Consultoria Estratégica"
+        "title": "Reach your <1>Peak</1>",
+        "subtitle": "Não vendemos soluções prontas. Criamos ecossistemas tecnológicos únicos que transformam a forma como sua empresa opera, compete e domina seu mercado.",
+        "cta": "Agendar Sessão Estratégica"
     },
-    "whyUs": {
-        "title": "SEU NEGÓCIO É <1>ÚNICO</1>. SUA <3>TECNOLOGIA</3> TAMBÉM DEVERIA SER.",
-        "description": "Como CEO da NeoVertex, eu, <1>Nelson Araujo</1>, me comprometo: zero soluções genéricas. Criamos Agentes de IA e sistemas que falam a linguagem do seu negócio. É a diferença entre ter tecnologia e dominar o mercado com ela.",
-        "cta": "Falar com Nelson Araujo"
+    "about": {
+        "title": "SOBRE A <1>NEOVERTEX</1>",
+        "description": "A NeoVertex é uma consultoria de alta performance especializada em transformação empresarial através de inteligência estratégica e tecnologia avançada. Nossa abordagem combina três pilares fundamentais:",
+        "pillars": {
+            "vision": {
+                "title": "VISÃO EXTERNA ESTRATÉGICA",
+                "description": "O foco nos problemas do dia a dia muitas vezes torna invisíveis as soluções inovadoras. Trazemos o olhar externo que transforma desafios operacionais em alavancas de crescimento."
+            },
+            "tech": {
+                "title": "Tecnologia Sob Medida",
+                "description": "Desenvolvemos Agentes de IA e sistemas exclusivos para seu negócio"
+            },
+            "execution": {
+                "title": "Execução Implacável",
+                "description": "Transformamos estratégia em resultados mensuráveis"
+            }
+        }
+    },
+    "philosophy": {
+        "quote": "Na NeoVertex, acreditamos que toda empresa tem um potencial inexplorado. Nossa missão é revelar esse potencial através de uma visão externa cirúrgica, combinada com tecnologia de ponta. Não somos apenas consultores - somos arquitetos da sua próxima fase de crescimento.",
+        "author": "Nelson Araujo, CEO & Fundador"
+    },
+    "differentials": {
+        "title": "O DIFERENCIAL <1>NEOVERTEX</1>",
+        "items": {
+            "vision": {
+                "title": "Visão de Fora, Resultados por Dentro",
+                "description": "Enquanto você está imerso no dia a dia, nós enxergamos o panorama completo. Identificamos gargalos ocultos, oportunidades perdidas e caminhos não explorados."
+            },
+            "tech": {
+                "title": "Tecnologia que Fala Sua Língua",
+                "description": "Desenvolvemos Agentes de IA e sistemas que entendem as nuances do seu negócio. Cada linha de código é pensada para resolver seus desafios específicos."
+            },
+            "consulting": {
+                "title": "Consultoria Executiva, Não Teórica",
+                "description": "Nossos consultores têm DNA empreendedor. Já construíram, escalaram e venderam empresas. Sabemos o que funciona porque já fizemos funcionar."
+            },
+            "roi": {
+                "title": "ROI Garantido",
+                "description": "Nossos projetos se pagam. Medimos sucesso em aumento de faturamento, redução de custos e ganho de eficiência operacional."
+            }
+        }
+    },
+    "process": {
+        "title": "COMO TRANSFORMAMOS SEU <1>NEGÓCIO</1>",
+        "phases": [
+            {
+                "title": "FASE 1: DIAGNÓSTICO 360°",
+                "items": [
+                    "Análise profunda de processos, pessoas e tecnologia",
+                    "Mapeamento de oportunidades e ameaças",
+                    "Benchmarking com líderes do seu setor"
+                ]
+            },
+            {
+                "title": "FASE 2: ESTRATÉGIA CUSTOMIZADA",
+                "items": [
+                    "Plano de ação com quick wins e projetos estruturantes",
+                    "Definição de KPIs e metas claras",
+                    "Roadmap tecnológico alinhado aos objetivos"
+                ]
+            },
+            {
+                "title": "FASE 3: IMPLEMENTAÇÃO ASSISTIDA",
+                "items": [
+                    "Desenvolvimento de sistemas e IA sob medida",
+                    "Acompanhamento semanal de resultados",
+                    "Ajustes em tempo real baseados em dados"
+                ]
+            },
+            {
+                "title": "FASE 4: ESCALA E OTIMIZAÇÃO",
+                "items": [
+                    "Automação de processos maduros",
+                    "Expansão de soluções bem-sucedidas",
+                    "Preparação para próximo ciclo de crescimento"
+                ]
+            }
+        ]
     },
     "services": {
-        "title": "TRANSFORMAÇÃO DIGITAL QUE GERA RESULTADOS",
-        "subtitle": "Da consultoria estratégica ao desenvolvimento web, somos o parceiro completo para acelerar seu crescimento. Unimos inteligência de negócios e tecnologia avançada para levar sua empresa ao próximo nível de performance e lucratividade.",
+        "title": "NOSSAS SOLUÇÕES",
+        "subtitle": "Da consultoria estratégica ao desenvolvimento web, somos o parceiro completo para acelerar seu crescimento.",
         "slogan_text": "Reach your Peak. Conecte tecnologia e estratégia para alcançar resultados extraordinários.",
+        "viewDetails": "Ver Detalhes →",
         "consulting": {
             "title": "CONSULTORIA ESTRATÉGICA",
             "description": "Análise profunda do seu negócio com diagnósticos precisos e planos de ação customizados. Nossa equipe identifica oportunidades de crescimento e otimização, garantindo decisões baseadas em dados e resultados mensuráveis.",
@@ -39,12 +115,21 @@
                 "marketResearch": {
                     "title": "Pesquisa de Mercado",
                     "description": "Mapeamos profundamente seu nicho e seus concorrentes. Identificamos tendências, ameaças e oportunidades inexploradas para que você esteja sempre um passo à frente no jogo dos negócios."
+                },
+                "growth": {
+                    "title": "Estratégia de Crescimento",
+                    "description": "Consultoria especializada em expansão de mercado, otimização de operações e maximização de lucros através de uma visão externa estratégica."
+                },
+                "support": {
+                    "title": "Suporte Técnico & Capacitação",
+                    "description": "Acompanhamento contínuo e treinamento especializado para sua equipe. Garantimos que você extraia o máximo potencial de todas as soluções implementadas, com suporte dedicado 24/7."
                 }
             }
         },
         "ai": {
-            "title": "INTELIGÊNCIA ARTIFICIAL & AUTOMAÇÃO",
-            "description": "Revolucione sua operação com a força da Inteligência Artificial. Desenvolvemos agentes autônomos e automações que trabalham 24/7 para sua empresa - reduzindo custos operacionais, eliminando erros humanos e liberando sua equipe para focar no que realmente importa: estratégia e crescimento.",
+            "title": "INTELIGÊNCIA ARTIFICIAL E AUTOMAÇÃO",
+            "description": "Revolucione sua operação com o poder da Inteligência Artificial. Desenvolvemos agentes autônomos e automações que trabalham 24/7 pela sua empresa - reduzindo custos operacionais, eliminando erros administrativos e liberando seu time para focar no que realmente importa: estratégia e crescimento.",
+            "chat_cta": "Diga Oi para nossa IA",
             "details": {
                 "agents": {
                     "title": "Agentes Inteligentes",
@@ -67,6 +152,7 @@
         "systems": {
             "title": "DESENVOLVIMENTO DE SISTEMAS",
             "description": "Esqueça as planilhas manuais e softwares engessados. Criamos o sistema operacional sob medida para o seu negócio. Centralize financeiro, estoque, RH e vendas em uma plataforma única, segura e acessível de qualquer lugar, projetada exclusivamente para os seus fluxos de trabalho.",
+            "cta": "Simulador de Sistema",
             "details": {
                 "erp": {
                     "title": "ERP Personalizado",
@@ -107,19 +193,45 @@
                     "description": "Seu site perfeito em qualquer tela. Garantimos uma experiência de uso consistente e incrível, seja no desktop, tablet ou smartphone."
                 }
             }
-        },
-        "marketing": {
-            "title": "MARKETING DIGITAL & GROWTH",
-            "description": "Estratégias completas de marketing digital para acelerar seu crescimento. SEO, gestão de redes sociais, campanhas pagas e análise de dados para posicionar sua marca e multiplicar suas vendas."
-        },
-        "support": {
-            "title": "SUPORTE TÉCNICO & CAPACITAÇÃO",
-            "description": "Acompanhamento contínuo e treinamento especializado para sua equipe. Garantimos que você extraia o máximo potencial de todas as soluções implementadas, com suporte dedicado 24/7."
         }
     },
+    "audience": {
+        "title": "PARA QUEM É A <1>NEOVERTEX</1>",
+        "items": [
+            "Empresas em Crescimento que precisam de estrutura para escalar",
+            "Negócios Estabelecidos buscando reinvenção e inovação",
+            "Empreendedores Visionários que querem construir o futuro, não apenas participar dele"
+        ]
+    },
+    "ceo": {
+        "title": "COMPROMISSO DO CEO",
+        "quote": "Como CEO da NeoVertex, eu me comprometo pessoalmente com o sucesso de cada cliente. Quando você contrata a NeoVertex, você não está comprando horas de consultoria - está investindo em uma parceria obsessiva por resultados. Seu sucesso é nossa única métrica.",
+        "author": "Nelson Araujo"
+    },
+    "results": {
+        "title": "RESULTADOS QUE <1>ENTREGAMOS</1>",
+        "items": [
+            {
+                "value": "40-60%",
+                "label": "Aumento em eficiência operacional"
+            },
+            {
+                "value": "30-50%",
+                "label": "Redução em custos com automação"
+            },
+            {
+                "value": "2-5x",
+                "label": "Crescimento em velocidade de execução"
+            },
+            {
+                "value": "300%",
+                "label": "ROI médio nos primeiros 12 meses"
+            }
+        ]
+    },
     "contact": {
-        "title": "Vamos Conversar?",
-        "subtitle": "Agende uma consultoria estratégica e descubra como podemos transformar seu negócio.",
+        "title": "Pronto para alcançar seu topo?",
+        "subtitle": "Agende uma Sessão Estratégica Gratuita. Vamos analisar seu negócio, identificar 3 oportunidades de crescimento imediato e mostrar exatamente como a NeoVertex pode transformar sua empresa.",
         "name": "Nome",
         "country": "País",
         "countryCode": "DDI",
@@ -140,11 +252,53 @@
             "rateLimit": "Aguarde {{minutes}} minutos para enviar nova mensagem.",
             "generic": "Erro ao enviar mensagem. Tente novamente."
         },
-        "submit": "Enviar Mensagem",
-        "success": "Obrigado! Entraremos em contato em breve.",
+        "submit": "Agendar Sessão Estratégica",
+        "disclaimer": "Vagas limitadas. Apenas empresas comprometidas com crescimento extraordinário.",
+        "success": "Obrigado! Entraremos em contato em breve para agendar sua sessão.",
         "sending": "Enviando..."
     },
     "footer": {
-        "rights": "Todos os direitos reservados."
+        "rights": "Todos os direitos reservados.",
+        "brand_text": "'Reach your Peak' é marca registrada da NeoVertex. Transformando visão em resultados através de inteligência estratégica e tecnologia avançada."
+    },
+    "demo": {
+        "login": {
+            "title": "Portal do Cliente",
+            "email": "Email",
+            "password": "Senha",
+            "submit": "Acessar Sistema",
+            "loading": "Acessando...",
+            "disclaimer": "* Ambiente de demonstração",
+            "back": "Voltar"
+        },
+        "dashboard": {
+            "sidebar": {
+                "dashboard": "Dashboard",
+                "clients": "Clientes",
+                "projects": "Projetos",
+                "financial": "Financeiro",
+                "settings": "Configurações",
+                "logout": "Sair"
+            },
+            "profile": {
+                "name": "Visitante Demo",
+                "role": "Acesso Limitado"
+            },
+            "header": {
+                "title": "Dashboard Geral",
+                "search": "Buscar..."
+            },
+            "kpi": {
+                "revenue": "Receita Total",
+                "revenue_value": "R$ 1.2M",
+                "clients": "Novos Clientes",
+                "projects": "Projetos Ativos",
+                "satisfaction": "Satisfação"
+            },
+            "chart": {
+                "title": "Análise de Performance em Tempo Real",
+                "description": "Este é um ambiente simulado para demonstrar a interatividade e o design visual dos sistemas desenvolvidos pela NeoVertex."
+            }
+        }
     }
 }

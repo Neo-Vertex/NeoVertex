@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Users, DollarSign, Settings, LogOut, MessageSquare, TrendingUp, Briefcase, AlertCircle } from 'lucide-react';
+import { LayoutDashboard, Users, DollarSign, Settings, MessageSquare, TrendingUp, Briefcase, Menu } from 'lucide-react';
 import { supabase } from '../services/supabase';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,7 +9,7 @@ import FinancialView from '../components/admin/FinancialView';
 import CreateAssociateForm from '../components/admin/CreateAssociateForm';
 import ProjectManager from '../components/admin/ProjectManager';
 import MessagesView from '../components/admin/MessagesView';
-import type { Associate, Project, Expense, Service } from '../types';
+import type { Associate, Project, Expense } from '../types';
 
 /**
  * AdminDashboard Component
@@ -25,10 +25,11 @@ import type { Associate, Project, Expense, Service } from '../types';
 const AdminDashboard: React.FC = () => {
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('dashboard');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [associates, setAssociates] = useState<Associate[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
     const [expenses, setExpenses] = useState<Expense[]>([]);
-    const [services, setServices] = useState<Service[]>([]);
+
     const [loading, setLoading] = useState(true);
     const [unreadCount, setUnreadCount] = useState(0);
 
@@ -113,9 +114,7 @@ const AdminDashboard: React.FC = () => {
             const { data: expensesData } = await supabase.from('expenses').select('*');
             if (expensesData) setExpenses(expensesData);
 
-            // Load Services
-            const { data: servicesData } = await supabase.from('services').select('*');
-            if (servicesData) setServices(servicesData);
+
 
         } catch (error) {
             console.error('Error loading data:', error);
@@ -155,8 +154,10 @@ const AdminDashboard: React.FC = () => {
                 title="ADMINISTRADOR"
                 logo="/logo.png" // Ensure you have a logo or remove this prop if optional
                 activeSection={activeSection}
-                onNavigate={setActiveSection}
+                onNavigate={(id) => { setActiveSection(id); setIsSidebarOpen(false); }}
                 onLogout={handleLogout}
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
                 menuItems={[
                     { id: 'dashboard', label: 'Visão Geral', icon: LayoutDashboard },
                     { id: 'associates', label: 'Associados', icon: Users },
@@ -168,32 +169,40 @@ const AdminDashboard: React.FC = () => {
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col z-10 relative h-screen overflow-hidden">
-                <main className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-[var(--color-primary)] scrollbar-track-transparent">
+                <main className="flex-1 overflow-y-auto p-4 md:p-8 scrollbar-thin scrollbar-thumb-[var(--color-primary)] scrollbar-track-transparent">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4 }}
                         className="max-w-7xl mx-auto"
                     >
-                        <header className="flex justify-between items-center mb-8">
-                            <div>
-                                <h2 className="text-3xl font-bold text-white mb-1">
-                                    {activeSection === 'dashboard' && 'Visão Geral'}
-                                    {activeSection === 'associates' && 'Gerenciar Associados'}
-                                    {activeSection === 'financial' && 'Controle Financeiro'}
-                                    {activeSection === 'messages' && 'Solicitações de Contato'}
-                                    {activeSection === 'settings' && 'Configurações'}
-                                    {activeSection === 'create-associate' && 'Novo Associado'}
-                                </h2>
-                                <p className="text-[var(--color-text-muted)]">Painel Administrativo NeoVertex</p>
+                        <header className="flex justify-between items-center mb-8 gap-4">
+                            <div className="flex items-center gap-4">
+                                <button
+                                    onClick={() => setIsSidebarOpen(true)}
+                                    className="p-2 md:hidden text-white hover:bg-white/10 rounded-lg"
+                                >
+                                    <Menu size={24} />
+                                </button>
+                                <div>
+                                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-1">
+                                        {activeSection === 'dashboard' && 'Visão Geral'}
+                                        {activeSection === 'associates' && 'Gerenciar Associados'}
+                                        {activeSection === 'financial' && 'Controle Financeiro'}
+                                        {activeSection === 'messages' && 'Solicitações de Contato'}
+                                        {activeSection === 'settings' && 'Configurações'}
+                                        {activeSection === 'create-associate' && 'Novo Associado'}
+                                    </h2>
+                                    <p className="text-[var(--color-text-muted)] text-sm md:text-base">Painel Administrativo NeoVertex</p>
+                                </div>
                             </div>
 
-                            <div className="flex items-center gap-4 bg-[rgba(255,255,255,0.03)] px-4 py-2 rounded-full border border-[rgba(255,255,255,0.05)]">
+                            <div className="flex items-center gap-4 bg-[rgba(255,255,255,0.03)] px-3 py-2 md:px-4 md:py-2 rounded-full border border-[rgba(255,255,255,0.05)]">
                                 <div className="text-right hidden md:block">
                                     <p className="text-xs text-[var(--color-text-muted)]">Logado como</p>
                                     <p className="font-bold text-sm text-white">Administrador</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-amber-700 flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-amber-700 flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)] text-xs md:text-sm">
                                     AD
                                 </div>
                             </div>

@@ -9,7 +9,7 @@ interface CreateAssociateFormProps {
     onSuccess?: () => void;
 }
 
-const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onCancel, onSuccess }) => {
+const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess }) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
