@@ -1,0 +1,150 @@
+{
+    "header": {
+        "home": "Inicio",
+        "solutions": "Soluciones",
+        "differentials": "Diferenciales",
+        "contact": "Contacto",
+        "login": "Iniciar Sesión"
+    },
+    "hero": {
+        "title": "Alcanza <1>tu Cima</1>",
+        "subtitle": "No somos solo consultores. Somos creadores de tecnología. Desarrollamos Agentes de IA exclusivos y sistemas integrados que eliminan el trabajo manual y ponen a su empresa en piloto automático de eficiencia.",
+        "cta": "Agendar Consultoría Estratégica"
+    },
+    "whyUs": {
+        "title": "Liderado por quien entiende de <1>Código</1> y de <3>Negocios</3>.",
+        "description": "\"En NeoVertex, no entregamos soluciones genéricas. Yo, <1>Nelson Araujo</1>, garantizo personalmente que cada línea de código y cada agente de IA esté diseñado específicamente para la arquitectura de su negocio. Aportamos la honestidad de un socio y la precisión de una máquina.\"",
+        "cta": "Hablar con Nelson Araujo"
+    },
+    "services": {
+        "title": "TRANSFORMACIÓN DIGITAL QUE GENERA RESULTADOS",
+        "subtitle": "Desde la consultoría estratégica hasta el desarrollo web, somos el socio completo para acelerar su crecimiento. Unimos inteligencia de negocios y tecnología avanzada para llevar a su empresa al siguiente nivel de rendimiento y rentabilidad.",
+        "slogan_text": "Reach your Peak. Conecta tecnología y estrategia para alcanzar resultados extraordinarios.",
+        "consulting": {
+            "title": "CONSULTORÍA ESTRATÉGICA",
+            "description": "Análisis profundo de su negocio con diagnósticos precisos y planes de acción personalizados. Nuestro equipo identifica oportunidades de crecimiento y optimización, garantizando decisiones basadas en datos y resultados medibles.",
+            "details": {
+                "branding": {
+                    "title": "Creación de Branding",
+                    "description": "Construimos una identidad visual y verbal única para su marca. Desde el logotipo hasta el tono de voz, garantizamos que su empresa transmita autoridad, gane la confianza del público y se destaque de la competencia."
+                },
+                "pricing": {
+                    "title": "Estrategia de Precios",
+                    "description": "Definimos el precio ideal para sus productos y servicios, equilibrando competitividad y margen de beneficio. Analizamos costos, valor percibido y demanda para maximizar su rentabilidad."
+                },
+                "actionPlan": {
+                    "title": "Plan de Acción",
+                    "description": "No entregamos solo informes, sino una hoja de ruta clara para la ejecución. Definimos objetivos, plazos y responsables, transformando la estrategia en tareas prácticas para garantizar el crecimiento."
+                },
+                "marketResearch": {
+                    "title": "Investigación de Mercado",
+                    "description": "Mapeamos profundamente su nicho y sus competidores. Identificamos tendencias, amenazas y oportunidades inexploradas para que siempre esté un paso adelante en el juego de los negocios."
+                }
+            }
+        },
+        "ai": {
+            "title": "INTELIGENCIA ARTIFICIAL Y AUTOMATIZACIÓN",
+            "description": "Implementamos soluciones de IA y automatización de procesos que revolucionan su operación. Reduzca costos, elimine errores y libere a su equipo para actividades estratégicas con tecnología de punta.",
+            "details": {
+                "agents": {
+                    "title": "Agentes Inteligentes",
+                    "description": "Chatbots avanzados y asistentes virtuales que venden, brindan soporte y atienden las 24 horas del día, utilizando lenguaje natural y aprendizaje continuo."
+                },
+                "automation": {
+                    "title": "Automatización de Procesos",
+                    "description": "Robots de software (RPA) que ejecutan tareas repetitivas y burocráticas a una velocidad sobrehumana, reduciendo drásticamente sus costos operativos."
+                },
+                "data": {
+                    "title": "Análisis Predictivo",
+                    "description": "Algoritmos que transforman sus datos brutos en predicciones precisas de ventas y tendencias, permitiendo decisiones estratégicas anticipadas."
+                },
+                "generative": {
+                    "title": "IA Generativa",
+                    "description": "Soluciones para creación automática de contenido, código o diseño, escalando su producción creativa sin perder calidad."
+                }
+            }
+        },
+        "systems": {
+            "title": "GESTIÓN INTEGRADA Y ERP",
+            "description": "Centralice toda la gestión de su negocio en una plataforma única e inteligente. Desde finanzas hasta ventas, ofrecemos sistemas que conectan todos los sectores de su empresa en tiempo real.",
+            "details": {
+                "erp": {
+                    "title": "ERP Personalizado",
+                    "description": "Un núcleo de gestión a medida para integrar todos los departamentos de su empresa, eliminando silos de información y retrabajos."
+                },
+                "crm": {
+                    "title": "CRM y Gestión de Ventas",
+                    "description": "Herramientas poderosas para seguir cada lead, visualizar su embudo de ventas y garantizar que no se pierda ninguna oportunidad de negocio."
+                },
+                "api": {
+                    "title": "Integración de API",
+                    "description": "Conectamos todo su software actual (bancos, marketing, logística) en un ecosistema unificado donde los datos fluyen automáticamente."
+                },
+                "dashboards": {
+                    "title": "Tableros en Tiempo Real",
+                    "description": "Paneles visuales e intuitivos que muestran los KPI más importantes de su negocio al instante, para una gestión visible y control total."
+                }
+            }
+        },
+        "web": {
+            "title": "DESARROLLO DE SITIOS WEB",
+            "description": "Creación de sitios corporativos, tiendas virtuales y plataformas digitales que convierten. Diseño moderno, rendimiento superior y experiencia de usuario optimizada para maximizar sus resultados en línea.",
+            "details": {
+                "uiux": {
+                    "title": "Diseño UI/UX Premium",
+                    "description": "Interfaces diseñadas para encantar y retener. Nos enfocamos en el viaje del usuario para garantizar una navegación fluida, intuitiva y estéticamente impecable."
+                },
+                "seo": {
+                    "title": "SEO y Rendimiento",
+                    "description": "Optimización técnica avanzada para que su sitio cargue al instante y conquiste las primeras posiciones en Google, atrayendo tráfico calificado."
+                },
+                "ecommerce": {
+                    "title": "E-commerce Escalable",
+                    "description": "Tiendas online robustas, seguras y listas para vender. Integración total con pagos, logística y herramientas de marketing para escalar sus ventas."
+                },
+                "responsive": {
+                    "title": "Responsividad Total",
+                    "description": "Su sitio perfecto en cualquier pantalla. Garantizamos una experiencia de usuario consistente e increíble, ya sea en escritorio, tableta o teléfono inteligente."
+                }
+            }
+        },
+        "marketing": {
+            "title": "MARKETING DIGITAL Y GROWTH",
+            "description": "Estrategias completas de marketing digital para acelerar su crecimiento. SEO, gestión de redes sociales, campañas pagas y análisis de datos para posicionar su marca y multiplicar sus ventas."
+        },
+        "support": {
+            "title": "SOPORTE TÉCNICO Y CAPACITACIÓN",
+            "description": "Acompañamiento continuo y capacitación especializada para su equipo. Garantizamos que extraiga el máximo potencial de todas las soluciones implementadas, con soporte dedicado 24/7."
+        }
+    },
+    "contact": {
+        "title": "¿Hablamos?",
+        "subtitle": "Agende una consultoría estratégica y descubra cómo podemos transformar su negocio.",
+        "name": "Nombre",
+        "country": "País",
+        "countryCode": "Cód. País",
+        "phone": "Teléfono / WhatsApp",
+        "message": "Mensaje",
+        "placeholders": {
+            "country": "Ej: España",
+            "phone": "Ej: +34 600 000 000"
+        },
+        "errors": {
+            "nameInvalid": "Nombre inválido (solo letras, 2-100 caracteres).",
+            "countryInvalid": "Por favor, ingrese su país.",
+            "countryCodeInvalid": "Ingrese el código de país.",
+            "phoneInvalid": "Por favor, ingrese un teléfono válido.",
+            "messageLength": "El mensaje debe tener entre {{min}} y {{max}} caracteres.",
+            "spamDetected": "Contenido sospechoso detectado.",
+            "recaptcha": "Por favor, complete el reCAPTCHA.",
+            "rateLimit": "Espere {{minutes}} minutos para enviar un nuevo mensaje.",
+            "generic": "Error al enviar mensaje. Intente nuevamente."
+        },
+        "submit": "Enviar Mensaje",
+        "success": "¡Gracias! Nos pondremos en contacto pronto.",
+        "sending": "Enviando..."
+    },
+    "footer": {
+        "rights": "Todos los derechos reservados."
+    }
+}

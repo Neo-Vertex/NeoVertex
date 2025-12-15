@@ -1,0 +1,291 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #000000;
+  --color-primary: #D4AF37;
+  --color-primary-light: #F4CF57;
+  --color-accent: #4A5D3A;
+  --color-text: #FFFFFF;
+  --color-text-muted: #A0A0A0;
+  --color-surface: #111111;
+
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+:root {
+  /* Keep these for backward compatibility if needed, or rely on theme vars */
+  --color-bg: #000000;
+  --color-primary: #D4AF37;
+  --color-primary-light: #F4CF57;
+  --color-accent: #4A5D3A;
+  --color-text: #FFFFFF;
+  --color-text-muted: #A0A0A0;
+  --color-surface: #111111;
+
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@keyframes liquid-gold {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.text-liquid-gold {
+  background: linear-gradient(90deg, #D4AF37 0%, #F4CF57 25%, #FFFFE0 50%, #F4CF57 75%, #D4AF37 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: liquid-gold 3s linear infinite;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.text-liquid-purple {
+  background: linear-gradient(90deg, #9D00FF 0%, #D480FF 25%, #FFFFFF 50%, #D480FF 75%, #9D00FF 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: liquid-gold 3s linear infinite;
+  text-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
+}
+
+.text-liquid-blue {
+  background: linear-gradient(90deg, #00EAFF 0%, #80F5FF 25%, #FFFFFF 50%, #80F5FF 75%, #00EAFF 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: liquid-gold 3s linear infinite;
+  text-shadow: 0 0 20px rgba(0, 234, 255, 0.4);
+}
+
+.text-liquid-green {
+  background: linear-gradient(90deg, #00FF00 0%, #80FF80 25%, #FFFFFF 50%, #80FF80 75%, #00FF00 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: liquid-gold 3s linear infinite;
+  text-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+button {
+  font-family: var(--font-heading);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Utilities replaced by Tailwind */
+
+.section-padding {
+  padding: 6rem 2rem;
+}
+
+.why-us-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4rem;
+}
+
+/* New Animations & Gold Effects */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 10px rgba(212, 175, 55, 0.4);
+  }
+
+  100% {
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes liquid-gold {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes shadow-flow {
+  0% {
+    box-shadow: 5px 5px 15px rgba(212, 175, 55, 0.2);
+  }
+
+  25% {
+    box-shadow: -5px 5px 15px rgba(212, 175, 55, 0.2);
+  }
+
+  50% {
+    box-shadow: -5px -5px 15px rgba(212, 175, 55, 0.2);
+  }
+
+  75% {
+    box-shadow: 5px -5px 15px rgba(212, 175, 55, 0.2);
+  }
+
+  100% {
+    box-shadow: 5px 5px 15px rgba(212, 175, 55, 0.2);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.gold-glow {
+  animation: glow 3s infinite alternate;
+}
+
+.gold-border {
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+  transition: all 0.3s ease;
+}
+
+.gold-border:hover {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  border-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  animation: shadow-flow 3s infinite linear;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light), var(--color-primary));
+  background-size: 200% auto;
+  animation: shine 3s linear infinite;
+  color: black;
+  font-weight: bold;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.btn-shine:hover {
+  transform: scale(1.05);
+  animation: shine 3s linear infinite, shadow-flow 2s infinite linear;
+}
+
+.card-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 1rem;
+  transition: all 0.4s ease;
+}
+
+.card-glass:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-item-active {
+  background: linear-gradient(270deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+  border-left: 3px solid var(--color-primary);
+}
+
+.menu-item-active svg {
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+}
+
+.menu-item-active span {
+  background: linear-gradient(90deg, #D4AF37 0%, #F4CF57 50%, #D4AF37 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: liquid-gold 3s linear infinite;
+  font-weight: bold;
+}

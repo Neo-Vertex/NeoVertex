@@ -1,0 +1,77 @@
+{
+    "header": {
+        "solutions": "Soluções",
+        "differentials": "Diferenciais",
+        "contact": "Contacto",
+        "login": "Login"
+    },
+    "hero": {
+        "title": "Alcance o <1>seu Topo</1>",
+        "subtitle": "Não somos apenas consultoria. Somos criadores de tecnologia. Desenvolvemos Agentes de IA exclusivos e sistemas integrados que eliminam o trabalho manual e colocam a sua empresa no piloto automático da eficiência.",
+        "cta": "Agendar Consultoria Estratégica"
+    },
+    "whyUs": {
+        "title": "SEU NEGÓCIO É <1>ÚNICO</1>. SUA <3>TECNOLOGIA</3> TAMBÉM DEVERIA SER.",
+        "description": "Como CEO da NeoVertex, eu, <1>Nelson Araujo</1>, me comprometo: zero soluções genéricas. Criamos Agentes de IA e sistemas que falam a linguagem do seu negócio. É a diferença entre ter tecnologia e dominar o mercado com ela.",
+        "cta": "Falar com Nelson Araujo"
+    },
+    "services": {
+        "title": "TRANSFORMAÇÃO DIGITAL QUE GERA RESULTADOS",
+        "subtitle": "Da consultoria estratégica ao desenvolvimento web, somos o parceiro completo para acelerar o seu crescimento. Unimos inteligência de negócios e tecnologia avançada para levar a sua empresa ao próximo nível de performance e lucratividade.",
+        "slogan_text": "Reach your Peak. Conecte tecnologia e estratégia para alcançar resultados extraordinários.",
+        "consulting": {
+            "title": "CONSULTORIA ESTRATÉGICA",
+            "description": "Análise profunda do seu negócio com diagnósticos precisos e planos de ação customizados. A nossa equipa identifica oportunidades de crescimento e otimização, garantindo decisões baseadas em dados e resultados mensuráveis."
+        },
+        "ai": {
+            "title": "INTELIGÊNCIA ARTIFICIAL & AUTOMAÇÃO",
+            "description": "Implementamos soluções de IA e automação de processos que revolucionam a sua operação. Reduza custos, elimine erros e liberte a sua equipa para atividades estratégicas com tecnologia de ponta."
+        },
+        "erp": {
+            "title": "GESTÃO INTEGRADA & ERP",
+            "description": "Centralize toda a gestão do seu negócio numa plataforma única e inteligente. Do financeiro ao comercial, oferecemos sistemas que conectam todos os setores da sua empresa em tempo real."
+        },
+        "web": {
+            "title": "DESENVOLVIMENTO WEB & E-COMMERCE",
+            "description": "Criação de sites corporativos, lojas virtuais e plataformas digitais que convertem. Design moderno, performance superior e experiência do utilizador otimizada para maximizar os seus resultados online."
+        },
+        "marketing": {
+            "title": "MARKETING DIGITAL & GROWTH",
+            "description": "Estratégias completas de marketing digital para acelerar o seu crescimento. SEO, gestão de redes sociais, campanhas pagas e análise de dados para posicionar a sua marca e multiplicar as suas vendas."
+        },
+        "support": {
+            "title": "SUPORTE TÉCNICO & CAPACITAÇÃO",
+            "description": "Acompanhamento contínuo e formação especializada para a sua equipa. Garantimos que extraia o máximo potencial de todas as soluções implementadas, com suporte dedicado 24/7."
+        }
+    },
+    "contact": {
+        "title": "Vamos Conversar?",
+        "subtitle": "Agende uma consultoria estratégica e descubra como podemos transformar o seu negócio.",
+        "name": "Nome",
+        "country": "País",
+        "countryCode": "DDI",
+        "phone": "Telefone / WhatsApp",
+        "message": "Mensagem",
+        "placeholders": {
+            "country": "Ex: Portugal",
+            "phone": "Ex: +351 912 345 678"
+        },
+        "errors": {
+            "nameInvalid": "Nome inválido (apenas letras, 2-100 caracteres).",
+            "countryInvalid": "Por favor, informe o seu país.",
+            "countryCodeInvalid": "Informe o DDI.",
+            "phoneInvalid": "Por favor, informe um telefone válido.",
+            "messageLength": "A mensagem deve ter entre {{min}} e {{max}} caracteres.",
+            "spamDetected": "Conteúdo suspeito detetado.",
+            "recaptcha": "Por favor, complete o reCAPTCHA.",
+            "rateLimit": "Aguarde {{minutes}} minutos para enviar nova mensagem.",
+            "generic": "Erro ao enviar mensagem. Tente novamente."
+        },
+        "submit": "Enviar Mensagem",
+        "success": "Obrigado! Entraremos em contacto em breve.",
+        "sending": "A enviar..."
+    },
+    "footer": {
+        "rights": "Todos os direitos reservados."
+    }
+}

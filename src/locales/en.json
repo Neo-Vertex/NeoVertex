@@ -1,0 +1,150 @@
+{
+    "header": {
+        "home": "Home",
+        "solutions": "Solutions",
+        "differentials": "Differentials",
+        "contact": "Contact",
+        "login": "Login"
+    },
+    "hero": {
+        "title": "Reach <1>your Peak</1>",
+        "subtitle": "We are not just consultants. We are technology creators. We develop exclusive AI Agents and integrated systems that eliminate manual work and put your company on efficiency autopilot.",
+        "cta": "Schedule Strategic Consulting"
+    },
+    "whyUs": {
+        "title": "Led by those who understand <1>Code</1> and <3>Business</3>.",
+        "description": "\"At NeoVertex, we don't deliver off-the-shelf solutions. I, <1>Nelson Araujo</1>, personally guarantee that every line of code and every AI agent is designed specifically for your business architecture. We bring the honesty of a partner and the precision of a machine.\"",
+        "cta": "Talk to Nelson Araujo"
+    },
+    "services": {
+        "title": "DIGITAL TRANSFORMATION THAT DRIVES RESULTS",
+        "subtitle": "From strategic consulting to web development, we are the complete partner to accelerate your growth. We unite business intelligence and advanced technology to take your company to the next level of performance and profitability.",
+        "slogan_text": "Reach your Peak. Connect technology and strategy to achieve extraordinary results.",
+        "consulting": {
+            "title": "STRATEGIC CONSULTING",
+            "description": "Deep analysis of your business with precise diagnostics and customized action plans. Our team identifies growth and optimization opportunities, ensuring data-driven decisions and measurable results.",
+            "details": {
+                "branding": {
+                    "title": "Branding Creation",
+                    "description": "We build a unique visual and verbal identity for your brand. From the logo to the tone of voice, we ensure your company conveys authority, earns public trust, and stands out from the competition."
+                },
+                "pricing": {
+                    "title": "Pricing Strategy",
+                    "description": "We define the ideal price for your products and services, balancing competitiveness and profit margin. We analyze costs, perceived value, and demand to maximize your profitability."
+                },
+                "actionPlan": {
+                    "title": "Action Plan",
+                    "description": "We deliver not just reports, but a clear execution roadmap. We define goals, deadlines, and owners, transforming strategy into practical tasks to ensure growth happens."
+                },
+                "marketResearch": {
+                    "title": "Market Research",
+                    "description": "We deeply map your niche and competitors. We identify trends, threats, and unexplored opportunities so you are always one step ahead in the business game."
+                }
+            }
+        },
+        "ai": {
+            "title": "ARTIFICIAL INTELLIGENCE & AUTOMATION",
+            "description": "Revolutionize your operation with the power of Artificial Intelligence. We develop autonomous agents and automations that work 24/7 for your company - reducing operational costs, eliminating administrative errors, and freeing your team to focus on what truly matters: strategy and growth.",
+            "details": {
+                "agents": {
+                    "title": "Intelligent Agents",
+                    "description": "Advanced chatbots and virtual assistants that sell, support, and serve 24 hours a day, using natural language and continuous learning."
+                },
+                "automation": {
+                    "title": "Process Automation",
+                    "description": "Software robots (RPA) that execute repetitive and bureaucratic tasks with superhuman speed, drastically cutting your operational costs."
+                },
+                "data": {
+                    "title": "Predictive Analytics",
+                    "description": "Algorithms that transform your raw data into precise sales predictions and trends, enabling early strategic decisions."
+                },
+                "generative": {
+                    "title": "Generative AI",
+                    "description": "Solutions for automated content creation, coding, or design, scaling your creative production without losing quality."
+                }
+            }
+        },
+        "systems": {
+            "title": "SYSTEMS DEVELOPMENT",
+            "description": "Forget manual spreadsheets and rigid software. We create the operating system tailored to your business. Centralize finance, inventory, HR, and sales intp a single, secure platform accessible from anywhere, designed exclusively for your workflows.",
+            "details": {
+                "erp": {
+                    "title": "Custom ERP",
+                    "description": "A management core made to measure to integrate all departments of your company, eliminating information silos and rework."
+                },
+                "crm": {
+                    "title": "CRM & Sales Management",
+                    "description": "Powerful tools to track every lead, visualize your sales funnel, and ensure no business opportunity is lost."
+                },
+                "api": {
+                    "title": "API Integration",
+                    "description": "We connect all your current software (banks, marketing, logistics) into a unified ecosystem where data flows automatically."
+                },
+                "dashboards": {
+                    "title": "Real-Time Dashboards",
+                    "description": "Visual and intuitive panels showing your business's most important KPIs instantly, for visible management and total control."
+                }
+            }
+        },
+        "websites": {
+            "title": "WEBSITE DEVELOPMENT",
+            "description": "Your digital storefront needs to be more than pretty: it needs to sell. We create high-performance websites, online stores, and landing pages optimized for conversion. We combine premium design, extreme speed, and best SEO practices to turn visitors into loyal customers.",
+            "details": {
+                "uiux": {
+                    "title": "Premium UI/UX Design",
+                    "description": "Interfaces designed to enchant and retain. We focus on the user journey to ensure fluid, intuitive, and aesthetically flawless navigation."
+                },
+                "seo": {
+                    "title": "SEO & Performance",
+                    "description": "Advanced technical optimization so your site loads instantly and conquers the top positions on Google, attracting qualified traffic."
+                },
+                "ecommerce": {
+                    "title": "Scalable E-commerce",
+                    "description": "Robust, secure online stores ready to sell. Full integration with payments, logistics, and marketing tools to scale your sales."
+                },
+                "responsive": {
+                    "title": "Total Responsiveness",
+                    "description": "Your site perfect on any screen. We ensure a consistent and incredible user experience, whether on desktop, tablet, or smartphone."
+                }
+            }
+        },
+        "marketing": {
+            "title": "DIGITAL MARKETING & GROWTH",
+            "description": "Complete digital marketing strategies to accelerate your growth. SEO, social media management, paid campaigns, and data analysis to position your brand and multiply your sales."
+        },
+        "support": {
+            "title": "TECHNICAL SUPPORT & TRAINING",
+            "description": "Continuous monitoring and specialized training for your team. We ensure you extract the maximum potential from all implemented solutions, with dedicated 24/7 support."
+        }
+    },
+    "contact": {
+        "title": "Let's Talk?",
+        "subtitle": "Schedule a strategic consultation and discover how we can transform your business.",
+        "name": "Name",
+        "country": "Country",
+        "countryCode": "Country Code",
+        "phone": "Phone / WhatsApp",
+        "message": "Message",
+        "placeholders": {
+            "country": "Ex: Brazil",
+            "phone": "Ex: +1 555 123 4567"
+        },
+        "errors": {
+            "nameInvalid": "Invalid name (letters only, 2-100 characters).",
+            "countryInvalid": "Please enter your country.",
+            "countryCodeInvalid": "Please enter the Country Code.",
+            "phoneInvalid": "Please enter a valid phone number.",
+            "messageLength": "Message must be between {{min}} and {{max}} characters.",
+            "spamDetected": "Suspicious content detected.",
+            "recaptcha": "Please complete the reCAPTCHA.",
+            "rateLimit": "Please wait {{minutes}} minutes before sending a new message.",
+            "generic": "Error sending message. Please try again."
+        },
+        "submit": "Send Message",
+        "success": "Thank you! We will be in touch shortly.",
+        "sending": "Sending..."
+    },
+    "footer": {
+        "rights": "All rights reserved."
+    }
+}
