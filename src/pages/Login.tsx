@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Mail, Lock, AlertTriangle, ArrowLeft, Check } from 'lucide-react';
 import Button from '../components/Button';
 import { supabase } from '../services/supabase';
 
@@ -57,10 +58,6 @@ const Login: React.FC = () => {
                 } else if (profile?.role === 'associate') {
                     navigate('/associate');
                 } else {
-                    // Fallback or specific error if role is unknown or missing
-                    // For now, let's treat it as an error or maybe just associate?
-                    // Safe default matches request: specific roles go to specific places.
-                    // If neither, show error.
                     throw new Error('Perfil de usuário sem permissão válida.');
                 }
             }
@@ -94,12 +91,15 @@ const Login: React.FC = () => {
                     gap: '0.5rem',
                     color: 'var(--color-text-muted)',
                     fontSize: '1rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
                     transition: 'color 0.3s'
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
                 onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-muted)'}
             >
-                ← Voltar para Home
+                <ArrowLeft size={20} /> Voltar para Home
             </button>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -138,7 +138,7 @@ const Login: React.FC = () => {
                             gap: '0.5rem'
                         }}
                     >
-                        <span>⚠️</span> {error}
+                        <AlertTriangle size={18} /> {error}
                     </motion.div>
                 )}
 
@@ -174,7 +174,9 @@ const Login: React.FC = () => {
                                 }}
                                 required
                             />
-                            <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }}>✉️</span>
+                            <div style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }}>
+                                <Mail size={18} />
+                            </div>
                         </div>
                     </div>
 
@@ -209,23 +211,33 @@ const Login: React.FC = () => {
                                 }}
                                 required
                             />
-                            <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }}>🔒</span>
+                            <div style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }}>
+                                <Lock size={18} />
+                            </div>
                         </div>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <input
-                            type="checkbox"
-                            id="rememberMe"
-                            checked={rememberMe}
-                            onChange={(e) => setRememberMe(e.target.checked)}
-                            style={{
-                                accentColor: 'var(--color-primary)',
-                                width: '18px',
-                                height: '18px',
-                                cursor: 'pointer'
-                            }}
-                        />
+                        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                                style={{
+                                    appearance: 'none',
+                                    width: '18px',
+                                    height: '18px',
+                                    border: '1px solid rgba(255,255,255,0.3)',
+                                    borderRadius: '4px',
+                                    backgroundColor: rememberMe ? 'var(--color-primary)' : 'transparent',
+                                    cursor: 'pointer',
+                                    display: 'grid',
+                                    placeContent: 'center'
+                                }}
+                            />
+                            {rememberMe && <Check size={12} className="text-black absolute pointer-events-none" style={{ left: '3px' }} />}
+                        </div>
                         <label htmlFor="rememberMe" style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', cursor: 'pointer', userSelect: 'none' }}>
                             Lembrar usuário e senha
                         </label>

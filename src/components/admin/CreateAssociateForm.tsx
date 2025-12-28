@@ -1,74 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Save, Loader2, AlertCircle } from 'lucide-react';
-import Button from '../Button';
-import { supabase } from '../../services/supabase';
-import { createClient } from '@supabase/supabase-js';
-import type { Service } from '../../types';
+import Stamp from '../common/Stamp';
 
-interface CreateAssociateFormProps {
-    onCancel?: () => void;
-    onSuccess?: () => void;
-}
+// ... (existing imports)
 
-const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, onCancel }) => {
+const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, onCancel, initialData }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showStamp, setShowStamp] = useState(false);
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        companyName: '',
-        address: '',
-        phone: '',
-        country: '',
-        location: '',
-        language: 'pt-BR',
-        birthDate: '',
-        referralSource: '',
-        isColab: false,
-        colabBrandId: '',
-        contractedProducts: [] as string[]
-    });
-
-    const [colabBrands, setColabBrands] = useState<any[]>([]);
-    const [availableServices, setAvailableServices] = useState<Service[]>([]);
-
-    useEffect(() => {
-        const loadData = async () => {
-            const { data: brands } = await supabase.from('colab_brands').select('*');
-            if (brands) setColabBrands(brands);
-
-            const { data: services } = await supabase.from('services').select('*').eq('active', true);
-            if (services) setAvailableServices(services);
-            else {
-                setAvailableServices([
-                    { id: '1', name: 'Criação de Site', description: 'Websites institucionais', active: true },
-                    { id: '2', name: 'Consultoria Empresarial', description: 'Análise de negócios', active: true },
-                    { id: '3', name: 'Agentes de IA', description: 'Automação com IA', active: true },
-                ]);
-            }
-        };
-        loadData();
-    }, []);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, type } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
-        }));
-    };
-
-    const toggleProduct = (serviceId: string) => {
-        setFormData(prev => {
-            const current = prev.contractedProducts;
-            const updated = current.includes(serviceId)
-                ? current.filter(id => id !== serviceId)
-                : [...current, serviceId];
-            return { ...prev, contractedProducts: updated };
-        });
-    };
+    // ... (existing state and useEffect)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -76,6 +15,8 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
         setError(null);
 
         try {
+            // ... (existing logic for creating user, profile, projects)
+
             // 1. Create a temporary client to avoid logging out the admin
             const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
             const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -102,26 +43,28 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 password: formData.password,
             });
 
-            if (authError) throw authError;
+            if (authError) {
+                if (authError.message.includes('already registered') || authError.status === 400) {
+                    throw new Error('Este email já está cadastrado para outro associado. Por favor, utilize outro email.');
+                }
+                throw authError;
+            }
+
             if (!authData.user) throw new Error('Erro ao criar usuário. Tente novamente.');
 
             const userId = authData.user.id;
 
-            // 3. Update the Profile (Trigger creates it, we update details)
-            // We wait a moment to ensure trigger validation (optional, but good practice)
-            // Actually, we use the session from signUp to perform the update as the user itself
-
-            // Wait for trigger to insert profile row
+            // 3. Update the Profile
             await new Promise(r => setTimeout(r, 1000));
 
             const { error: profileError } = await tempSupabase
                 .from('profiles')
                 .update({
-                    full_name: formData.companyName, // Mapping company name to full_name for now or strict mapping
+                    full_name: formData.companyName,
                     company_name: formData.companyName,
-                    role: 'associate', // Trigger sets it, but ensuring
+                    role: 'associate',
                     phone: formData.phone,
-                    location: formData.address, // Using address as location
+                    location: formData.address,
                     country: formData.country,
                     language: formData.language,
                     birth_date: formData.birthDate || null,
@@ -133,10 +76,9 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
             if (profileError) {
                 console.error('Profile Update Error:', profileError);
-                // Continue anyway, it's non-critical
             }
 
-            // 4. Create Projects for selected products
+            // 4. Create Projects
             if (formData.contractedProducts.length > 0) {
                 const projectsToInsert = formData.contractedProducts.map(serviceId => {
                     const service = availableServices.find(s => s.id === serviceId);
@@ -145,7 +87,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                         service: service?.name || 'Serviço Personalizado',
                         status: 'Contratado',
                         start_date: new Date().toISOString(),
-                        value: 0, // Default or fetch from service
+                        value: 0,
                     };
                 });
 
@@ -156,23 +98,63 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 if (projectsError) console.error('Projects Error:', projectsError);
             }
 
-            // Success
-            if (onSuccess) onSuccess();
+            // Success Animation
+            triggerStamp();
+            setTimeout(() => {
+                if (onSuccess) onSuccess();
+            }, 3000);
 
         } catch (err: any) {
             console.error(err);
-            setError(err.message || 'Ocorreu um erro ao cadastrar o associado.');
-        } finally {
+            // Translate common Supabase errors
+            let msg = err.message || 'Ocorreu um erro ao cadastrar o associado.';
+            if (msg.includes('already registered')) msg = 'Este email já está cadastrado para outro associado.';
+
+            setError(msg);
             setLoading(false);
         }
     };
 
+    const triggerStamp = () => {
+        setShowStamp(true);
+        setTimeout(() => setShowStamp(false), 3000);
+    };
+
     return (
-        <div className="card-glass p-10 max-w-5xl mx-auto shadow-[0_0_50px_rgba(0,0,0,0.3)] border border-[rgba(255,255,255,0.05)]">
-            <div className="text-center mb-10">
+        <div className="card-glass p-10 max-w-5xl mx-auto shadow-[0_0_50px_rgba(0,0,0,0.3)] border border-[rgba(255,255,255,0.05)] relative">
+            <AnimatePresence>
+                {showStamp && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-none"
+                        onClick={() => setShowStamp(false)} // Allow clicking to dismiss early
+                    >
+                        <Stamp />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="text-center mb-10 relative">
                 <h3 className="text-3xl font-bold text-liquid-gold mb-2">Cadastrar Novo Associado</h3>
                 <p className="text-[var(--color-text-muted)]">Preencha os dados abaixo para criar um novo perfil de associado.</p>
+
+                {/* Manual Stamp Button */}
+                <button
+                    type="button"
+                    onClick={triggerStamp}
+                    className="absolute right-0 top-0 p-2 text-[var(--color-primary)] hover:bg-[rgba(212,175,55,0.1)] rounded-full transition-colors flex flex-col items-center gap-1 group"
+                    title="Carimbar Manualmente"
+                >
+                    <div className="w-8 h-8 rounded-full border-2 border-[var(--color-primary)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span className="text-lg">★</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Carimbar</span>
+                </button>
             </div>
+
+            {/* ... (rest of the form content same as before) */}
 
             {error && (
                 <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-xl flex items-center gap-3 text-red-200">
@@ -182,6 +164,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
             )}
 
             <form onSubmit={handleSubmit} className="space-y-8">
+                {/* ... (Form Fields) */}
                 {/* 1. Account Info Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
                     <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">

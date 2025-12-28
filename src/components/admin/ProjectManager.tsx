@@ -907,15 +907,15 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                 </div>
 
                 {/* Barra Superior de Abas e Estatísticas */}
-                <div className="shrink-0 flex items-center justify-between px-8 border-b border-white/5 bg-[#09090b]">
-                    <div className="flex gap-8">
-                        <button onClick={() => setActiveTab('projects')} className={`py-6 text-sm font-bold uppercase tracking-widest border-b-2 transition-all ${activeTab === 'projects' ? 'border-[var(--color-primary)] text-white' : 'border-transparent text-[var(--color-text-muted)] hover:text-white'}`}>
+                <div className="shrink-0 flex items-center justify-between px-8 py-4 border-b border-white/5 bg-[#09090b]">
+                    <div className="flex gap-4">
+                        <button onClick={() => setActiveTab('projects')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'projects' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
                             Portfólio de Projetos
                         </button>
-                        <button onClick={() => setActiveTab('profile')} className={`py-6 text-sm font-bold uppercase tracking-widest border-b-2 transition-all ${activeTab === 'profile' ? 'border-[var(--color-primary)] text-white' : 'border-transparent text-[var(--color-text-muted)] hover:text-white'}`}>
+                        <button onClick={() => setActiveTab('profile')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'profile' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
                             Dados do Perfil
                         </button>
-                        <button onClick={() => setActiveTab('financial')} className={`py-6 text-sm font-bold uppercase tracking-widest border-b-2 transition-all ${activeTab === 'financial' ? 'border-[var(--color-primary)] text-white' : 'border-transparent text-[var(--color-text-muted)] hover:text-white'}`}>
+                        <button onClick={() => setActiveTab('financial')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'financial' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
                             Financeiro
                         </button>
                     </div>

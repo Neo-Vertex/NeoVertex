@@ -152,13 +152,13 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
-                            className={`relative flex items-center gap-2 px-6 py-2.5 rounded-lg transition-all duration-300 z-10 ${isActive ? 'text-black font-bold' : 'text-[var(--color-text-muted)] hover:text-white'
+                            className={`relative flex items-center gap-2 px-6 py-2.5 rounded-lg transition-all duration-300 z-10 ${isActive ? 'text-white font-bold' : 'text-[var(--color-text-muted)] hover:text-white'
                                 }`}
                         >
                             {isActive && (
                                 <motion.div
                                     layoutId="activeSettingsTab"
-                                    className="absolute inset-0 bg-[var(--color-primary)] rounded-lg shadow-[0_0_15px_rgba(212,175,55,0.4)]"
+                                    className="absolute inset-0 bg-[var(--color-primary)]/20 border border-[var(--color-primary)] rounded-lg shadow-[0_0_15px_rgba(212,175,55,0.2)]"
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                 />
                             )}

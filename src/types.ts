@@ -65,6 +65,7 @@ export interface Associate {
     referral_source?: string;
     is_colab?: boolean;
     colab_brand_id?: string;
+    created_at?: string;
 }
 
 export interface ColabBrand {

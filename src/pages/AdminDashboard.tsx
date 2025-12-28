@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, DollarSign, Bell, Trash2, Briefcase, ChevronDown } from 'lucide-react';
+import { Users, Trash2, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '../services/supabase';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,21 +12,39 @@ import ProjectManager from '../components/admin/ProjectManager';
 import MessagesView from '../components/admin/MessagesView';
 import ProductsManager from '../components/admin/ProductsManager';
 import LanguagesManager from '../components/admin/LanguagesManager';
-import type { Associate, Project, Expense } from '../types';
+import CRMView from '../components/crm/CRMView';
+import type { Associate, Project, FinancialRecord } from '../types';
+import type { CRMLead } from '../types/crm';
 
-// Editing State
+// Helper for Month/Year Selection
+const getMonthYearRange = (date: Date) => {
+    const start = new Date(date.getFullYear(), date.getMonth(), 1);
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0); // Last day of month
+    end.setHours(23, 59, 59, 999);
+    return { start, end };
+};
+
 const AdminDashboard: React.FC = () => {
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    // Data State
     const [associates, setAssociates] = useState<Associate[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
-    const [expenses, setExpenses] = useState<Expense[]>([]);
+    const [financialRecords, setFinancialRecords] = useState<FinancialRecord[]>([]);
+    // const [expenses, setExpenses] = useState<Expense[]>([]); // Removed: using financialRecords strictly
 
+    // UI State
     const [loading, setLoading] = useState(true);
     const [unreadCount, setUnreadCount] = useState(0);
     const [userEmail, setUserEmail] = useState('');
 
+    // Filter State
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [leadConversionData, setLeadConversionData] = useState<CRMLead | null>(null);
+
+    // Editing State
     const [editingAssociate, setEditingAssociate] = useState<Associate | null>(null);
     const [editingTab, setEditingTab] = useState<'projects' | 'logs' | 'profile'>('projects');
 
@@ -35,16 +53,21 @@ const AdminDashboard: React.FC = () => {
         loadData();
 
         const subscription = supabase
-            .channel('admin_dashboard_badges')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_requests' }, () => {
-                fetchUnreadCount();
-            })
+            .channel('admin_dashboard_updates')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_requests' }, () => fetchUnreadCount())
             .subscribe();
 
         return () => {
             subscription.unsubscribe();
         };
     }, []);
+
+    // Reload data when parameters that affect calculations change
+    useEffect(() => {
+        // Ideally we would fetch filtered data here, but we fetch all for now.
+        // Ensuring financial records are fresh is good practice.
+        loadFinancialData();
+    }, [selectedDate]);
 
     const fetchUnreadCount = async () => {
         const { count } = await supabase
@@ -76,7 +99,7 @@ const AdminDashboard: React.FC = () => {
             const { data: associatesData } = await supabase.from('profiles').select('*').eq('role', 'associate');
             if (associatesData) setAssociates(associatesData);
 
-            // Load Projects
+            // Load Projects (All, for stats)
             const { data: projectsData } = await supabase.from('projects').select('*');
             if (projectsData) setProjects(projectsData.map(p => ({
                 id: p.id,
@@ -91,14 +114,23 @@ const AdminDashboard: React.FC = () => {
                 projectUrl: p.project_url
             })));
 
-            // Load Expenses
-            const { data: expensesData } = await supabase.from('expenses').select('*');
-            if (expensesData) setExpenses(expensesData);
+            await loadFinancialData();
 
         } catch (error) {
             console.error('Error loading data:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const loadFinancialData = async () => {
+        // Fetch financial records
+        const { data: financialData } = await supabase
+            .from('financial_records')
+            .select('*');
+
+        if (financialData) {
+            setFinancialRecords(financialData);
         }
     };
 
@@ -112,113 +144,112 @@ const AdminDashboard: React.FC = () => {
         setEditingTab(tab);
     };
 
+    // --- Monthly Filter & Metrics ---
+    const getMonthlyData = () => {
+        const { start, end } = getMonthYearRange(selectedDate);
+
+        // Filter Financial Records for Selected Month
+        const monthlyRecords = financialRecords.filter(r => {
+            const rDate = new Date(r.date + 'T12:00:00');
+            return rDate >= start && rDate <= end;
+        });
+
+        // Calculate Monthly Sales (New Projects)
+        const monthlySales = projects.reduce((acc, project) => {
+            if (!project.startDate) return acc;
+            const projectDate = new Date(project.startDate);
+            if (projectDate >= start && projectDate <= end) {
+                return acc + Number(project.value || 0);
+            }
+            return acc;
+        }, 0);
+
+        return { monthlyRecords, monthlySales };
+    };
+
+    const { monthlyRecords, monthlySales } = getMonthlyData();
+
+
+
+    // --- Modal States ---
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [associateToDelete, setAssociateToDelete] = useState<string | null>(null);
     const [isVerifyingPassword, setIsVerifyingPassword] = useState(false);
 
-    // Reset Password State
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [resetPasswordAssociate, setResetPasswordAssociate] = useState<Associate | null>(null);
     const [newResetPassword, setNewResetPassword] = useState('');
     const [isResettingPassword, setIsResettingPassword] = useState(false);
 
-    const handleRemindUser = async (email: string) => {
-        alert(`Lembrete enviado para ${email}`);
-    };
-
+    // --- Handlers --- (Keep existing logic for password/delete/reset)
+    const handleRemindUser = async (email: string) => { alert(`Lembrete enviado para ${email}`); };
     const handleToggleActive = async (associate: Associate) => {
         const newStatus = !associate.active;
         const { error } = await supabase.from('profiles').update({ active: newStatus }).eq('id', associate.id);
-
-        if (error) {
-            console.error('Error toggling active status:', error);
-            alert('Erro ao atualizar status do associado.');
-            return;
-        }
-
+        if (error) { alert('Erro ao atualizar status.'); return; }
         setAssociates(associates.map(a => a.id === associate.id ? { ...a, active: newStatus } : a));
     };
 
-    const requestDeleteAssociate = (associateId: string) => {
-        setAssociateToDelete(associateId);
-        setIsPasswordModalOpen(true);
-    };
-
+    const requestDeleteAssociate = (associateId: string) => { setAssociateToDelete(associateId); setIsPasswordModalOpen(true); };
     const confirmDeleteAssociate = async () => {
         if (!associateToDelete || !passwordConfirmation) return;
         setIsVerifyingPassword(true);
-
         try {
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user || !user.email) {
-                alert('Erro ao identificar usuário logado.');
-                return;
-            }
+            if (!user?.email) return;
 
-            const { error: authError } = await supabase.auth.signInWithPassword({
-                email: user.email,
-                password: passwordConfirmation
-            });
+            // 1. Verify Admin Password
+            const { error: authError } = await supabase.auth.signInWithPassword({ email: user.email, password: passwordConfirmation });
+            if (authError) { alert('Senha incorreta.'); return; }
 
-            if (authError) {
-                alert('Senha incorreta.');
-                setIsVerifyingPassword(false);
-                return;
-            }
+            // 2. Attempt Safe Deletion via RPC
+            const { error: rpcError } = await supabase.rpc('admin_delete_associate', { target_user_id: associateToDelete });
 
-            // Password correct, proceed with delete
-            const { error: deleteError } = await supabase.from('profiles').delete().eq('id', associateToDelete);
+            if (rpcError) {
+                console.error('RPC Error:', rpcError);
+                // Fallback or specific error handling
+                if (rpcError.message.includes('function admin_delete_associate') && rpcError.message.includes('does not exist')) {
+                    alert('ERRO DE SISTEMA: A função de exclusão segura não foi encontrada no banco de dados.\n\nPor favor, execute o script "fix_delete_associate.sql" no SQL Editor do Supabase.');
+                    return;
+                }
 
-            if (deleteError) {
-                throw deleteError;
+                // If RPC fails for other reasons, try direct delete (legacy method) just in case
+                // preventing complete blocking if RPC has issues but direct works (unlikely for constraints)
+                const { error: deleteError } = await supabase.from('profiles').delete().eq('id', associateToDelete);
+                if (deleteError) throw deleteError;
             }
 
             setAssociates(associates.filter(a => a.id !== associateToDelete));
             setIsPasswordModalOpen(false);
-            setAssociateToDelete(null);
-            setPasswordConfirmation('');
-            alert('Associado excluído com sucesso.');
-
+            alert('Associado e todos os seus dados vinculados foram excluídos com sucesso.');
+            loadData(); // Force reload to confirm DB deletion
         } catch (error: any) {
-            console.error('Error deleting associate:', error);
-            alert(`Erro ao excluir associado: ${error.message || error.details || 'Erro desconhecido'}. \n\nVerifique se rodou o script de correção de banco de dados.`);
+            console.error('Full Delete Error:', error);
+            alert(`Erro detalhado ao excluir: \n${JSON.stringify(error, null, 2) || error.message}`);
         } finally {
             setIsVerifyingPassword(false);
         }
     };
 
-    const handleResetPasswordInit = (associate: Associate) => {
-        setResetPasswordAssociate(associate);
-        setNewResetPassword('');
-        setIsResetModalOpen(true);
-    };
-
+    const handleResetPasswordInit = (associate: Associate) => { setResetPasswordAssociate(associate); setIsResetModalOpen(true); };
     const confirmResetPassword = async () => {
         if (!resetPasswordAssociate || !newResetPassword) return;
         setIsResettingPassword(true);
-
         try {
-            const { error } = await supabase.rpc('admin_reset_password', {
-                target_user_id: resetPasswordAssociate.id,
-                new_password: newResetPassword
-            });
-
+            const { error } = await supabase.rpc('admin_reset_password', { target_user_id: resetPasswordAssociate.id, new_password: newResetPassword });
             if (error) throw error;
-
-            alert(`Senha redefinida com sucesso para o associado ${resetPasswordAssociate.full_name || resetPasswordAssociate.email}.`);
+            alert(`Senha redefinida com sucesso para ${resetPasswordAssociate.full_name}.`);
             setIsResetModalOpen(false);
-            setResetPasswordAssociate(null);
-            setNewResetPassword('');
-
-        } catch (error: any) {
-            console.error('Error resetting password:', error);
-            alert(`Erro ao redefinir senha: ${error.message || 'Erro desconhecido'}. \n\nVerifique se o script 'reset_user_password.sql' foi rodado no banco de dados.`);
-        } finally {
-            setIsResettingPassword(false);
-        }
+        } catch (error: any) { alert(`Erro: ${error.message}`); } finally { setIsResettingPassword(false); }
     };
 
+    // Helper to change month
+    const changeMonth = (offset: number) => {
+        const newDate = new Date(selectedDate);
+        newDate.setMonth(newDate.getMonth() + offset);
+        setSelectedDate(newDate);
+    };
 
     if (loading) {
         return (
@@ -230,7 +261,7 @@ const AdminDashboard: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[var(--color-bg)] text-white overflow-hidden">
-            {/* Password Confirmation Modal */}
+            {/* --- Password Confirmation Modal --- */}
             <AnimatePresence>
                 {isPasswordModalOpen && (
                     <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
@@ -277,7 +308,7 @@ const AdminDashboard: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            {/* Reset Password Modal */}
+            {/* --- Reset Password Modal --- */}
             <AnimatePresence>
                 {isResetModalOpen && resetPasswordAssociate && (
                     <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
@@ -325,7 +356,6 @@ const AdminDashboard: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            {/* Sidebar (New Tech Component) */}
             <Sidebar
                 activeSection={activeSection}
                 setActiveSection={setActiveSection}
@@ -335,7 +365,6 @@ const AdminDashboard: React.FC = () => {
                 onClose={() => setIsSidebarOpen(false)}
             />
 
-            {/* Main Content */}
             <div className="flex-1 flex flex-col h-full overflow-hidden relative">
                 <TopBar
                     activeSection={activeSection}
@@ -346,71 +375,62 @@ const AdminDashboard: React.FC = () => {
                 <main className="flex-1 overflow-y-auto p-4 md:p-8 relative">
                     <div className="max-w-7xl mx-auto space-y-8">
                         {activeSection === 'dashboard' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <motion.div className="bg-[#1a1a1a] p-6 rounded-2xl border border-white/5">
-                                    <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-blue-500/10 rounded-xl text-blue-400">
-                                            <Users size={24} />
+                            <>
+                                {/* --- Month Selector --- */}
+                                <div className="flex items-center justify-between mb-6">
+                                    <div className="flex items-center gap-4 bg-[#111] p-2 rounded-md border border-white/5 shadow-lg">
+                                        <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-white/5 rounded-sm text-[var(--color-text-muted)] hover:text-white transition-colors">
+                                            <ChevronLeft size={20} />
+                                        </button>
+                                        <div className="flex items-center gap-3 px-4 py-1 border-x border-white/5 min-w-[180px] justify-center">
+                                            <CalendarIcon size={18} className="text-[#D4AF37]" />
+                                            <span className="font-bold uppercase tracking-widest text-sm text-white">
+                                                {selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+                                            </span>
                                         </div>
-                                        <div>
-                                            <h3 className="text-gray-400 text-sm">Total de Associados</h3>
-                                            <p className="text-2xl font-bold">{associates.length}</p>
-                                        </div>
+                                        <button onClick={() => changeMonth(1)} className="p-2 hover:bg-white/5 rounded-sm text-[var(--color-text-muted)] hover:text-white transition-colors">
+                                            <ChevronRight size={20} />
+                                        </button>
                                     </div>
-                                </motion.div>
+                                    <button
+                                        onClick={() => setSelectedDate(new Date())}
+                                        className="px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/20 hover:bg-[#D4AF37]/20 transition-colors"
+                                    >
+                                        Mês Atual
+                                    </button>
+                                </div>
 
-                                <motion.div className="bg-[#1a1a1a] p-6 rounded-2xl border border-white/5">
-                                    <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-green-500/10 rounded-xl text-green-400">
-                                            <Briefcase size={24} />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-gray-400 text-sm">Projetos Ativos</h3>
-                                            <p className="text-2xl font-bold">{projects.filter(p => p.status === 'Em Desenvolvimento').length}</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                <div className="mb-8">
+                                    <FinancialView
+                                        key={`fin-overview-${selectedDate.toISOString()}`}
+                                        records={monthlyRecords}
+                                        associates={associates}
+                                        onUpdate={loadData}
+                                        initialTab="summary"
+                                        contractSales={monthlySales}
+                                        selectedDate={selectedDate}
+                                        historyRecords={financialRecords}
+                                        allProjects={projects}
+                                    />
+                                </div>
 
-                                <motion.div className="bg-[#1a1a1a] p-6 rounded-2xl border border-white/5">
-                                    <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-[var(--color-primary)]/10 rounded-xl text-[var(--color-primary)]">
-                                            <DollarSign size={24} />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-gray-400 text-sm">Receita Mensal</h3>
-                                            <p className="text-2xl font-bold">
-                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
-                                                    projects.reduce((acc, curr) => acc + (Number(curr.value || 0) * 0.1), 0)
-                                                )}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </motion.div>
 
-                                <motion.div className="bg-[#1a1a1a] p-6 rounded-2xl border border-white/5">
-                                    <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-red-500/10 rounded-xl text-red-400">
-                                            <Bell size={24} />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-gray-400 text-sm">Alertas (Vencimento)</h3>
-                                            <p className="text-2xl font-bold">
-                                                {projects.filter(p => {
-                                                    if (!p.maintenanceEndDate) return false;
-                                                    const today = new Date();
-                                                    const end = new Date(p.maintenanceEndDate);
-                                                    const diffDays = Math.ceil((end.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-                                                    return diffDays <= 5 && diffDays >= 0;
-                                                }).length}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            </div>
+                            </>
                         )}
 
                         {activeSection === 'create-associate' && (
-                            <CreateAssociateForm onCancel={() => setActiveSection('settings-associates')} onSuccess={() => { loadData(); setActiveSection('settings-associates'); }} />
+                            <CreateAssociateForm
+                                initialData={leadConversionData}
+                                onCancel={() => {
+                                    setActiveSection('settings-associates');
+                                    setLeadConversionData(null);
+                                }}
+                                onSuccess={() => {
+                                    loadData();
+                                    setActiveSection('settings-associates');
+                                    setLeadConversionData(null);
+                                }}
+                            />
                         )}
 
                         {activeSection === 'settings-associates' && (
@@ -430,15 +450,24 @@ const AdminDashboard: React.FC = () => {
                         {activeSection === 'settings-languages' && <LanguagesManager />}
 
                         {activeSection === 'financial-dashboard' && (
-                            <FinancialView key="fin-dash" expenses={expenses} onUpdate={loadData} initialTab="summary" />
+                            <FinancialView
+                                key={`fin-dash-${selectedDate.toISOString()}`}
+                                records={monthlyRecords}
+                                associates={associates}
+                                onUpdate={loadData}
+                                initialTab="summary"
+                                contractSales={monthlySales}
+                                selectedDate={selectedDate}
+                            />
                         )}
 
                         {activeSection === 'financial-records' && (
-                            <FinancialView key="fin-rec" expenses={expenses} onUpdate={loadData} initialTab="income" />
+                            <FinancialView key="fin-rec" records={financialRecords} associates={associates} onUpdate={loadData} initialTab="income" />
                         )}
 
                         {activeSection === 'messages' && <MessagesView />}
 
+                        {activeSection === 'crm' && <CRMView onConvertLead={(lead) => { setLeadConversionData(lead); setActiveSection('create-associate'); }} />}
                     </div>
                 </main>
             </div>
