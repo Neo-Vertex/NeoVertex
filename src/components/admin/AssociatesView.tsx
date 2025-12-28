@@ -10,9 +10,12 @@ interface AssociatesViewProps {
     startEditing: (associate: Associate, tab?: 'projects' | 'profile') => void;
     handleRemindUser: (email: string) => void;
     onNewAssociate: () => void;
+    onDeleteAssociate: (id: string) => void;
+    onToggleActive: (associate: Associate) => void;
+    onResetPassword: (associate: Associate) => void;
 }
 
-const AssociatesView: React.FC<AssociatesViewProps> = ({ associates, allProjects, startEditing, onNewAssociate }) => {
+const AssociatesView: React.FC<AssociatesViewProps> = ({ associates, allProjects, startEditing, onNewAssociate, onDeleteAssociate, onToggleActive, onResetPassword }) => {
 
     return (
         <div className="space-y-6">
@@ -37,6 +40,9 @@ const AssociatesView: React.FC<AssociatesViewProps> = ({ associates, allProjects
                             projects={userProjects}
                             onEditProfile={() => startEditing(associate, 'profile')}
                             onManageProjects={() => startEditing(associate, 'projects')}
+                            onDelete={() => onDeleteAssociate(associate.id)}
+                            onToggleActive={() => onToggleActive(associate)}
+                            onResetPassword={() => onResetPassword(associate)}
                         />
                     );
                 })}

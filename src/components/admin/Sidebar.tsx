@@ -1,63 +1,170 @@
-import React from 'react';
-import { LayoutDashboard, Users, UserPlus, Settings, LogOut, DollarSign } from 'lucide-react';
+import React, { useState } from 'react';
+import { LayoutGrid, Users, DollarSign, Settings, MessageSquare, Briefcase, ChevronDown, LogOut, Power, CreditCard, Settings2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Logo from '../Logo';
 
 interface SidebarProps {
     activeSection: string;
     setActiveSection: (section: string) => void;
     handleLogout: () => void;
+    unreadCount?: number;
+    isOpen?: boolean; // Mobile state
+    onClose?: () => void;
 }
 
-const menuItems = [
-    { id: 'dashboard', label: 'Visão Geral', icon: LayoutDashboard },
-    { id: 'associates', label: 'Associados', icon: Users },
-    { id: 'create-associate', label: 'Criar Associado', icon: UserPlus },
-    { id: 'financial', label: 'Financeiro', icon: DollarSign },
-    { id: 'settings', label: 'Configurações', icon: Settings },
+interface MenuItem {
+    id: string;
+    label: string;
+    icon: React.ElementType;
+    badge?: number;
+    subItems?: { id: string; label: string }[];
+}
+
+const menuItems: MenuItem[] = [
+    { id: 'dashboard', label: 'VISÃO GERAL', icon: LayoutGrid },
+    {
+        id: 'financial',
+        label: 'FINANCEIRO',
+        icon: CreditCard,
+        subItems: [
+            { id: 'financial-dashboard', label: 'DASHBOARD' },
+            { id: 'financial-records', label: 'REGISTROS' }
+        ]
+    },
+    {
+        id: 'settings',
+        label: 'CONFIGURAÇÃO',
+        icon: Settings2,
+        subItems: [
+            { id: 'settings-associates', label: 'ASSOCIADOS' },
+            { id: 'settings-products', label: 'PRODUTOS' },
+            { id: 'settings-languages', label: 'IDIOMAS' }
+        ]
+    },
+    { id: 'messages', label: 'SOLICITAÇÕES', icon: MessageSquare }
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection, handleLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection, handleLogout, unreadCount = 0, isOpen = true, onClose }) => {
+    const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
+
+    const toggleMenu = (menuId: string) => {
+        setExpandedMenu(expandedMenu === menuId ? null : menuId);
+    };
+
+    const handleItemClick = (item: MenuItem) => {
+        if (item.subItems) {
+            toggleMenu(item.id);
+        } else {
+            setActiveSection(item.id);
+            if (onClose) onClose();
+        }
+    };
+
+    // Update menu items with dynamic badges
+    const items = menuItems.map(item => item.id === 'messages' ? { ...item, badge: unreadCount } : item);
+
     return (
-        <aside className="w-72 bg-gradient-to-b from-black via-[#0a0a0a] to-black border-r border-[rgba(212,175,55,0.2)] flex flex-col z-20 shadow-[10px_0_30px_rgba(0,0,0,0.5)] h-screen sticky top-0">
-            <div className="p-8 border-b border-[rgba(255,255,255,0.05)] flex flex-col items-center gap-4 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-50"></div>
-                <div className="scale-90 origin-center hover:scale-100 transition-transform duration-500">
+        <aside className={`fixed md:sticky top-0 h-screen w-80 bg-[#050505] tech-panel border-r border-[#222] flex flex-col z-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+            {/* Header */}
+            <div className="p-8 border-b border-[#222] flex flex-col items-center gap-4 relative">
+                <div className="scale-90 transition-transform duration-500 hover:scale-100 filter drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]">
                     <Logo />
                 </div>
                 <div className="text-center">
-                    <h2 className="text-xs font-bold text-[var(--color-primary)] tracking-[0.2em] uppercase opacity-80">Admin Console</h2>
+                    <h2 className="text-[10px] font-mono font-bold text-[var(--color-primary)] tracking-[0.3em] uppercase">
+                        System Control
+                    </h2>
                 </div>
             </div>
 
-            <nav className="flex-1 p-4 space-y-4 overflow-y-auto custom-scrollbar">
-                {menuItems.map(item => (
-                    <button
-                        key={item.id}
-                        onClick={() => setActiveSection(item.id)}
-                        className={`w-full flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${activeSection === item.id
-                            ? 'bg-[rgba(212,175,55,0.1)] text-white shadow-[0_0_20px_rgba(212,175,55,0.1)] translate-x-1'
-                            : 'text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.03)] hover:pl-7'
-                            }`}
-                    >
-                        {activeSection === item.id && (
-                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-primary)] shadow-[0_0_10px_var(--color-primary)]"></div>
-                        )}
-                        <item.icon size={22} className={`transition-colors duration-300 ${activeSection === item.id ? 'text-[var(--color-primary)] drop-shadow-[0_0_5px_rgba(212,175,55,0.5)]' : 'group-hover:text-[var(--color-primary-light)]'}`} />
-                        <span className={`font-medium tracking-wide ${activeSection === item.id ? 'text-white' : ''}`}>{item.label}</span>
+            {/* Navigation */}
+            <nav className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
+                {items.map(item => {
+                    const isActive = activeSection === item.id || (item.subItems && item.subItems.some(sub => sub.id === activeSection));
+                    const isExpanded = expandedMenu === item.id;
 
-                        {/* Hover Glow Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(212,175,55,0.05)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                    </button>
-                ))}
+                    return (
+                        <div key={item.id} className="overflow-hidden">
+                            <button
+                                onClick={() => handleItemClick(item)}
+                                className={`w-full flex items-center justify-between px-6 py-4 rounded-sm transition-all duration-200 group relative border-l-2
+                                    ${isActive
+                                        ? 'bg-[#111] border-[var(--color-primary)] text-white'
+                                        : 'border-transparent text-gray-500 hover:text-white hover:bg-[#0a0a0a] hover:border-[#333]'
+                                    }`}
+                            >
+                                <div className="flex items-center gap-4">
+                                    <item.icon
+                                        size={20}
+                                        strokeWidth={isActive ? 2.5 : 2}
+                                        className={`transition-colors duration-300 ${isActive ? 'text-[var(--color-primary)]' : 'group-hover:text-white'}`}
+                                    />
+                                    <span className="text-xs font-bold tracking-widest font-mono uppercase">
+                                        {item.label}
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    {item.badge !== undefined && item.badge > 0 && (
+                                        <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-[0_0_5px_rgba(220,38,38,0.5)]">
+                                            {item.badge}
+                                        </span>
+                                    )}
+                                    {item.subItems && (
+                                        <ChevronDown size={14} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[var(--color-primary)]' : ''}`} />
+                                    )}
+                                </div>
+
+                                {/* Active Indicator for non-nested */}
+                                {isActive && !item.subItems && (
+                                    <div className="absolute right-2 w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_var(--color-primary)] animate-pulse"></div>
+                                )}
+                            </button>
+
+                            {/* Submenu */}
+                            <AnimatePresence>
+                                {item.subItems && isExpanded && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className="bg-[#080808] border-l border-[#222] ml-6 my-1"
+                                    >
+                                        {item.subItems.map(subItem => {
+                                            const isSubActive = activeSection === subItem.id;
+                                            return (
+                                                <button
+                                                    key={subItem.id}
+                                                    onClick={() => {
+                                                        setActiveSection(subItem.id);
+                                                        if (onClose) onClose();
+                                                    }}
+                                                    className={`w-full text-left pl-6 pr-4 py-3 text-[11px] font-mono tracking-wider transition-colors border-l-2
+                                                        ${isSubActive
+                                                            ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[rgba(212,175,55,0.05)]'
+                                                            : 'border-transparent text-gray-500 hover:text-white hover:border-[#444]'
+                                                        }`}
+                                                >
+                                                    {subItem.label}
+                                                </button>
+                                            );
+                                        })}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    );
+                })}
             </nav>
 
-            <div className="p-6 border-t border-[rgba(255,255,255,0.05)] bg-black/20">
+            {/* Footer */}
+            <div className="p-4 border-t border-[#222] bg-black/40">
                 <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-6 py-4 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 group border border-transparent hover:border-red-500/20"
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-sm border border-[#333] hover:border-red-900/50 hover:bg-red-950/10 text-gray-500 hover:text-red-400 transition-all duration-300 group"
                 >
-                    <LogOut size={20} className="group-hover:-translate-x-1 transition-transform" />
-                    <span className="font-medium">Sair do Sistema</span>
+                    <Power size={18} className="group-hover:text-red-500 transition-colors" />
+                    <span className="text-xs font-bold tracking-widest font-mono group-hover:text-red-400">ENCERRAR</span>
                 </button>
             </div>
         </aside>

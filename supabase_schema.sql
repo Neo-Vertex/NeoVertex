@@ -13,6 +13,7 @@ create table if not exists profiles (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+
 -- Set up Row Level Security (RLS)
 alter table profiles enable row level security;
 
@@ -27,6 +28,10 @@ create policy "Users can insert their own profile." on profiles
 drop policy if exists "Users can update own profile." on profiles;
 create policy "Users can update own profile." on profiles
   for update using (auth.uid() = id);
+
+drop policy if exists "Admins can delete profiles." on profiles;
+create policy "Admins can delete profiles." on profiles
+  for delete using (auth.uid() in (select id from profiles where role = 'admin'));
 
 -- Create a table for projects
 create table if not exists projects (
@@ -44,6 +49,10 @@ create table if not exists projects (
 
 -- Add currency column if it doesn't exist
 alter table projects add column if not exists currency text default 'BRL';
+alter table projects add column if not exists maintenance_value numeric default 0;
+alter table projects add column if not exists monthly_maintenance_value numeric default 0;
+alter table projects add column if not exists maintenance_due_day integer;
+alter table projects add column if not exists maintenance_start_date date;
 
 -- Set up RLS for projects
 alter table projects enable row level security;
@@ -63,6 +72,10 @@ create policy "Users can update own projects." on projects
 drop policy if exists "Users can delete own projects." on projects;
 create policy "Users can delete own projects." on projects
   for delete using (auth.uid() = user_id);
+
+drop policy if exists "Admins can manage projects." on projects;
+create policy "Admins can manage projects." on projects
+  for all using (auth.uid() in (select id from profiles where role = 'admin'));
 
 -- Function to handle new user creation
 create or replace function public.handle_new_user()
@@ -143,7 +156,6 @@ alter table profiles add column if not exists referral_source text;
 alter table profiles add column if not exists is_colab boolean default false;
 alter table profiles add column if not exists colab_brand_id uuid references colab_brands(id);
 
--- New Profile Fields
 alter table profiles add column if not exists full_name text;
 alter table profiles add column if not exists phone text;
 alter table profiles add column if not exists company_name text;
@@ -306,3 +318,42 @@ where not exists (select 1 from products where name = 'Consultoria de TI');
 insert into products (name, description, base_value)
 select 'Implementação de Agente de IA no Site', 'Integração de assistente virtual inteligente para atendimento automatizado.', 1500.00
 where not exists (select 1 from products where name = 'Implementação de Agente de IA no Site');
+-- Add associate_id column to financial_records if not exists
+alter table financial_records add column if not exists associate_id uuid references profiles(id) on delete set null;
+
+-- Create table for Languages (Internationalization)
+create table if not exists languages (
+  id uuid default uuid_generate_v4() primary key,
+  code text unique not null,
+  name text not null,
+  active boolean default false,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- RLS for languages
+alter table languages enable row level security;
+
+drop policy if exists "Authenticated users can view languages." on languages;
+create policy "Authenticated users can view languages." on languages
+  for select using (auth.role() = 'authenticated');
+
+drop policy if exists "Admins can manage languages." on languages;
+create policy "Admins can manage languages." on languages
+  for all using (auth.uid() in (select id from profiles where role = 'admin'));
+
+-- Insert default languages
+insert into languages (code, name, active)
+select 'pt-BR', 'Português (Brasil)', true
+where not exists (select 1 from languages where code = 'pt-BR');
+
+insert into languages (code, name, active)
+select 'en-US', 'Inglês (Estados Unidos)', true
+where not exists (select 1 from languages where code = 'en-US');
+
+insert into languages (code, name, active)
+select 'fr-FR', 'Francês', false
+where not exists (select 1 from languages where code = 'fr-FR');
+
+insert into languages (code, name, active)
+select 'es-ES', 'Espanhol', false
+where not exists (select 1 from languages where code = 'es-ES');

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Sidebar from '../components/Sidebar';
-import { Calendar, Clock, AlertTriangle, CheckCircle, Package, Settings, Globe, Link as LinkIcon, Menu } from 'lucide-react';
+import { Calendar, Clock, Package, Settings, Globe, Link as LinkIcon, Menu } from 'lucide-react';
 import { paymentService } from '../services/payment';
+import ProjectTimeline from '../components/shared/ProjectTimeline';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../services/supabase';
 import { useTranslation } from 'react-i18next';
@@ -101,6 +102,13 @@ const AssociateDashboard: React.FC = () => {
                 if (projectsError) {
                     console.error('Error fetching projects:', projectsError);
                 } else {
+                    const projectIds = projectsData.map(p => p.id);
+                    const { data: logsData } = await supabase
+                        .from('project_logs')
+                        .select('*')
+                        .in('project_id', projectIds)
+                        .order('created_at', { ascending: false });
+
                     setProjects(projectsData.map(p => ({
                         id: p.id,
                         userId: p.user_id,
@@ -111,7 +119,9 @@ const AssociateDashboard: React.FC = () => {
                         currency: p.currency,
                         hoursBalance: p.hours_balance,
                         maintenanceEndDate: p.maintenance_end_date,
-                        projectUrl: p.project_url
+                        projectUrl: p.project_url,
+                        stages: p.stages,
+                        logs: logsData?.filter(log => log.project_id === p.id) || []
                     })));
                 }
 
@@ -149,49 +159,8 @@ const AssociateDashboard: React.FC = () => {
         return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: currency }).format(value);
     };
 
-    const handleRequestSubscription = async (project: Project) => {
-        const fee = (project.value || 0) * 0.10; // 10% for monthly subscription
-        await paymentService.createCheckoutSession(project.id, 'subscription', fee);
-    };
-
-    const handleBuyHours = async (project: Project) => {
-        const hourlyRate = (project.value || 0) * 0.05; // 5% for hourly rate
-        await paymentService.createCheckoutSession(project.id, 'hourly', hourlyRate);
-    };
-
-    const getMaintenanceStatus = (dateString?: string) => {
-        if (!dateString) return { status: 'inactive', text: 'Não Contratada', color: 'var(--color-text-muted)' };
-
-        const today = new Date();
-        const endDate = new Date(dateString);
-        const diffTime = endDate.getTime() - today.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        if (diffDays < 0) return { status: 'expired', text: 'Expirada', color: '#ff4444' };
-        if (diffDays <= 7) return { status: 'warning', text: `Vence em ${diffDays} dias`, color: '#fbbf24' };
-        return { status: 'active', text: `Ativa até ${endDate.toLocaleDateString('pt-BR')}`, color: '#4ade80' };
-    };
 
 
-    const [logs, setLogs] = useState<any[]>([]);
-    const [isLogsModalOpen, setIsLogsModalOpen] = useState(false);
-    const [selectedProjectName, setSelectedProjectName] = useState('');
-
-    const handleViewLogs = async (projectId: string, projectName: string) => {
-        setIsLoading(true);
-        const { data } = await supabase
-            .from('project_logs')
-            .select('*')
-            .eq('project_id', projectId)
-            .order('created_at', { ascending: false });
-
-        if (data) {
-            setLogs(data);
-            setSelectedProjectName(projectName);
-            setIsLogsModalOpen(true);
-        }
-        setIsLoading(false);
-    };
 
     return (
         <div className="min-h-screen bg-[var(--color-bg)] flex flex-row relative overflow-hidden" style={{
@@ -268,7 +237,6 @@ const AssociateDashboard: React.FC = () => {
                                 ) : (
                                     <div className="grid grid-cols-1 gap-6">
                                         {projects.map((project, index) => {
-                                            const maintenance = getMaintenanceStatus(project.maintenanceEndDate);
                                             return (
                                                 <motion.div
                                                     key={project.id}
@@ -287,70 +255,66 @@ const AssociateDashboard: React.FC = () => {
                                                                     </a>
                                                                 )}
                                                             </strong>
-                                                            <div className="text-sm text-[var(--color-text-muted)] space-y-1">
-                                                                <p>Início: {new Date(project.startDate).toLocaleDateString('pt-BR')}</p>
-                                                                <p className="text-[var(--color-primary-light)] text-lg font-medium">
-                                                                    Valor do Projeto: {formatCurrency(project.value || 0, project.currency)}
-                                                                </p>
-                                                            </div>
                                                         </div>
                                                         <div className="flex flex-col items-end gap-2">
-                                                            <span className={`px-4 py-1.5 rounded-full text-sm font-bold border ${project.status === 'Concluído' ? 'bg-green-500/10 text-green-400 border-green-500/30' :
+                                                            <span className={`px-4 py-1.5 rounded-full text-xs font-bold border ${project.status === 'Concluído' ? 'bg-green-500/10 text-green-400 border-green-500/30' :
                                                                 project.status === 'Em Desenvolvimento' ? 'bg-blue-500/10 text-blue-400 border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]' :
                                                                     'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
                                                                 }`}>
                                                                 {project.status}
                                                             </span>
-                                                            <button
-                                                                onClick={() => handleViewLogs(project.id, project.service)}
-                                                                className="text-xs text-[var(--color-primary)] hover:underline flex items-center gap-1"
-                                                            >
-                                                                <Clock size={12} /> Ver Histórico
-                                                            </button>
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-[rgba(255,255,255,0.03)] p-4 rounded-xl">
-                                                        <div>
-                                                            <span className="text-xs text-[var(--color-text-muted)] block mb-1">Banco de Horas</span>
-                                                            <div className="flex items-center gap-2 text-white text-xl font-bold">
-                                                                <Clock size={20} className="text-[var(--color-primary)]" />
-                                                                {project.hoursBalance || 0}h
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <span className="text-xs text-[var(--color-text-muted)] block mb-1">Manutenção</span>
-                                                            <div className="flex items-center gap-2 text-lg font-bold" style={{ color: maintenance.color }}>
-                                                                {maintenance.status === 'active' ? <CheckCircle size={20} /> : <AlertTriangle size={20} />}
-                                                                {maintenance.text}
-                                                            </div>
-                                                        </div>
+                                                    <div className="mb-8 overflow-hidden">
+                                                        <ProjectTimeline
+                                                            steps={project.stages && project.stages.length > 0 ? project.stages : ['Início', 'Planejamento', 'Execução', 'Revisão', 'Conclusão']}
+                                                            currentStatus={project.status || 'Início'}
+                                                            readOnly={true}
+                                                        />
                                                     </div>
 
-                                                    <div className="flex flex-col md:flex-row gap-4 pt-6 border-t border-[rgba(255,255,255,0.1)]">
-                                                        <div className="flex-1">
-                                                            <span className="text-xs text-[var(--color-text-muted)] block mb-1">Assinatura Mensal (10%)</span>
-                                                            <strong className="text-lg text-[var(--color-primary-light)] block mb-3">
-                                                                {formatCurrency((project.value || 0) * 0.10, project.currency)} / mês
-                                                            </strong>
-                                                            <button
-                                                                onClick={() => handleRequestSubscription(project)}
-                                                                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[var(--color-primary)] text-black font-bold hover:bg-white transition-colors"
-                                                            >
-                                                                <Calendar size={18} /> Renovar Assinatura
-                                                            </button>
+
+                                                    <div className="pt-6 border-t border-[rgba(255,255,255,0.05)]">
+                                                        <div className="flex items-center gap-2 mb-6">
+                                                            <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
+                                                                <Clock size={16} className="text-[var(--color-primary)]" />
+                                                            </div>
+                                                            <div>
+                                                                <h4 className="font-bold text-white text-sm">Histórico de Atividade</h4>
+                                                                <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">Acompanhamento em tempo real</p>
+                                                            </div>
                                                         </div>
-                                                        <div className="flex-1">
-                                                            <span className="text-xs text-[var(--color-text-muted)] block mb-1">Hora de Desenvolvimento (5%)</span>
-                                                            <strong className="text-lg text-[var(--color-primary-light)] block mb-3">
-                                                                {formatCurrency((project.value || 0) * 0.05, project.currency)} / hora
-                                                            </strong>
-                                                            <button
-                                                                onClick={() => handleBuyHours(project)}
-                                                                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-[var(--color-primary)] text-[var(--color-primary)] font-bold hover:bg-[var(--color-primary)] hover:text-black transition-colors"
-                                                            >
-                                                                <Clock size={18} /> Pedir Ajuda
-                                                            </button>
+
+                                                        <div className="space-y-4 relative before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white/10">
+                                                            {project.logs && project.logs.length > 0 ? (
+                                                                project.logs.map((log: any) => (
+                                                                    <div key={log.id} className="relative pl-8 group">
+                                                                        {/* Dot */}
+                                                                        <div className="absolute left-[12px] top-2 w-[7px] h-[7px] rounded-full bg-[var(--color-primary)] ring-4 ring-[var(--color-primary)]/10 group-hover:scale-125 transition-transform"></div>
+
+                                                                        <div className="bg-white/5 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-all hover:translate-x-1">
+                                                                            <div className="flex justify-between items-center mb-2">
+                                                                                <span className="text-[10px] text-[var(--color-primary)] font-bold uppercase tracking-widest bg-[var(--color-primary)]/10 px-2 py-0.5 rounded">
+                                                                                    {new Date(log.created_at).toLocaleDateString('pt-BR')} {new Date(log.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                                                                </span>
+                                                                                {log.duration_minutes && (
+                                                                                    <span className="text-[10px] text-gray-500 font-mono">
+                                                                                        {log.duration_minutes}min dedicado
+                                                                                    </span>
+                                                                                )}
+                                                                            </div>
+                                                                            <p className="text-sm text-gray-300 leading-relaxed font-medium">{log.description}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            ) : (
+                                                                <div className="pl-8">
+                                                                    <p className="text-xs text-[var(--color-text-muted)] italic py-6 text-center bg-white/[0.02] rounded-xl border border-dashed border-white/5">
+                                                                        Nenhuma atividade registrada ainda para este projeto.
+                                                                    </p>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </motion.div>
@@ -425,39 +389,6 @@ const AssociateDashboard: React.FC = () => {
                 </main>
             </div>
 
-            {/* Logs Modal */}
-            <AnimatePresence>
-                {isLogsModalOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setIsLogsModalOpen(false)}>
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-                            className="bg-[#1a1a1a] border border-[var(--color-primary)] rounded-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.5)] p-6"
-                            onClick={e => e.stopPropagation()}
-                        >
-                            <div className="flex justify-between items-center mb-6 border-b border-[rgba(255,255,255,0.1)] pb-4">
-                                <h3 className="text-xl font-bold text-white">Histórico: {selectedProjectName}</h3>
-                                <button onClick={() => setIsLogsModalOpen(false)} className="text-[var(--color-text-muted)] hover:text-white">Fechar</button>
-                            </div>
-                            <div className="space-y-3">
-                                {logs.length === 0 ? (
-                                    <p className="text-center text-[var(--color-text-muted)] py-8">Nenhum registro encontrado.</p>
-                                ) : (
-                                    logs.map((log: any) => (
-                                        <div key={log.id} className="bg-[rgba(255,255,255,0.03)] p-4 rounded-lg border-l-2 border-[var(--color-primary)]">
-                                            <div className="flex justify-between items-start">
-                                                <p className="text-white font-medium">{log.description}</p>
-                                                <span className="text-[var(--color-primary)] font-bold text-sm whitespace-nowrap">-{log.duration_minutes} min</span>
-                                            </div>
-                                            <p className="text-xs text-[var(--color-text-muted)] mt-2">{new Date(log.created_at).toLocaleString()}</p>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
-
             {/* First Access Language Modal */}
             <AnimatePresence>
                 {showLanguageModal && (
@@ -491,7 +422,7 @@ const AssociateDashboard: React.FC = () => {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     );
 };
 

@@ -3,19 +3,32 @@ export interface Service {
     name: string;
     description: string;
     active: boolean;
+    has_implementation?: boolean;
+    has_monthly_fee?: boolean;
+    monthly_fee_value?: number;
+    monthly_fee_start_date?: string; // Date string
+    payment_methods?: string;
+    features?: { name: string; value: number; }[];
 }
 
 export interface Project {
     id: string;
     userId: string;
     service: string;
-    status: 'Contratado' | 'Em Desenvolvimento' | 'Homologação' | 'Concluído';
+    status: string;
+    stages?: string[];
     startDate: string;
     value: number;
     currency?: string;
     hoursBalance: number;
     maintenanceEndDate?: string;
+    maintenanceValue?: number;
+    monthlyMaintenanceValue?: number;
+    maintenanceDueDay?: number;
+    maintenanceStartDate?: string;
     projectUrl?: string;
+    upgrades?: { name: string; value: number; date: string }[];
+    logs?: any[];
 }
 
 export interface Expense {
@@ -30,6 +43,9 @@ export interface Expense {
     payer?: string;
     paymentMethod?: string;
     taxAmount?: number;
+    associate_id?: string;
+    related_record_id?: string; // ID do registro pai ou relacionado (ex: dívida original)
+    is_recurring?: boolean; // Para despesas recorrentes
 }
 
 export interface Associate {
@@ -40,6 +56,7 @@ export interface Associate {
     phone?: string;
     company_name?: string;
     avatar_url?: string;
+    active?: boolean;
     bio?: string;
     location?: string;
     country?: string;
@@ -59,16 +76,24 @@ export interface ColabBrand {
 export interface FinancialRecord {
     id: string;
     type: 'income' | 'expense';
+    status?: 'paid' | 'pending';
+    payment_method?: string; // Novo campo
     description: string;
     amount: number;
     original_amount: number;
     currency: string;
     exchange_rate: number;
     payer?: string;
-    payment_method?: string;
     tax_amount?: number;
     date: string;
+    associate_id?: string;
+    associate?: {
+        company_name?: string;
+        full_name?: string;
+    };
     created_at: string;
+    is_recurring?: boolean;
+    related_record_id?: string;
 }
 
 export interface ContactRequest {

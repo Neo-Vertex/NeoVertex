@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, TrendingUp, TrendingDown, DollarSign, Calendar, CreditCard, User } from 'lucide-react';
+import { Plus, Trash2, TrendingUp, TrendingDown, DollarSign, Calendar, CreditCard, User, Building2 } from 'lucide-react';
 import Button from '../Button';
 import { supabase } from '../../services/supabase';
-import type { FinancialRecord, Expense } from '../../types';
+import type { FinancialRecord, Expense, Associate } from '../../types';
 
 interface FinancialViewProps {
-    expenses?: Expense[]; // Legacy prop, can be ignored or migrated
+    expenses?: Expense[];
     onUpdate?: () => void;
+    initialTab?: 'summary' | 'income' | 'expense';
 }
 
-const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
+const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate, initialTab = 'summary' }) => {
     const [records, setRecords] = useState<FinancialRecord[]>([]);
-    const [activeTab, setActiveTab] = useState<'summary' | 'income' | 'expense'>('summary');
+    const [associates, setAssociates] = useState<Associate[]>([]);
+    const [activeTab, setActiveTab] = useState<'summary' | 'income' | 'expense'>(initialTab);
     const [exchangeRates, setExchangeRates] = useState<any>(null);
 
     // Form State
@@ -23,21 +25,33 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
         payer: '',
         paymentMethod: '',
         date: new Date().toISOString().split('T')[0],
-        taxRate: ''
+        taxRate: '',
+        associateId: ''
     });
 
     useEffect(() => {
         loadRecords();
         fetchRates();
+        fetchAssociates();
     }, []);
 
     const loadRecords = async () => {
         const { data } = await supabase
             .from('financial_records')
-            .select('*')
+            .select('*, associate:profiles(company_name, full_name)')
             .order('date', { ascending: false });
 
         if (data) setRecords(data);
+    };
+
+    const fetchAssociates = async () => {
+        const { data } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('role', 'associate')
+            .order('company_name', { ascending: true });
+
+        if (data) setAssociates(data);
     };
 
     const fetchRates = async () => {
@@ -74,9 +88,6 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
         if (formData.taxRate) {
             const rate = parseFloat(formData.taxRate) / 100;
             taxAmount = amountInBrl * rate;
-            // For income, tax reduces the net amount? Or just tracked?
-            // Usually tax is an expense or a deduction. 
-            // Let's assume for now it's just stored.
         }
 
         const { error } = await supabase.from('financial_records').insert([{
@@ -89,7 +100,8 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
             payer: formData.payer,
             payment_method: formData.paymentMethod,
             tax_amount: taxAmount,
-            date: formData.date
+            date: formData.date,
+            associate_id: formData.associateId || null
         }]);
 
         if (!error) {
@@ -101,7 +113,8 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
                 payer: '',
                 paymentMethod: '',
                 date: new Date().toISOString().split('T')[0],
-                taxRate: ''
+                taxRate: '',
+                associateId: ''
             });
             loadRecords();
             if (onUpdate) onUpdate();
@@ -184,6 +197,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
                                 <tr className="border-b border-[rgba(255,255,255,0.1)]">
                                     <th className="p-4 text-[var(--color-text-muted)] font-medium">Data</th>
                                     <th className="p-4 text-[var(--color-text-muted)] font-medium">Descrição</th>
+                                    <th className="p-4 text-[var(--color-text-muted)] font-medium">Empresa/Associado</th>
                                     <th className="p-4 text-[var(--color-text-muted)] font-medium">Categoria</th>
                                     <th className="p-4 text-[var(--color-text-muted)] font-medium">Valor Original</th>
                                     <th className="p-4 text-[var(--color-text-muted)] font-medium">Valor (BRL)</th>
@@ -197,6 +211,18 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
                                         <td className="p-4 text-white">
                                             <div className="font-medium">{record.description}</div>
                                             <div className="text-xs text-[var(--color-text-muted)]">{record.payer} • {record.payment_method}</div>
+                                        </td>
+                                        <td className="p-4 text-white">
+                                            {record.associate ? (
+                                                <div className="flex items-center gap-2">
+                                                    <Building2 size={14} className="text-[var(--color-primary)]" />
+                                                    <span className="text-sm font-mono text-gray-300">
+                                                        {record.associate.company_name || record.associate.full_name || 'Sem nome'}
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <span className="text-xs text-gray-600">-</span>
+                                            )}
                                         </td>
                                         <td className="p-4">
                                             <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${record.type === 'income' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
@@ -221,7 +247,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
                                 ))}
                                 {records.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="p-8 text-center text-[var(--color-text-muted)]">Nenhum registro encontrado.</td>
+                                        <td colSpan={7} className="p-8 text-center text-[var(--color-text-muted)]">Nenhum registro encontrado.</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -241,6 +267,28 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
                                     placeholder={activeTab === 'income' ? "Ex: Pagamento Projeto X" : "Ex: Servidor AWS"}
                                     required
                                 />
+                            </div>
+
+                            <div className="md:col-span-2">
+                                <label className="block text-sm text-[var(--color-text-muted)] mb-2">
+                                    {activeTab === 'income' ? 'Recebido de (Associado/Empresa)' : 'Referente a (Associado/Empresa)'}
+                                </label>
+                                <div className="relative">
+                                    <select
+                                        name="associateId"
+                                        value={formData.associateId}
+                                        onChange={handleInputChange}
+                                        className="input-field appearance-none"
+                                    >
+                                        <option value="">Selecione uma empresa...</option>
+                                        {associates.map(assoc => (
+                                            <option key={assoc.id} value={assoc.id}>
+                                                {assoc.company_name || assoc.full_name || assoc.email} {assoc.company_name ? `(${assoc.full_name})` : ''}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <Building2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
+                                </div>
                             </div>
 
                             <div>
@@ -291,7 +339,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
                             </div>
 
                             <div>
-                                <label className="block text-sm text-[var(--color-text-muted)] mb-2">{activeTab === 'income' ? 'Pagador (Cliente)' : 'Beneficiário (Fornecedor)'}</label>
+                                <label className="block text-sm text-[var(--color-text-muted)] mb-2">{activeTab === 'income' ? 'Pagador (Rotulo Livre)' : 'Beneficiário (Rotulo Livre)'}</label>
                                 <div className="relative">
                                     <input
                                         type="text"
@@ -299,7 +347,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({ onUpdate }) => {
                                         value={formData.payer}
                                         onChange={handleInputChange}
                                         className="input-field"
-                                        placeholder={activeTab === 'income' ? "Ex: Cliente A" : "Ex: Amazon Web Services"}
+                                        placeholder={activeTab === 'income' ? "Ex: Cliente A (Se não for associado)" : "Ex: AWS (Se não for associado)"}
                                     />
                                     <User size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                                 </div>
