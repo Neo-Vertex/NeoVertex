@@ -55,6 +55,11 @@ const Sidebar: React.FC<SidebarProps> = ({
     item.id === 'messages' ? { ...item, badge: unreadCount } : item
   );
 
+  const itemsWithSectionFlag = items.map((item, i) => ({
+    ...item,
+    showSection: !!item.section && items.slice(0, i).every(prev => prev.section !== item.section),
+  }));
+
   const handleItemClick = (item: MenuItem) => {
     if (item.subItems) {
       setExpandedMenu(expandedMenu === item.id ? null : item.id);
@@ -67,8 +72,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const isActive = (item: MenuItem) =>
     activeSection === item.id ||
     (item.subItems?.some(s => s.id === activeSection) ?? false);
-
-  let lastSection = '';
 
   return (
     <>
@@ -96,8 +99,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       >
         {/* Logo */}
         <div className="px-4 py-5 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
-          <button onClick={onClose} className="absolute top-4 right-4 md:hidden text-white/40 hover:text-white">
-            <X size={18} />
+          <button onClick={onClose} aria-label="Fechar menu" className="absolute top-4 right-4 md:hidden text-white/40 hover:text-white">
+            <X size={18} aria-hidden={true} />
           </button>
           <div style={{
             width: 34, height: 34, borderRadius: 9, flexShrink: 0,
@@ -121,15 +124,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-0.5">
-          {items.map(item => {
+          {itemsWithSectionFlag.map(item => {
             const active = isActive(item);
             const expanded = expandedMenu === item.id;
-            const showSection = item.section && item.section !== lastSection;
-            if (item.section) lastSection = item.section;
 
             return (
               <div key={item.id}>
-                {showSection && (
+                {item.showSection && (
                   <div style={{
                     fontSize: 9, letterSpacing: '0.18em', fontWeight: 600,
                     color: 'rgba(212,175,55,0.35)', padding: '10px 8px 4px',
@@ -140,6 +141,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
                 <button
                   onClick={() => handleItemClick(item)}
+                  aria-expanded={item.subItems ? expanded : undefined}
                   className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-all duration-200 group relative"
                   style={active ? {
                     background: 'rgba(212,175,55,0.08)',
@@ -163,6 +165,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   <item.icon
                     size={14}
                     strokeWidth={active ? 2.5 : 1.8}
+                    aria-hidden={true}
                     style={{ flexShrink: 0, transition: 'color 0.2s' }}
                   />
                   <span style={{ fontSize: 11.5, fontWeight: active ? 600 : 400, letterSpacing: '0.03em', flex: 1, textAlign: 'left' }}>
@@ -182,6 +185,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   {item.subItems && (
                     <ChevronDown
                       size={12}
+                      aria-hidden={true}
                       style={{
                         transition: 'transform 0.25s',
                         transform: expanded ? 'rotate(180deg)' : 'none',
@@ -261,7 +265,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               (e.currentTarget as HTMLElement).style.background = 'transparent';
             }}
           >
-            <Power size={13} />
+            <Power size={13} aria-hidden={true} />
             <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em' }}>ENCERRAR</span>
           </button>
         </div>
