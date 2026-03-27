@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle, Loader2, Save } from 'lucide-react';
+import { AlertCircle, Loader2, Save, X } from 'lucide-react';
 import { supabase } from '../../services/supabase';
 import Stamp from '../common/Stamp';
 import Button from '../Button';
@@ -168,7 +168,37 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
     };
 
     return (
-        <div className="card-glass p-10 max-w-5xl mx-auto shadow-[0_0_50px_rgba(0,0,0,0.3)] border border-[rgba(255,255,255,0.05)] relative">
+        <div className="fixed inset-0 z-40 flex items-center justify-center p-4"
+          style={{ background:'rgba(0,0,0,0.75)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)' }}
+        >
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl"
+            style={{
+              background:'rgba(8,8,18,0.95)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)',
+              border:'1px solid rgba(212,175,55,0.15)',
+              boxShadow:'0 40px 80px rgba(0,0,0,0.7)',
+              animation:'scaleIn 0.3s cubic-bezier(0.16,1,0.3,1) both',
+            }}
+          >
+            {/* Top shimmer line */}
+            <div style={{ position:'absolute', top:0, left:0, right:0, height:1, background:'linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent)' }} />
+
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 sticky top-0 z-10"
+              style={{ borderBottom:'1px solid rgba(212,175,55,0.08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
+            >
+              <h2 style={{ fontFamily:'Cinzel, serif', fontSize:14, fontWeight:700, color:'#D4AF37', letterSpacing:'0.1em' }}>
+                CADASTRAR NOVO ASSOCIADO
+              </h2>
+              <button
+                onClick={onCancel}
+                aria-label="Fechar"
+                style={{ color:'rgba(255,255,255,0.4)', transition:'color 0.2s', background:'none', border:'none', cursor:'pointer' }}
+                onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
+                onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,0.4)')}
+              ><X size={18} aria-hidden={true}/></button>
+            </div>
+
+            <div style={{ padding:'24px' }}>
             <AnimatePresence>
                 {showStamp && (
                     <motion.div
@@ -176,7 +206,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-none"
-                        onClick={() => setShowStamp(false)} // Allow clicking to dismiss early
+                        onClick={() => setShowStamp(false)}
                     >
                         <Stamp />
                     </motion.div>
@@ -184,7 +214,6 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
             </AnimatePresence>
 
             <div className="text-center mb-10 relative">
-                <h3 className="text-3xl font-bold text-liquid-gold mb-2">Cadastrar Novo Associado</h3>
                 <p className="text-[var(--color-text-muted)]">Preencha os dados abaixo para criar um novo perfil de associado.</p>
 
                 {/* Manual Stamp Button */}
@@ -214,7 +243,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 {/* ... (Form Fields) */}
                 {/* 1. Account Info Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">1</span>
                         Dados de Acesso
                     </h4>
@@ -227,7 +256,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="ex: nome@empresa.com"
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300"
+                                className="input-field w-full"
                                 required
                             />
                         </div>
@@ -239,7 +268,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="••••••••"
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300"
+                                className="input-field w-full"
                                 required
                             />
                         </div>
@@ -248,7 +277,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                 {/* 2. Personal/Company Info Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">2</span>
                         Informações do Associado/Empresa
                     </h4>
@@ -261,7 +290,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 value={formData.companyName}
                                 onChange={handleChange}
                                 placeholder="Nome Completo ou Razão Social"
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300"
+                                className="input-field w-full"
                             />
                         </div>
                         <div className="group">
@@ -272,7 +301,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 value={formData.phone}
                                 onChange={handleChange}
                                 placeholder="+55 (11) 99999-9999"
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300"
+                                className="input-field w-full"
                             />
                         </div>
                         <div className="group md:col-span-2">
@@ -283,7 +312,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 value={formData.address}
                                 onChange={handleChange}
                                 placeholder="Rua, Número, Bairro, Cidade - UF"
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300"
+                                className="input-field w-full"
                             />
                         </div>
                         <div className="group">
@@ -293,7 +322,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 name="country"
                                 value={formData.country}
                                 onChange={handleChange}
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300"
+                                className="input-field w-full"
                             />
                         </div>
                         <div className="group">
@@ -303,7 +332,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 name="birthDate"
                                 value={formData.birthDate}
                                 onChange={handleChange}
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300 [color-scheme:dark]"
+                                className="input-field w-full"
                             />
                         </div>
                     </div>
@@ -311,7 +340,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                 {/* 3. Products/Services Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">3</span>
                         Produtos Contratados
                     </h4>
@@ -339,7 +368,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                 {/* 4. Marketing & Colab Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">4</span>
                         Origem & Parcerias
                     </h4>
@@ -352,7 +381,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 value={formData.referralSource}
                                 onChange={handleChange}
                                 placeholder="Ex: Instagram, Indicação, Google..."
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:bg-black/40 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)] outline-none transition-all duration-300"
+                                className="input-field w-full"
                             />
                         </div>
 
@@ -391,7 +420,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                                 name="colabBrandId"
                                                 value={formData.colabBrandId}
                                                 onChange={handleChange}
-                                                className="w-full bg-black/40 border border-[rgba(212,175,55,0.3)] rounded-xl px-4 py-3.5 text-white focus:border-[var(--color-primary)] focus:shadow-[0_0_20px_rgba(212,175,55,0.2)] outline-none appearance-none cursor-pointer transition-all duration-300"
+                                                className="input-field w-full"
                                             >
                                                 <option value="">Selecione uma marca...</option>
                                                 {colabBrands.map(brand => (
@@ -413,12 +442,18 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                             Cancelar
                         </Button>
                     )}
-                    <Button type="submit" disabled={loading} className="flex-[2] justify-center py-5 text-lg font-bold tracking-wide shadow-[0_10px_30px_rgba(212,175,55,0.2)] hover:shadow-[0_15px_40px_rgba(212,175,55,0.4)] transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                        {loading ? <Loader2 className="animate-spin mr-2" /> : <Save size={24} className="mr-3" />}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        style={{ background:'linear-gradient(135deg,#D4AF37,#8a6010)', color:'#000', fontWeight:700, fontSize:12, letterSpacing:'0.1em', padding:'10px 24px', borderRadius:10, boxShadow:'0 4px 16px rgba(212,175,55,0.25)', border:'none', cursor:'pointer', flex:2, display:'flex', alignItems:'center', justifyContent:'center', gap:8, opacity: loading ? 0.5 : 1 }}
+                    >
+                        {loading ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
                         {loading ? 'Cadastrando...' : 'Cadastrar Associado'}
-                    </Button>
+                    </button>
                 </div>
             </form>
+            </div>
+          </div>
         </div>
     );
 };

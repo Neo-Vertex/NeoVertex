@@ -866,7 +866,8 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
+                className="fixed inset-0 z-40 transition-opacity"
+                style={{ background:'rgba(0,0,0,0.75)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)' }}
                 onClick={onClose}
             />
             <motion.div
@@ -874,10 +875,13 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-                className="fixed inset-y-0 right-0 w-full max-w-[95vw] md:max-w-[1600px] bg-[#09090b] border-l border-white/10 shadow-2xl z-50 overflow-hidden flex flex-col"
+                className="fixed inset-y-0 right-0 w-full max-w-[95vw] md:max-w-[1600px] z-50 overflow-hidden flex flex-col"
+                style={{ background:'rgba(8,8,18,0.95)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderLeft:'1px solid rgba(212,175,55,0.15)', boxShadow:'0 40px 80px rgba(0,0,0,0.7)' }}
             >
                 {/* Cabeçalho */}
-                <div className="shrink-0 bg-[#09090b]/90 backdrop-blur-md border-b border-white/5 p-8 flex justify-between items-center z-10">
+                <div className="shrink-0 p-8 flex justify-between items-center z-10 sticky top-0"
+                  style={{ borderBottom:'1px solid rgba(212,175,55,0.08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
+                >
                     <div className="flex items-center gap-6">
                         <div className="relative group">
                             {profileData.avatar_url ? (
@@ -899,8 +903,14 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <button onClick={onClose} className="p-3 hover:bg-white/5 rounded-full text-[var(--color-text-muted)] hover:text-white transition-all">
-                            <X size={24} />
+                        <button
+                          onClick={onClose}
+                          aria-label="Fechar"
+                          style={{ color:'rgba(255,255,255,0.4)', transition:'color 0.2s', background:'none', border:'none', cursor:'pointer', padding:8 }}
+                          onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
+                          onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,0.4)')}
+                        >
+                            <X size={24} aria-hidden={true}/>
                         </button>
                     </div>
                 </div>
@@ -1249,24 +1259,43 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                     {/* Modal de Gerenciamento de Etapas/Upgrades */}
                     <AnimatePresence>
                         {managingStagesProject && (
-                            <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6" onClick={() => setManagingStagesProject(null)}>
+                            <div className="fixed inset-0 z-[70] flex items-center justify-center p-4"
+                              style={{ background:'rgba(0,0,0,0.75)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)' }}
+                              onClick={() => setManagingStagesProject(null)}
+                            >
                                 <motion.div
                                     initial={{ scale: 0.9, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     exit={{ scale: 0.9, opacity: 0 }}
-                                    className="bg-[#121214] border border-[var(--color-primary)] w-full max-w-2xl rounded-2xl shadow-[0_0_50px_rgba(212,175,55,0.15)] flex flex-col max-h-[90vh]"
+                                    className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl flex flex-col"
+                                    style={{
+                                      background:'rgba(8,8,18,0.95)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)',
+                                      border:'1px solid rgba(212,175,55,0.15)',
+                                      boxShadow:'0 40px 80px rgba(0,0,0,0.7)',
+                                      animation:'scaleIn 0.3s cubic-bezier(0.16,1,0.3,1) both',
+                                    }}
                                     onClick={e => e.stopPropagation()}
                                 >
+                                    {/* Top shimmer line */}
+                                    <div style={{ position:'absolute', top:0, left:0, right:0, height:1, background:'linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent)' }} />
                                     {/* Cabeçalho */}
-                                    <div className="p-6 border-b border-white/10 flex justify-between items-center bg-[#09090b]">
+                                    <div className="flex items-center justify-between p-6 sticky top-0 z-10"
+                                      style={{ borderBottom:'1px solid rgba(212,175,55,0.08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
+                                    >
                                         <div>
-                                            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                                                <GitCommit size={20} className="text-[var(--color-primary)]" /> Gerenciar Projeto
-                                            </h3>
+                                            <h2 style={{ fontFamily:'Cinzel, serif', fontSize:14, fontWeight:700, color:'#D4AF37', letterSpacing:'0.1em' }}>
+                                                GERENCIAR PROJETO
+                                            </h2>
                                             <p className="text-sm text-[var(--color-text-muted)] mt-1">{managingStagesProject.service}</p>
                                         </div>
-                                        <button onClick={() => setManagingStagesProject(null)} className="p-2 hover:bg-white/5 rounded-full text-white/50 hover:text-white transition-colors">
-                                            <X size={20} />
+                                        <button
+                                          onClick={() => setManagingStagesProject(null)}
+                                          aria-label="Fechar"
+                                          style={{ color:'rgba(255,255,255,0.4)', transition:'color 0.2s', background:'none', border:'none', cursor:'pointer' }}
+                                          onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
+                                          onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,0.4)')}
+                                        >
+                                          <X size={18} aria-hidden={true}/>
                                         </button>
                                     </div>
 
@@ -1716,9 +1745,12 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                         </div>
                                     </div>
                                     <div className="mt-4">
-                                        <Button onClick={handleAddFinancialRecord} className="w-full h-[46px] flex items-center justify-center bg-[var(--color-primary)] text-[#09090b] hover:bg-white transition-all duration-300 shadow-lg shadow-[var(--color-primary)]/20 hover:shadow-[var(--color-primary)]/40 hover:scale-[1.01] active:scale-[0.98] border border-[var(--color-primary)]/20 font-bold uppercase tracking-wider">
-                                            <Plus size={20} className="mr-2" /> Adicionar Registro
-                                        </Button>
+                                        <button
+                                            onClick={handleAddFinancialRecord}
+                                            style={{ background:'linear-gradient(135deg,#D4AF37,#8a6010)', color:'#000', fontWeight:700, fontSize:12, letterSpacing:'0.1em', padding:'10px 24px', borderRadius:10, boxShadow:'0 4px 16px rgba(212,175,55,0.25)', border:'none', cursor:'pointer', width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}
+                                        >
+                                            <Plus size={18} /> Adicionar Registro
+                                        </button>
                                     </div>
 
                                     {newFinancialType === 'income' && newFinancialAmount && (
@@ -2130,9 +2162,13 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                 </div>
 
                                 <div className="pt-8 text-center">
-                                    <Button onClick={handleSaveProfile} disabled={isSavingProfile} className="w-full md:w-auto px-12 py-4 text-base font-bold shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:shadow-[0_0_50px_rgba(212,175,55,0.4)]">
-                                        {isSavingProfile ? <><Clock size={20} className="animate-spin mr-2" /> Salvando...</> : <><Save size={20} className="mr-2" /> Salvar Alterações Detalhadas</>}
-                                    </Button>
+                                    <button
+                                        onClick={handleSaveProfile}
+                                        disabled={isSavingProfile}
+                                        style={{ background:'linear-gradient(135deg,#D4AF37,#8a6010)', color:'#000', fontWeight:700, fontSize:12, letterSpacing:'0.1em', padding:'10px 24px', borderRadius:10, boxShadow:'0 4px 16px rgba(212,175,55,0.25)', border:'none', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:8, opacity: isSavingProfile ? 0.5 : 1 }}
+                                    >
+                                        {isSavingProfile ? <><Clock size={16} className="animate-spin" /> Salvando...</> : <><Save size={16} /> Salvar Alterações Detalhadas</>}
+                                    </button>
                                 </div>
                             </div>
                         )
