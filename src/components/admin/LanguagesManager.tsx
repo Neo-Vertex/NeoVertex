@@ -3,7 +3,7 @@ import { Globe, Check } from 'lucide-react';
 
 /**
  * LanguagesManager Component
- * 
+ *
  * Allows management of supported languages for the system.
  * Corresponds to "Idiomas" in the mind map.
  */
@@ -17,13 +17,13 @@ const LanguagesManager: React.FC = () => {
     ]);
 
     const toggleLanguage = (code: string) => {
-        setLanguages(prev => prev.map(lang =>
+        setLanguages(prev => prev.map((lang: any) =>
             lang.code === code ? { ...lang, active: !lang.active } : lang
         ));
     };
 
     return (
-        <div className="space-y-8">
+        <div className="p-6 anim-fade-in space-y-8">
             <div>
                 <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                     <Globe className="text-[var(--color-primary)]" />
@@ -33,42 +33,49 @@ const LanguagesManager: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {languages.map(lang => (
+                {languages.map((lang: any) => (
                     <div
                         key={lang.code}
                         onClick={() => toggleLanguage(lang.code)}
-                        className={`
-                            cursor-pointer p-6 rounded-xl border flex items-center justify-between transition-all duration-300
-                            ${lang.active
-                                ? 'bg-[rgba(212,175,55,0.1)] border-[var(--color-primary)]'
-                                : 'bg-[rgba(255,255,255,0.02)] border-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.05)]'}
-                        `}
+                        className="glass glass-top-line relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300"
+                        style={{
+                            border: lang.active ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(255,255,255,0.05)',
+                            background: lang.active ? 'rgba(212,175,55,0.08)' : undefined,
+                        }}
                     >
-                        <div className="flex items-center gap-4">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold
-                                ${lang.active ? 'bg-[var(--color-primary)] text-black' : 'bg-white/10 text-white/50'}
-                            `}>
-                                {lang.code.split('-')[0].toUpperCase()}
+                        <div className="anim-shimmer" />
+                        <div className="flex items-center justify-between p-6">
+                            <div className="flex items-center gap-4">
+                                <div
+                                    className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold"
+                                    style={lang.active
+                                        ? { background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000' }
+                                        : { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }
+                                    }
+                                >
+                                    {lang.code.split('-')[0].toUpperCase()}
+                                </div>
+                                <div>
+                                    <h3 className={`text-lg font-bold ${lang.active ? 'text-white' : 'text-[var(--color-text-muted)]'}`}>
+                                        {lang.name}
+                                    </h3>
+                                    <p className="text-xs text-[var(--color-text-muted)]">{lang.code}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className={`text-lg font-bold ${lang.active ? 'text-white' : 'text-[var(--color-text-muted)]'}`}>
-                                    {lang.name}
-                                </h3>
-                                <p className="text-xs text-[var(--color-text-muted)]">{lang.code}</p>
-                            </div>
-                        </div>
 
-                        <div className={`
-                            w-6 h-6 rounded-full border flex items-center justify-center transition-colors
-                            ${lang.active ? 'bg-green-500 border-green-500 text-black' : 'border-[rgba(255,255,255,0.2)]'}
-                        `}>
-                            {lang.active && <Check size={14} strokeWidth={4} />}
+                            <div className={`
+                                w-6 h-6 rounded-full border flex items-center justify-center transition-colors
+                                ${lang.active ? 'bg-green-500 border-green-500 text-black' : 'border-[rgba(255,255,255,0.2)]'}
+                            `}>
+                                {lang.active && <Check size={14} strokeWidth={4} />}
+                            </div>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <div className="card-glass p-6 mt-8">
+            <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden mt-8">
+                <div className="anim-shimmer" />
                 <h3 className="text-lg font-bold text-white mb-2">Nota sobre Internacionalização</h3>
                 <p className="text-[var(--color-text-muted)] text-sm">
                     Alterar as configurações de idioma aqui habilitará as opções no seletor de idiomas público e do painel do associado.

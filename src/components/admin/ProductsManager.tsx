@@ -6,7 +6,7 @@ import type { Service } from '../../types';
 
 /**
  * ProductsManager Component
- * 
+ *
  * Allows the administrator to manage the services/products offered (e.g., Website Creation, Consulting, AI Agents).
  * Corresponds to "Cadastro de Produtos" in the mind map.
  */
@@ -59,7 +59,7 @@ const ProductsManager: React.FC = () => {
                 .eq('id', currentService.id);
 
             if (!error) {
-                setServices(prev => prev.map(s => s.id === currentService.id ? { ...s, ...currentService } as Service : s));
+                setServices(prev => prev.map((s: any) => s.id === currentService.id ? { ...s, ...currentService } as Service : s));
             }
         } else {
             // Create
@@ -90,12 +90,12 @@ const ProductsManager: React.FC = () => {
 
         const { error } = await supabase.from('services').delete().eq('id', id);
         if (!error) {
-            setServices(prev => prev.filter(s => s.id !== id));
+            setServices(prev => prev.filter((s: any) => s.id !== id));
         }
     };
 
     return (
-        <div className="space-y-6">
+        <div className="p-6 anim-fade-in space-y-6">
             <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -104,14 +104,19 @@ const ProductsManager: React.FC = () => {
                     </h2>
                     <p className="text-[var(--color-text-muted)]">Gerencie os serviços oferecidos pela NeoVertex.</p>
                 </div>
-                <Button onClick={() => { setCurrentService({ active: true }); setIsEditing(true); }}>
-                    <Plus size={18} className="mr-2" /> Novo Produto
-                </Button>
+                <button
+                    onClick={() => { setCurrentService({ active: true }); setIsEditing(true); }}
+                    style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
+                    className="flex items-center gap-2"
+                >
+                    <Plus size={16} /> Novo Produto
+                </button>
             </div>
 
             {isEditing && (
-                <div className="card-glass p-6 border border-[var(--color-primary)]/50 relative animation-slide-down">
-                    <button onClick={() => setIsEditing(false)} className="absolute top-4 right-4 text-[var(--color-text-muted)] hover:text-white">
+                <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.3)' }}>
+                    <div className="anim-shimmer" />
+                    <button onClick={() => setIsEditing(false)} className="absolute top-4 right-4 text-[var(--color-text-muted)] hover:text-white z-10">
                         <X size={20} />
                     </button>
                     <h3 className="text-lg font-bold text-white mb-4">{currentService.id ? 'Editar Produto' : 'Novo Produto'}</h3>
@@ -139,7 +144,7 @@ const ProductsManager: React.FC = () => {
                         </div>
 
                         {/* New Fields */}
-                        <div className="md:col-span-2 flex flex-col md:flex-row gap-6 p-4 border border-white/5 rounded-lg bg-black/20">
+                        <div className="md:col-span-2 flex flex-col md:flex-row gap-6 p-4 rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.2)' }}>
                             {/* Implementation & Monthly Fee Toggles */}
                             <div className="space-y-4">
                                 <label className="flex items-center gap-2 cursor-pointer group">
@@ -211,10 +216,10 @@ const ProductsManager: React.FC = () => {
                         </div>
 
                         {/* Features Management */}
-                        <div className="md:col-span-2 border-t border-[rgba(255,255,255,0.1)] pt-4 mt-2">
+                        <div className="md:col-span-2 pt-4 mt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                             <label className="block text-sm font-bold text-white mb-2">Features / Adicionais</label>
                             <div className="space-y-2">
-                                {(currentService.features || []).map((feature, index) => (
+                                {(currentService.features || []).map((feature: any, index: number) => (
                                     <div key={index} className="flex gap-2 items-center">
                                         <input
                                             type="text"
@@ -243,7 +248,7 @@ const ProductsManager: React.FC = () => {
                                         </div>
                                         <button
                                             onClick={() => {
-                                                const newFeatures = (currentService.features || []).filter((_, i) => i !== index);
+                                                const newFeatures = (currentService.features || []).filter((_: any, i: number) => i !== index);
                                                 setCurrentService({ ...currentService, features: newFeatures });
                                             }}
                                             className="p-2 text-red-500 hover:bg-red-500/10 rounded"
@@ -277,16 +282,23 @@ const ProductsManager: React.FC = () => {
                     </div>
                     <div className="flex justify-end gap-2 mt-4">
                         <Button variant="outline" onClick={() => setIsEditing(false)}>Cancelar</Button>
-                        <Button onClick={handleSave}><Save size={18} className="mr-2" /> Salvar</Button>
+                        <button
+                            onClick={handleSave}
+                            style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
+                            className="flex items-center gap-2"
+                        >
+                            <Save size={16} /> Salvar
+                        </button>
                     </div>
                 </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {services.map(service => (
-                    <div key={service.id} className="card-glass p-6 group hover:border-[var(--color-primary)] transition-colors">
+                {services.map((service: any) => (
+                    <div key={service.id} className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden group hover:border-[var(--color-primary)] transition-colors">
+                        <div className="anim-shimmer" />
                         <div className="flex justify-between items-start mb-4">
-                            <div className="p-3 bg-[rgba(255,255,255,0.05)] rounded-lg text-[var(--color-primary)]">
+                            <div className="p-3 rounded-lg text-[var(--color-primary)]" style={{ background: 'rgba(255,255,255,0.05)' }}>
                                 <Package size={24} />
                             </div>
                             <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -300,7 +312,7 @@ const ProductsManager: React.FC = () => {
                         </div>
                         <h3 className="text-xl font-bold text-white mb-2">{service.name}</h3>
                         <p className="text-[var(--color-text-muted)] text-sm mb-4 line-clamp-2">{service.description}</p>
-                        <div className={`inline-flex px-2 py-1 rounded text-xs font-bold uppercase ${service.active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        <div className={`inline-flex px-2 py-1 rounded-full text-xs font-bold uppercase ${service.active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                             {service.active ? 'Ativo' : 'Inativo'}
                         </div>
                     </div>

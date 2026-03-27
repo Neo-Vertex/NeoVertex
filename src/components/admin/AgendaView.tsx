@@ -139,18 +139,27 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
         }
     };
 
-    const inputClass = "w-full bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-lg p-3 text-white text-sm focus:outline-none focus:border-[var(--color-primary)] transition-colors";
     const labelClass = "block text-xs font-mono font-bold text-gray-400 uppercase tracking-wider mb-1.5";
 
     return (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div
+            className="fixed inset-0 z-[70] flex items-center justify-center p-4"
+            style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }}
+        >
             <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
-                className="bg-[#111] border border-[#222] rounded-xl w-full max-w-2xl shadow-2xl overflow-y-auto max-h-[90vh]"
+                className="w-full max-w-2xl shadow-2xl overflow-y-auto max-h-[90vh] rounded-2xl"
+                style={{
+                    background: 'rgba(8,8,18,0.95)',
+                    border: '1px solid rgba(212,175,55,0.3)',
+                }}
             >
-                <div className="flex items-center justify-between p-6 border-b border-[#222]">
+                <div
+                    className="flex items-center justify-between p-6"
+                    style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}
+                >
                     <h2 className="text-lg font-bold text-white font-mono tracking-wider">
                         {appointment ? 'EDITAR COMPROMISSO' : 'NOVO COMPROMISSO'}
                     </h2>
@@ -167,7 +176,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             type="text"
                             value={form.title}
                             onChange={e => setForm({ ...form, title: e.target.value })}
-                            className={inputClass}
+                            className="input-field"
                             placeholder="Ex: Reunião com cliente, Prazo entrega..."
                             required
                         />
@@ -180,7 +189,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             <select
                                 value={form.type}
                                 onChange={e => setForm({ ...form, type: e.target.value as AppointmentType })}
-                                className={inputClass}
+                                className="input-field"
                             >
                                 {Object.entries(TYPE_LABELS).map(([k, v]) => (
                                     <option key={k} value={k}>{v}</option>
@@ -192,7 +201,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             <select
                                 value={form.priority}
                                 onChange={e => setForm({ ...form, priority: e.target.value as AppointmentPriority })}
-                                className={inputClass}
+                                className="input-field"
                             >
                                 {Object.entries(PRIORITY_LABELS).map(([k, v]) => (
                                     <option key={k} value={k}>{v}</option>
@@ -209,7 +218,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                                 type="datetime-local"
                                 value={form.start_at}
                                 onChange={e => setForm({ ...form, start_at: e.target.value })}
-                                className={inputClass}
+                                className="input-field"
                                 required
                             />
                         </div>
@@ -219,7 +228,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                                 type="datetime-local"
                                 value={form.end_at}
                                 onChange={e => setForm({ ...form, end_at: e.target.value })}
-                                className={inputClass}
+                                className="input-field"
                             />
                         </div>
                     </div>
@@ -231,7 +240,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             type="text"
                             value={form.location}
                             onChange={e => setForm({ ...form, location: e.target.value })}
-                            className={inputClass}
+                            className="input-field"
                             placeholder="Ex: Escritório, Google Meet, Zoom..."
                         />
                     </div>
@@ -242,7 +251,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                         <textarea
                             value={form.description}
                             onChange={e => setForm({ ...form, description: e.target.value })}
-                            className={`${inputClass} resize-none`}
+                            className="input-field resize-none"
                             rows={3}
                             placeholder="Detalhes do compromisso..."
                         />
@@ -255,7 +264,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             <select
                                 value={form.related_user_id}
                                 onChange={e => setForm({ ...form, related_user_id: e.target.value })}
-                                className={inputClass}
+                                className="input-field"
                             >
                                 <option value="">-- Nenhum --</option>
                                 {profiles.map(p => (
@@ -268,7 +277,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             <select
                                 value={form.related_project_id}
                                 onChange={e => setForm({ ...form, related_project_id: e.target.value })}
-                                className={inputClass}
+                                className="input-field"
                             >
                                 <option value="">-- Nenhum --</option>
                                 {projects.map(p => (
@@ -285,7 +294,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             <select
                                 value={form.status}
                                 onChange={e => setForm({ ...form, status: e.target.value as AppointmentStatus })}
-                                className={inputClass}
+                                className="input-field"
                             >
                                 <option value="pending">Pendente</option>
                                 <option value="completed">Concluído</option>
@@ -305,7 +314,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                         <button
                             type="submit"
                             disabled={saving}
-                            className="px-5 py-2.5 rounded-lg bg-[var(--color-primary)] hover:brightness-110 text-black font-bold text-sm transition-colors disabled:opacity-50"
+                            style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer', opacity: saving ? 0.5 : 1 }}
                         >
                             {saving ? 'Salvando...' : (appointment ? 'Salvar Alterações' : 'Criar Compromisso')}
                         </button>
@@ -376,19 +385,19 @@ const AgendaView: React.FC = () => {
     ];
 
     const getAppsForDay = (day: Date) =>
-        appointments.filter(a => isSameDay(new Date(a.start_at), day));
+        appointments.filter((a: any) => isSameDay(new Date(a.start_at), day));
 
-    const filteredAppts = appointments.filter(a =>
+    const filteredAppts = appointments.filter((a: any) =>
         (filterType === 'all' || a.type === filterType) &&
         a.status !== 'cancelled'
     );
 
     const upcomingAppts = filteredAppts
-        .filter(a => new Date(a.start_at) >= new Date(new Date().setHours(0, 0, 0, 0)))
+        .filter((a: any) => new Date(a.start_at) >= new Date(new Date().setHours(0, 0, 0, 0)))
         .slice(0, 10);
 
     const dayAppts = selectedDay
-        ? appointments.filter(a => isSameDay(new Date(a.start_at), selectedDay))
+        ? appointments.filter((a: any) => isSameDay(new Date(a.start_at), selectedDay))
         : [];
 
     const today = new Date();
@@ -402,7 +411,7 @@ const AgendaView: React.FC = () => {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="p-6 anim-fade-in space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
@@ -411,7 +420,8 @@ const AgendaView: React.FC = () => {
                 </div>
                 <button
                     onClick={() => { setEditingAppointment(null); setSelectedDay(null); setIsModalOpen(true); }}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-[var(--color-primary)] hover:brightness-110 text-black font-bold text-xs rounded-lg transition-all font-mono tracking-wider uppercase"
+                    style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
+                    className="flex items-center gap-2"
                 >
                     <Plus size={16} />
                     Novo Compromisso
@@ -437,7 +447,8 @@ const AgendaView: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* ── Calendário ── */}
-                <div className="lg:col-span-2 bg-[#0d0d0d] border border-[#1e1e1e] rounded-xl p-6">
+                <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden lg:col-span-2">
+                    <div className="anim-shimmer" />
                     {/* Nav do mês */}
                     <div className="flex items-center justify-between mb-6">
                         <button
@@ -478,23 +489,25 @@ const AgendaView: React.FC = () => {
                                 <button
                                     key={i}
                                     onClick={() => setSelectedDay(isSelected ? null : day)}
-                                    className={`relative aspect-square flex flex-col items-center justify-start pt-1.5 rounded-lg text-xs font-mono transition-all border ${isSelected
-                                        ? 'bg-[var(--color-primary)]/20 border-[var(--color-primary)] text-[var(--color-primary)]'
-                                        : isToday
-                                            ? 'bg-white/5 border-white/20 text-white'
-                                            : 'border-transparent text-gray-500 hover:bg-white/5 hover:text-white'
-                                        }`}
+                                    className={`relative aspect-square flex flex-col items-center justify-start pt-1.5 rounded-lg text-xs font-mono transition-all border`}
+                                    style={
+                                        isSelected
+                                            ? { background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#D4AF37' }
+                                            : isToday
+                                                ? { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }
+                                                : { border: '1px solid transparent', color: '#6b7280' }
+                                    }
                                 >
                                     <span className={`text-xs font-bold ${isToday && !isSelected ? 'text-[var(--color-primary)]' : ''}`}>
                                         {day.getDate()}
                                     </span>
                                     {dayAppsAll.length > 0 && (
                                         <div className="flex gap-0.5 mt-1 flex-wrap justify-center">
-                                            {dayAppsAll.slice(0, 3).map(a => (
+                                            {dayAppsAll.slice(0, 3).map((a: any) => (
                                                 <div
                                                     key={a.id}
                                                     className="w-1.5 h-1.5 rounded-full"
-                                                    style={{ backgroundColor: TYPE_COLORS[a.type] }}
+                                                    style={{ backgroundColor: TYPE_COLORS[a.type as AppointmentType] }}
                                                 />
                                             ))}
                                         </div>
@@ -519,7 +532,8 @@ const AgendaView: React.FC = () => {
                 <div className="space-y-4">
                     {/* Dia selecionado */}
                     {selectedDay && (
-                        <div className="bg-[#0d0d0d] border border-[var(--color-primary)]/30 rounded-xl p-4">
+                        <div className="glass glass-top-line relative rounded-2xl p-4 overflow-hidden" style={{ borderColor: 'rgba(212,175,55,0.3)' }}>
+                            <div className="anim-shimmer" />
                             <div className="flex items-center justify-between mb-3">
                                 <h3 className="text-xs font-bold font-mono text-[var(--color-primary)] uppercase tracking-wider">
                                     {selectedDay.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
@@ -536,7 +550,7 @@ const AgendaView: React.FC = () => {
                                 <p className="text-xs text-gray-600 font-mono py-3 text-center">Nenhum compromisso neste dia.</p>
                             ) : (
                                 <div className="space-y-2">
-                                    {dayAppts.map(a => (
+                                    {dayAppts.map((a: any) => (
                                         <AppointmentCard
                                             key={a.id}
                                             appointment={a}
@@ -554,7 +568,8 @@ const AgendaView: React.FC = () => {
                     )}
 
                     {/* Próximos compromissos */}
-                    <div className="bg-[#0d0d0d] border border-[#1e1e1e] rounded-xl p-4">
+                    <div className="glass glass-top-line relative rounded-2xl p-4 overflow-hidden">
+                        <div className="anim-shimmer" />
                         <h3 className="text-xs font-bold font-mono text-gray-400 uppercase tracking-wider mb-3">
                             Próximos Compromissos
                         </h3>
@@ -562,7 +577,7 @@ const AgendaView: React.FC = () => {
                             <p className="text-xs text-gray-600 font-mono py-4 text-center">Nenhum compromisso futuro.</p>
                         ) : (
                             <div className="space-y-2">
-                                {upcomingAppts.map(a => (
+                                {upcomingAppts.map((a: any) => (
                                     <AppointmentCard
                                         key={a.id}
                                         appointment={a}
@@ -613,8 +628,8 @@ interface AppointmentCardProps {
 const AppointmentCard: React.FC<AppointmentCardProps> = ({
     appointment: a, profiles, projects, onEdit, onDelete, onMarkStatus, compact
 }) => {
-    const relatedProfile = profiles.find(p => p.id === a.related_user_id);
-    const relatedProject = projects.find(p => p.id === a.related_project_id);
+    const relatedProfile = profiles.find((p: any) => p.id === a.related_user_id);
+    const relatedProject = projects.find((p: any) => p.id === a.related_project_id);
     const startDate = new Date(a.start_at);
 
     const statusIcon = a.status === 'completed'
@@ -626,7 +641,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
     return (
         <div
             className={`group relative rounded-lg border transition-all cursor-pointer ${a.status === 'completed' ? 'opacity-50' : ''} ${compact ? 'p-3' : 'p-4'}`}
-            style={{ borderLeftColor: TYPE_COLORS[a.type], borderLeftWidth: 3, borderColor: '#1e1e1e', borderTopColor: '#1e1e1e', borderRightColor: '#1e1e1e', borderBottomColor: '#1e1e1e' }}
+            style={{ borderLeftColor: TYPE_COLORS[a.type], borderLeftWidth: 3, borderColor: 'rgba(255,255,255,0.08)', borderTopColor: 'rgba(255,255,255,0.08)', borderRightColor: 'rgba(255,255,255,0.08)', borderBottomColor: 'rgba(255,255,255,0.08)' }}
             onClick={onEdit}
         >
             <div className="flex items-start justify-between gap-2">
@@ -649,13 +664,13 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
                                 {startDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
                             </span>
                             <span
-                                className="text-[10px] font-mono px-1.5 py-0.5 rounded"
+                                className="text-[10px] font-mono px-1.5 py-0.5 rounded-full"
                                 style={{ color: TYPE_COLORS[a.type], backgroundColor: `${TYPE_COLORS[a.type]}20` }}
                             >
                                 {TYPE_LABELS[a.type]}
                             </span>
                             <span
-                                className="text-[10px] font-mono px-1.5 py-0.5 rounded"
+                                className="text-[10px] font-mono px-1.5 py-0.5 rounded-full"
                                 style={{ color: PRIORITY_COLORS[a.priority], backgroundColor: `${PRIORITY_COLORS[a.priority]}20` }}
                             >
                                 {PRIORITY_LABELS[a.priority]}
