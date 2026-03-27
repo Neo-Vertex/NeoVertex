@@ -182,15 +182,13 @@ const Sidebar: React.FC<SidebarProps> = ({ title, logo, menuItems, activeSection
                     x: isMobile ? (isOpen ? 0 : '-100%') : 0
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className={`
-                    fixed md:relative z-50 
-                    h-screen
-                    bg-[#0a0a0a] 
-                    border-r border-[rgba(255,255,255,0.05)]
-                    flex flex-col
-                    shadow-[5px_0_30px_rgba(0,0,0,0.5)]
-                    overflow-hidden
-                `}
+                className="fixed md:relative z-50 h-screen flex flex-col overflow-hidden shadow-[5px_0_30px_rgba(0,0,0,0.5)]"
+                style={{
+                    background: 'rgba(255,255,255,0.02)',
+                    backdropFilter: 'blur(24px)',
+                    WebkitBackdropFilter: 'blur(24px)',
+                    borderRight: '1px solid rgba(212,175,55,0.1)',
+                }}
             >
                 {/* Close Button (All Screens) */}
                 <button
@@ -201,7 +199,7 @@ const Sidebar: React.FC<SidebarProps> = ({ title, logo, menuItems, activeSection
                 </button>
 
                 {/* Header / Logo */}
-                <div className={`p-6 border-b border-[rgba(255,255,255,0.05)] flex flex-col items-center transition-all duration-300 ${isCollapsed ? 'py-6' : ''}`}>
+                <div className={`p-6 flex flex-col items-center transition-all duration-300 ${isCollapsed ? 'py-6' : ''}`} style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
                     {/* User Profile Section (Priority) */}
                     {userProfile ? (
                         <div className="flex flex-col items-center mt-16">
@@ -261,7 +259,7 @@ const Sidebar: React.FC<SidebarProps> = ({ title, logo, menuItems, activeSection
                 </div>
 
                 {/* Footer / Logout */}
-                <div className="p-4 border-t border-[rgba(255,255,255,0.05)]">
+                <div className="p-4" style={{ borderTop: '1px solid rgba(212,175,55,0.08)' }}>
                     <button
                         onClick={onLogout}
                         className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-4 px-4'} py-3.5 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-200`}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Sidebar from '../components/Sidebar';
+import AmbientBackground from '../components/AmbientBackground';
 import { Calendar, Clock, Package, Settings, Globe, Link as LinkIcon, Menu } from 'lucide-react';
 import { paymentService } from '../services/payment';
 import ProjectTimeline from '../components/shared/ProjectTimeline';
@@ -163,9 +164,8 @@ const AssociateDashboard: React.FC = () => {
 
 
     return (
-        <div className="min-h-screen bg-[var(--color-bg)] flex flex-row relative overflow-hidden" style={{
-            backgroundImage: 'radial-gradient(circle at 0% 0%, rgba(212, 175, 55, 0.15), transparent 50%)'
-        }}>
+        <div className="min-h-screen relative overflow-hidden" style={{ background: '#04040a' }}>
+            <AmbientBackground />
             {/* Loading Overlay */}
             {isLoading && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
@@ -176,6 +176,7 @@ const AssociateDashboard: React.FC = () => {
                 </div>
             )}
 
+            <div className="relative z-10 flex flex-row min-h-screen">
             <Sidebar
                 title="ÁREA DO ASSOCIADO"
                 logo={colabBrand?.logo_url || "/logo.png"}
@@ -238,13 +239,12 @@ const AssociateDashboard: React.FC = () => {
                                     <div className="grid grid-cols-1 gap-6">
                                         {projects.map((project, index) => {
                                             return (
-                                                <motion.div
-                                                    key={project.id}
-                                                    initial={{ x: -20, opacity: 0 }}
-                                                    animate={{ x: 0, opacity: 1 }}
-                                                    transition={{ delay: index * 0.1 }}
-                                                    className="bg-[rgba(0,0,0,0.4)] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 hover:border-[var(--color-primary)] transition-colors"
+                                                <div
+                                                    key={project.id || index}
+                                                    className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden"
+                                                    style={{ animation: `fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) ${index * 0.08}s both` }}
                                                 >
+                                                    <div className="anim-shimmer" />
                                                     <div className="flex justify-between items-start mb-6">
                                                         <div>
                                                             <strong className="block text-2xl text-white mb-2 flex items-center gap-2">
@@ -257,10 +257,15 @@ const AssociateDashboard: React.FC = () => {
                                                             </strong>
                                                         </div>
                                                         <div className="flex flex-col items-end gap-2">
-                                                            <span className={`px-4 py-1.5 rounded-full text-xs font-bold border ${project.status === 'Concluído' ? 'bg-green-500/10 text-green-400 border-green-500/30' :
-                                                                project.status === 'Em Desenvolvimento' ? 'bg-blue-500/10 text-blue-400 border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]' :
-                                                                    'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
-                                                                }`}>
+                                                            <span style={
+                                                                project.status === 'Ativo' || project.status?.toLowerCase() === 'ativo'
+                                                                    ? { background: 'rgba(74,222,128,0.1)', color: '#4ade80', border: '1px solid rgba(74,222,128,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
+                                                                    : project.status === 'Concluído' || project.status?.toLowerCase() === 'concluido' || project.status?.toLowerCase() === 'concluído'
+                                                                        ? { background: 'rgba(96,165,250,0.1)', color: '#60a5fa', border: '1px solid rgba(96,165,250,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
+                                                                        : project.status === 'Cancelado' || project.status?.toLowerCase() === 'cancelado'
+                                                                            ? { background: 'rgba(248,113,113,0.1)', color: '#f87171', border: '1px solid rgba(248,113,113,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
+                                                                            : { background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
+                                                            }>
                                                                 {project.status}
                                                             </span>
                                                         </div>
@@ -317,7 +322,7 @@ const AssociateDashboard: React.FC = () => {
                                                             )}
                                                         </div>
                                                     </div>
-                                                </motion.div>
+                                                </div>
                                             );
                                         })}
                                     </div>
@@ -387,6 +392,7 @@ const AssociateDashboard: React.FC = () => {
                         )}
                     </motion.div>
                 </main>
+            </div>
             </div>
 
             {/* First Access Language Modal */}
