@@ -1,13 +1,82 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { createClient } from '@supabase/supabase-js';
+import { AlertCircle, Loader2, Save } from 'lucide-react';
 import Stamp from '../common/Stamp';
+import Button from '../Button';
 
-// ... (existing imports)
+interface CreateAssociateFormProps {
+    onSuccess?: () => void;
+    onCancel?: () => void;
+    initialData?: any;
+}
+
+interface FormData {
+    email: string;
+    password: string;
+    companyName: string;
+    phone: string;
+    address: string;
+    country: string;
+    language: string;
+    birthDate: string;
+    contractedProducts: string[];
+    referralSource: string;
+    isColab: boolean;
+    colabBrandId: string;
+}
+
+const availableServices = [
+    { id: '1', name: 'Websites & Landing Pages', description: 'Criação de sites de alta conversão' },
+    { id: '2', name: 'Sistemas & Aplicativos', description: 'Automação e ERP' },
+    { id: '3', name: 'Consultoria de IA', description: 'Integração de Inteligência Artificial' },
+];
+
+const colabBrands = [
+    { id: 'brand1', name: 'Marca Parceira 1' },
+    { id: 'brand2', name: 'Marca Parceira 2' },
+];
 
 const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, onCancel, initialData }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [showStamp, setShowStamp] = useState(false);
 
-    // ... (existing state and useEffect)
+    const [formData, setFormData] = useState<FormData>({
+        email: initialData?.email || '',
+        password: '',
+        companyName: initialData?.companyName || '',
+        phone: initialData?.phone || '',
+        address: initialData?.address || '',
+        country: initialData?.country || '',
+        language: initialData?.language || 'pt-BR',
+        birthDate: initialData?.birthDate || '',
+        contractedProducts: initialData?.contractedProducts || [],
+        referralSource: initialData?.referralSource || '',
+        isColab: initialData?.isColab || false,
+        colabBrandId: initialData?.colabBrandId || ''
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value, type } = e.target;
+        if (type === 'checkbox') {
+            const checked = (e.target as HTMLInputElement).checked;
+            setFormData(prev => ({ ...prev, [name]: checked }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const toggleProduct = (serviceId: string) => {
+        setFormData(prev => {
+            const products = prev.contractedProducts;
+            if (products.includes(serviceId)) {
+                return { ...prev, contractedProducts: products.filter(id => id !== serviceId) };
+            } else {
+                return { ...prev, contractedProducts: [...products, serviceId] };
+            }
+        });
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

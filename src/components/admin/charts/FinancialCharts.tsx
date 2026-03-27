@@ -9,7 +9,6 @@ interface ChartProps {
     selectedDate?: Date;
 }
 
-const COLORS = ['#D4AF37', '#10B981', '#3B82F6', '#EF4444', '#F59E0B', '#8B5CF6'];
 
 export const CashFlowChart: React.FC<ChartProps> = ({ records = [], selectedDate = new Date() }) => {
     const data = useMemo(() => {
@@ -63,8 +62,7 @@ export const CashFlowChart: React.FC<ChartProps> = ({ records = [], selectedDate
                         <Tooltip
                             contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
                             itemStyle={{ color: '#fff' }}
-                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                            formatter={(value: number) => [`R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, '']}
+                            formatter={(value: any) => [`R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, '']}
                         />
                         <Legend />
                         <Bar dataKey="Entrada" fill="#10B981" radius={[4, 4, 0, 0]} maxBarSize={40} />
