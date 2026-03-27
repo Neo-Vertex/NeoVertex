@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { createClient } from '@supabase/supabase-js';
 import { AlertCircle, Loader2, Save } from 'lucide-react';
+import { supabase } from '../../services/supabase';
 import Stamp from '../common/Stamp';
 import Button from '../Button';
 
@@ -86,47 +86,25 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
         try {
             // ... (existing logic for creating user, profile, projects)
 
-            // 1. Create a temporary client to avoid logging out the admin
-            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-            const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-            // Use memory storage to prevent affecting the main localStorage
-            const MemoryStorage = {
-                getItem: (key: string) => null,
-                setItem: (key: string, value: string) => { },
-                removeItem: (key: string) => { }
-            };
-
-            const tempSupabase = createClient(supabaseUrl, supabaseAnonKey, {
-                auth: {
-                    persistSession: false,
-                    storage: MemoryStorage,
-                    autoRefreshToken: false,
-                    detectSessionInUrl: false
-                }
-            });
-
-            // 2. Sign Up the new user
-            const { data: authData, error: authError } = await tempSupabase.auth.signUp({
+            // 1. Criar o usuário (não afeta a sessão do admin no novo sistema)
+            const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
             });
 
             if (authError) {
-                if (authError.message.includes('already registered') || authError.status === 400) {
+                if (authError.message.includes('already registered') || authError.message.includes('já existe')) {
                     throw new Error('Este email já está cadastrado para outro associado. Por favor, utilize outro email.');
                 }
                 throw authError;
             }
 
-            if (!authData.user) throw new Error('Erro ao criar usuário. Tente novamente.');
+            if (!authData?.user) throw new Error('Erro ao criar usuário. Tente novamente.');
 
             const userId = authData.user.id;
 
-            // 3. Update the Profile
-            await new Promise(r => setTimeout(r, 1000));
-
-            const { error: profileError } = await tempSupabase
+            // 2. Atualizar o perfil
+            const { error: profileError } = (await supabase
                 .from('profiles')
                 .update({
                     full_name: formData.companyName,
@@ -141,13 +119,13 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                     is_colab: formData.isColab,
                     colab_brand_id: formData.colabBrandId || null
                 })
-                .eq('id', userId);
+                .eq('id', userId)) as any;
 
             if (profileError) {
                 console.error('Profile Update Error:', profileError);
             }
 
-            // 4. Create Projects
+            // 3. Criar projetos vinculados
             if (formData.contractedProducts.length > 0) {
                 const projectsToInsert = formData.contractedProducts.map(serviceId => {
                     const service = availableServices.find(s => s.id === serviceId);
@@ -155,14 +133,14 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                         user_id: userId,
                         service: service?.name || 'Serviço Personalizado',
                         status: 'Contratado',
-                        start_date: new Date().toISOString(),
+                        start_date: new Date().toISOString().split('T')[0],
                         value: 0,
                     };
                 });
 
-                const { error: projectsError } = await tempSupabase
+                const { error: projectsError } = (await supabase
                     .from('projects')
-                    .insert(projectsToInsert);
+                    .insert(projectsToInsert)) as any;
 
                 if (projectsError) console.error('Projects Error:', projectsError);
             }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutGrid, Users, DollarSign, Settings, MessageSquare, Briefcase, ChevronDown, LogOut, Power, CreditCard, Settings2, X } from 'lucide-react';
+import { LayoutGrid, Users, DollarSign, Settings, MessageSquare, Briefcase, ChevronDown, LogOut, Power, CreditCard, Settings2, X, CalendarDays } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from '../Logo';
 
@@ -41,6 +41,7 @@ const menuItems: MenuItem[] = [
             { id: 'settings-languages', label: 'IDIOMAS' }
         ]
     },
+    { id: 'agenda', label: 'AGENDA', icon: CalendarDays },
     { id: 'messages', label: 'SOLICITAÇÕES', icon: MessageSquare }
 ];
 
