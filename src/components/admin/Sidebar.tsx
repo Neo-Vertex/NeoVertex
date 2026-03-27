@@ -1,195 +1,273 @@
 import React, { useState } from 'react';
-import { LayoutGrid, Users, DollarSign, Settings, MessageSquare, Briefcase, ChevronDown, LogOut, Power, CreditCard, Settings2, X, CalendarDays } from 'lucide-react';
+import {
+  LayoutGrid, Users, CreditCard, Settings2, MessageSquare,
+  CalendarDays, ChevronDown, Power, X,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Logo from '../Logo';
 
 interface SidebarProps {
-    activeSection: string;
-    setActiveSection: (section: string) => void;
-    handleLogout: () => void;
-    unreadCount?: number;
-    isOpen?: boolean; // Mobile state
-    onClose?: () => void;
+  activeSection: string;
+  setActiveSection: (section: string) => void;
+  handleLogout: () => void;
+  unreadCount?: number;
+  isOpen?: boolean;
+  onClose?: () => void;
+  adminEmail?: string;
 }
 
 interface MenuItem {
-    id: string;
-    label: string;
-    icon: React.ElementType;
-    badge?: number;
-    subItems?: { id: string; label: string }[];
+  id: string;
+  label: string;
+  icon: React.ElementType;
+  badge?: number;
+  subItems?: { id: string; label: string }[];
+  section?: string;
 }
 
 const menuItems: MenuItem[] = [
-    { id: 'dashboard', label: 'VISÃO GERAL', icon: LayoutGrid },
-    {
-        id: 'associates-section',
-        label: 'ASSOCIADOS',
-        icon: Users,
-        subItems: [
-            { id: 'crm', label: 'GESTÃO DE LEADS' },
-            { id: 'settings-associates', label: 'LISTA DE ASSOCIADOS' }
-        ]
-    },
-    { id: 'financial-records', label: 'FINANCEIRO', icon: CreditCard },
-    {
-        id: 'settings',
-        label: 'CONFIGURAÇÃO',
-        icon: Settings2,
-        subItems: [
-            { id: 'settings-products', label: 'PRODUTOS' },
-            { id: 'settings-languages', label: 'IDIOMAS' }
-        ]
-    },
-    { id: 'agenda', label: 'AGENDA', icon: CalendarDays },
-    { id: 'messages', label: 'SOLICITAÇÕES', icon: MessageSquare }
+  { id: 'dashboard',          label: 'Visão Geral',   icon: LayoutGrid, section: 'PRINCIPAL' },
+  {
+    id: 'associates-section', label: 'Associados',    icon: Users, section: 'PRINCIPAL',
+    subItems: [
+      { id: 'crm',                  label: 'Gestão de Leads' },
+      { id: 'settings-associates',  label: 'Lista de Associados' },
+    ],
+  },
+  { id: 'financial-records',  label: 'Financeiro',    icon: CreditCard },
+  { id: 'agenda',             label: 'Agenda',        icon: CalendarDays, section: 'OPERAÇÕES' },
+  { id: 'messages',           label: 'Solicitações',  icon: MessageSquare },
+  {
+    id: 'settings',           label: 'Configurações', icon: Settings2, section: 'SISTEMA',
+    subItems: [
+      { id: 'settings-products',  label: 'Produtos' },
+      { id: 'settings-languages', label: 'Idiomas' },
+    ],
+  },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection, handleLogout, unreadCount = 0, isOpen = true, onClose }) => {
-    const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
+const Sidebar: React.FC<SidebarProps> = ({
+  activeSection, setActiveSection, handleLogout,
+  unreadCount = 0, isOpen = true, onClose, adminEmail = '',
+}) => {
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
 
-    const toggleMenu = (menuId: string) => {
-        setExpandedMenu(expandedMenu === menuId ? null : menuId);
-    };
+  const items = menuItems.map(item =>
+    item.id === 'messages' ? { ...item, badge: unreadCount } : item
+  );
 
-    const handleItemClick = (item: MenuItem) => {
-        if (item.subItems) {
-            toggleMenu(item.id);
-        } else {
-            setActiveSection(item.id);
-            if (onClose) onClose();
-        }
-    };
+  const handleItemClick = (item: MenuItem) => {
+    if (item.subItems) {
+      setExpandedMenu(expandedMenu === item.id ? null : item.id);
+    } else {
+      setActiveSection(item.id);
+      onClose?.();
+    }
+  };
 
-    // Update menu items with dynamic badges
-    const items = menuItems.map(item => item.id === 'messages' ? { ...item, badge: unreadCount } : item);
+  const isActive = (item: MenuItem) =>
+    activeSection === item.id ||
+    (item.subItems?.some(s => s.id === activeSection) ?? false);
 
-    return (
-        <>
-            {/* Mobile Backdrop */}
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onClose}
-                        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden cursor-pointer"
-                    />
+  let lastSection = '';
+
+  return (
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
+          />
+        )}
+      </AnimatePresence>
+
+      <aside
+        className={`fixed md:sticky top-0 h-screen flex flex-col z-50 transition-transform duration-300
+          ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+        style={{
+          width: 220,
+          background: 'rgba(255,255,255,0.02)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderRight: '1px solid rgba(212,175,55,0.1)',
+          animation: 'slideInLeft 0.5s cubic-bezier(0.16,1,0.3,1) both',
+        }}
+      >
+        {/* Logo */}
+        <div className="px-4 py-5 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
+          <button onClick={onClose} className="absolute top-4 right-4 md:hidden text-white/40 hover:text-white">
+            <X size={18} />
+          </button>
+          <div style={{
+            width: 34, height: 34, borderRadius: 9, flexShrink: 0,
+            background: 'linear-gradient(135deg, #f0cc55, #8a6010)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 14, color: '#000',
+            animation: 'logoPulse 3s ease-in-out infinite',
+          }}>
+            N
+          </div>
+          <div>
+            <div style={{
+              fontFamily: 'Cinzel, serif', fontSize: 11, fontWeight: 700,
+              letterSpacing: '0.15em', color: '#D4AF37',
+            }}>NEOVERTEX</div>
+            <div style={{ fontSize: 9, color: 'rgba(212,175,55,0.35)', letterSpacing: '0.1em', marginTop: 1 }}>
+              PLATAFORMA ADMIN
+            </div>
+          </div>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-0.5">
+          {items.map(item => {
+            const active = isActive(item);
+            const expanded = expandedMenu === item.id;
+            const showSection = item.section && item.section !== lastSection;
+            if (item.section) lastSection = item.section;
+
+            return (
+              <div key={item.id}>
+                {showSection && (
+                  <div style={{
+                    fontSize: 9, letterSpacing: '0.18em', fontWeight: 600,
+                    color: 'rgba(212,175,55,0.35)', padding: '10px 8px 4px',
+                  }}>
+                    {item.section}
+                  </div>
                 )}
-            </AnimatePresence>
 
-            <aside className={`fixed md:sticky top-0 h-screen w-80 bg-[#050505] tech-panel border-r border-[#222] flex flex-col z-50 transition-transform duration-300 shadow-[2px_0_20px_rgba(0,0,0,0.5)] ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
-                {/* Header */}
-                <div className="p-8 border-b border-[#222] flex flex-col items-center gap-4 relative">
-                    {/* Close Button Mobile */}
-                    <button onClick={onClose} className="absolute top-4 right-4 md:hidden text-gray-500 hover:text-white">
-                        <X size={24} />
-                    </button>
+                <button
+                  onClick={() => handleItemClick(item)}
+                  className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-all duration-200 group relative"
+                  style={active ? {
+                    background: 'rgba(212,175,55,0.08)',
+                    border: '1px solid rgba(212,175,55,0.18)',
+                    color: '#D4AF37',
+                    boxShadow: '0 2px 12px rgba(212,175,55,0.08)',
+                  } : {
+                    border: '1px solid transparent',
+                    color: 'rgba(255,255,255,0.45)',
+                  }}
+                >
+                  {active && (
+                    <div style={{
+                      position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)',
+                      width: 3, height: '55%', borderRadius: '0 2px 2px 0',
+                      background: 'linear-gradient(180deg, #f0cc55, #8a6010)',
+                      boxShadow: '0 0 6px rgba(212,175,55,0.5)',
+                    }} />
+                  )}
 
-                    <div className="scale-90 transition-transform duration-500 hover:scale-100 filter drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]">
-                        <Logo />
-                    </div>
-                    <div className="text-center">
-                        <h2 className="text-[10px] font-mono font-bold text-[var(--color-primary)] tracking-[0.3em] uppercase">
-                            System Control
-                        </h2>
-                    </div>
-                </div>
+                  <item.icon
+                    size={14}
+                    strokeWidth={active ? 2.5 : 1.8}
+                    style={{ flexShrink: 0, transition: 'color 0.2s' }}
+                  />
+                  <span style={{ fontSize: 11.5, fontWeight: active ? 600 : 400, letterSpacing: '0.03em', flex: 1, textAlign: 'left' }}>
+                    {item.label}
+                  </span>
 
-                {/* Navigation */}
-                <nav className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
-                    {items.map(item => {
-                        const isActive = activeSection === item.id || (item.subItems && item.subItems.some(sub => sub.id === activeSection));
-                        const isExpanded = expandedMenu === item.id;
+                  {item.badge !== undefined && item.badge > 0 && (
+                    <span style={{
+                      background: 'rgba(212,175,55,0.15)', color: '#D4AF37',
+                      fontSize: 9, padding: '1px 5px', borderRadius: 10, fontWeight: 700,
+                      border: '1px solid rgba(212,175,55,0.2)',
+                      animation: 'badgePulse 2s ease-in-out infinite',
+                    }}>
+                      {item.badge}
+                    </span>
+                  )}
+                  {item.subItems && (
+                    <ChevronDown
+                      size={12}
+                      style={{
+                        transition: 'transform 0.25s',
+                        transform: expanded ? 'rotate(180deg)' : 'none',
+                        color: active ? '#D4AF37' : 'rgba(255,255,255,0.3)',
+                      }}
+                    />
+                  )}
+                </button>
 
-                        return (
-                            <div key={item.id} className="overflow-hidden">
-                                <button
-                                    onClick={() => handleItemClick(item)}
-                                    className={`w-full flex items-center justify-between px-6 py-4 rounded-sm transition-all duration-200 group relative border-l-2
-                                        ${isActive
-                                            ? 'bg-[#111] border-[var(--color-primary)] text-white'
-                                            : 'border-transparent text-gray-500 hover:text-white hover:bg-[#0a0a0a] hover:border-[#333]'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <item.icon
-                                            size={20}
-                                            strokeWidth={isActive ? 2.5 : 2}
-                                            className={`transition-colors duration-300 ${isActive ? 'text-[var(--color-primary)]' : 'group-hover:text-white'}`}
-                                        />
-                                        <span className="text-xs font-bold tracking-widest font-mono uppercase">
-                                            {item.label}
-                                        </span>
-                                    </div>
-
-                                    <div className="flex items-center gap-2">
-                                        {item.badge !== undefined && item.badge > 0 && (
-                                            <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-[0_0_5px_rgba(220,38,38,0.5)]">
-                                                {item.badge}
-                                            </span>
-                                        )}
-                                        {item.subItems && (
-                                            <ChevronDown size={14} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[var(--color-primary)]' : ''}`} />
-                                        )}
-                                    </div>
-
-                                    {/* Active Indicator for non-nested */}
-                                    {isActive && !item.subItems && (
-                                        <div className="absolute right-2 w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shadow-[0_0_8px_var(--color-primary)] animate-pulse"></div>
-                                    )}
-                                </button>
-
-                                {/* Submenu */}
-                                <AnimatePresence>
-                                    {item.subItems && isExpanded && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            className="bg-[#080808] border-l border-[#222] ml-6 my-1"
-                                        >
-                                            {item.subItems.map(subItem => {
-                                                const isSubActive = activeSection === subItem.id;
-                                                return (
-                                                    <button
-                                                        key={subItem.id}
-                                                        onClick={() => {
-                                                            setActiveSection(subItem.id);
-                                                            if (onClose) onClose();
-                                                        }}
-                                                        className={`w-full text-left pl-6 pr-4 py-3 text-[11px] font-mono tracking-wider transition-colors border-l-2
-                                                            ${isSubActive
-                                                                ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[rgba(212,175,55,0.05)]'
-                                                                : 'border-transparent text-gray-500 hover:text-white hover:border-[#444]'
-                                                            }`}
-                                                    >
-                                                        {subItem.label}
-                                                    </button>
-                                                );
-                                            })}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-                        );
-                    })}
-                </nav>
-
-                {/* Footer */}
-                <div className="p-4 border-t border-[#222] bg-black/40">
-                    <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-sm border border-[#333] hover:border-red-900/50 hover:bg-red-950/10 text-gray-500 hover:text-red-400 transition-all duration-300 group"
+                <AnimatePresence>
+                  {item.subItems && expanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      style={{ overflow: 'hidden', marginLeft: 12, marginTop: 2 }}
                     >
-                        <Power size={18} className="group-hover:text-red-500 transition-colors" />
-                        <span className="text-xs font-bold tracking-widest font-mono group-hover:text-red-400">ENCERRAR</span>
-                    </button>
-                </div>
-            </aside>
-        </>
-    );
+                      <div style={{ borderLeft: '1px solid rgba(212,175,55,0.1)', paddingLeft: 10 }}>
+                        {item.subItems.map(sub => {
+                          const subActive = activeSection === sub.id;
+                          return (
+                            <button
+                              key={sub.id}
+                              onClick={() => { setActiveSection(sub.id); onClose?.(); }}
+                              className="w-full text-left py-2 px-2 rounded-md transition-all duration-150"
+                              style={{
+                                fontSize: 11,
+                                color: subActive ? '#D4AF37' : 'rgba(255,255,255,0.4)',
+                                background: subActive ? 'rgba(212,175,55,0.06)' : 'transparent',
+                                fontWeight: subActive ? 600 : 400,
+                              }}
+                            >
+                              {sub.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* User footer */}
+        <div className="px-3 py-3" style={{ borderTop: '1px solid rgba(212,175,55,0.08)' }}>
+          <div className="flex items-center gap-2.5 mb-2.5 px-1">
+            <div style={{
+              width: 28, height: 28, borderRadius: 7, flexShrink: 0,
+              background: 'linear-gradient(135deg, #D4AF37, #8a6010)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 10, fontWeight: 800, color: '#000',
+            }}>
+              {adminEmail ? adminEmail[0].toUpperCase() : 'A'}
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>Administrador</div>
+              <div style={{ fontSize: 9, color: 'rgba(212,175,55,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {adminEmail}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-all duration-200 group"
+            style={{ border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.3)' }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(248,113,113,0.3)';
+              (e.currentTarget as HTMLElement).style.color = '#f87171';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(248,113,113,0.05)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
+              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.3)';
+              (e.currentTarget as HTMLElement).style.background = 'transparent';
+            }}
+          >
+            <Power size={13} />
+            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em' }}>ENCERRAR</span>
+          </button>
+        </div>
+      </aside>
+    </>
+  );
 };
 
 export default Sidebar;

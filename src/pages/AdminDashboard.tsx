@@ -364,6 +364,7 @@ const AdminDashboard: React.FC = () => {
                 unreadCount={unreadCount}
                 isOpen={isSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
+                adminEmail={userEmail}
             />
 
             <div className="flex-1 flex flex-col h-full overflow-hidden relative">
