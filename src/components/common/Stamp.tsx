@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Star } from 'lucide-react';
 
 interface StampProps {
     label?: string;
@@ -53,9 +54,9 @@ const Stamp: React.FC<StampProps> = ({
 
                 {/* Star / Icon */}
                 <div className="flex gap-2 my-1 opacity-80" style={{ color: color }}>
-                    <span>★</span>
-                    <span>★</span>
-                    <span>★</span>
+                    <Star size={12} fill="currentColor" />
+                    <Star size={12} fill="currentColor" />
+                    <Star size={12} fill="currentColor" />
                 </div>
 
                 <p

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle, Loader2, Save, X } from 'lucide-react';
+import { AlertCircle, Check, Loader2, Save, Star, X } from 'lucide-react';
 import { supabase } from '../../services/supabase';
 import Stamp from '../common/Stamp';
 import Button from '../Button';
@@ -224,7 +224,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                     title="Carimbar Manualmente"
                 >
                     <div className="w-8 h-8 rounded-full border-2 border-[var(--color-primary)] flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <span className="text-lg">★</span>
+                        <Star size={18} />
                     </div>
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Carimbar</span>
                 </button>
@@ -358,7 +358,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                             >
                                 <div className="flex justify-between items-start">
                                     <h5 className={`font-bold ${formData.contractedProducts.includes(service.id) ? 'text-[var(--color-primary)]' : 'text-white'}`}>{service.name}</h5>
-                                    {formData.contractedProducts.includes(service.id) && <div className="w-5 h-5 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-black text-xs font-bold">✓</div>}
+                                    {formData.contractedProducts.includes(service.id) && <div className="w-5 h-5 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-black"><Check size={12} strokeWidth={3} /></div>}
                                 </div>
                                 <p className="text-xs text-[var(--color-text-muted)]">{service.description}</p>
                             </div>
@@ -387,7 +387,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                         <div className="flex items-center gap-4 p-4 bg-black/20 rounded-xl border border-white/5 hover:border-[var(--color-primary)]/30 transition-colors cursor-pointer" onClick={() => setFormData(prev => ({ ...prev, isColab: !prev.isColab }))}>
                             <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${formData.isColab ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-text-muted)]'}`}>
-                                {formData.isColab && <span className="text-black font-bold">✓</span>}
+                                {formData.isColab && <Check size={14} strokeWidth={3} className="text-black" />}
                             </div>
                             <input
                                 type="checkbox"
