@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Building, Clock, Pencil, ExternalLink, Trash2, Power, MoreVertical, Smartphone, User, Lock } from 'lucide-react';
 import type { Associate, Project } from '../../types';
 
@@ -16,7 +15,7 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditProfile, onManageProjects, onDelete, onToggleActive, onResetPassword, colabBrandLogo }) => {
     // Calculate Subscription Status
-    const activeSubscription = projects.find(p => p.maintenanceEndDate && new Date(p.maintenanceEndDate) > new Date());
+    const activeSubscription = projects.find((p: any) => p.maintenanceEndDate && new Date(p.maintenanceEndDate) > new Date());
     let subStatus = null;
 
     if (activeSubscription && activeSubscription.maintenanceEndDate) {
@@ -29,18 +28,33 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
     const displayName = associate.full_name || associate.email.split('@')[0] || 'Associado';
     const isActive = associate.active !== false;
 
+    const initials = displayName
+        .split(' ')
+        .map((n: string) => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+
     return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: isActive ? 1 : 0.7, scale: 1 }}
+        <div
+            className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden cursor-pointer transition-all duration-300"
             onClick={() => onManageProjects(associate)}
-            className={`
-                group relative flex flex-col rounded-xl overflow-hidden transition-all duration-300
-                bg-[#18181b] border border-[#27272a] hover:border-[var(--color-primary)] hover:shadow-lg
-                cursor-pointer
-            `}
+            onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.transform = 'translateY(-4px)';
+                el.style.borderColor = 'rgba(212,175,55,0.28)';
+                el.style.boxShadow = '0 16px 40px rgba(212,175,55,0.1)';
+            }}
+            onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.transform = '';
+                el.style.borderColor = '';
+                el.style.boxShadow = '';
+            }}
         >
-            <div className="p-5 flex flex-col h-full">
+            <div className="anim-shimmer" />
+
+            <div className="flex flex-col h-full">
 
                 {/* Header: Avatar + Info */}
                 <div className="flex gap-4 mb-4">
@@ -50,11 +64,24 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
                             <img
                                 src={associate.avatar_url}
                                 alt={displayName}
-                                className="w-16 h-16 rounded-xl object-cover bg-[#27272a]"
+                                style={{
+                                    width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                                    background: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))',
+                                    border: '1px solid rgba(212,175,55,0.2)',
+                                    objectFit: 'cover',
+                                }}
                             />
                         ) : (
-                            <div className="w-16 h-16 rounded-xl bg-[#27272a] flex items-center justify-center text-gray-500">
-                                <User size={28} strokeWidth={1.5} />
+                            <div
+                                style={{
+                                    width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                                    background: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))',
+                                    border: '1px solid rgba(212,175,55,0.2)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: 14, fontWeight: 700, color: '#D4AF37',
+                                }}
+                            >
+                                {initials || <User size={18} strokeWidth={1.5} />}
                             </div>
                         )}
 
@@ -70,33 +97,36 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
                     <div className="flex-1 min-w-0 flex flex-col justify-center">
                         {/* Status Badge */}
                         <div className="mb-1 flex">
-                            <span className={`
-                                inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border
-                                ${subStatus
-                                    ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
-                                    : isActive
-                                        ? 'bg-gray-800 text-gray-400 border-gray-700'
-                                        : 'bg-red-500/10 text-red-500 border-red-500/20'}
-                            `}>
-                                {isActive && !subStatus && <span className="w-1.5 h-1.5 rounded-full bg-gray-500"></span>}
-                                {subStatus && <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>}
-                                {!isActive && <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>}
-
-                                {subStatus ? `${subStatus.days} dias restantes` : (isActive ? 'Plano Free' : 'Inativo')}
-                            </span>
+                            {isActive ? (
+                                <span style={{ background: 'rgba(74,222,128,0.1)', color: '#4ade80', border: '1px solid rgba(74,222,128,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }}>
+                                    {subStatus ? `${subStatus.days} dias restantes` : 'Ativo'}
+                                </span>
+                            ) : (
+                                <span style={{ background: 'rgba(248,113,113,0.1)', color: '#f87171', border: '1px solid rgba(248,113,113,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }}>
+                                    Inativo
+                                </span>
+                            )}
                         </div>
 
-                        <h3 className="text-base font-bold text-white truncate group-hover:text-[var(--color-primary)] transition-colors" title={displayName}>
+                        <h3
+                            style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.85)' }}
+                            className="truncate"
+                            title={displayName}
+                        >
                             {displayName}
                         </h3>
 
-                        {associate.company_name ? (
-                            <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
-                                <Building size={12} className="text-[var(--color-primary)]" />
+                        {associate.email && (
+                            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }} className="truncate mt-0.5">
+                                {associate.email}
+                            </div>
+                        )}
+
+                        {associate.company_name && (
+                            <div className="flex items-center gap-1.5 mt-0.5" style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>
+                                <Building size={11} style={{ color: '#D4AF37', flexShrink: 0 }} />
                                 <span className="truncate">{associate.company_name}</span>
                             </div>
-                        ) : (
-                            <div className="text-[10px] text-gray-600 mt-0.5 italic">Sem empresa vinculada</div>
                         )}
                     </div>
                 </div>
@@ -163,7 +193,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 
