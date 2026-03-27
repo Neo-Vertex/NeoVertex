@@ -16,13 +16,18 @@ const authHeaders = (): Record<string, string> => {
   };
 };
 
+// Tipo de resposta padrão (compatível com o que os componentes esperam)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ApiResult = { data: any; error: any; count?: number | null };
+
 // ── Query Builder ─────────────────────────────────────────────────────────────
 
 class QueryBuilder {
   private _table: string;
   private _method = 'GET';
   private _params: Record<string, string> = {};
-  private _body: unknown = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private _body: any = null;
   private _single = false;
   private _countMode = false;
   private _headMode = false;
@@ -38,19 +43,30 @@ class QueryBuilder {
     return this;
   }
 
-  insert(data: unknown) { this._method = 'POST'; this._body = data; return this; }
-  update(data: unknown) { this._method = 'PATCH'; this._body = data; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  insert(data: any) { this._method = 'POST'; this._body = data; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  update(data: any) { this._method = 'PATCH'; this._body = data; return this; }
   delete() { this._method = 'DELETE'; return this; }
 
-  eq(col: string, val: unknown) { this._params[col] = `eq.${val}`; return this; }
-  neq(col: string, val: unknown) { this._params[col] = `neq.${val}`; return this; }
-  gt(col: string, val: unknown) { this._params[col] = `gt.${val}`; return this; }
-  lt(col: string, val: unknown) { this._params[col] = `lt.${val}`; return this; }
-  gte(col: string, val: unknown) { this._params[col] = `gte.${val}`; return this; }
-  lte(col: string, val: unknown) { this._params[col] = `lte.${val}`; return this; }
-  like(col: string, val: unknown) { this._params[col] = `like.${val}`; return this; }
-  ilike(col: string, val: unknown) { this._params[col] = `ilike.${val}`; return this; }
-  in(col: string, vals: unknown[]) { this._params[col] = `in.(${vals.join(',')})`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  eq(col: string, val: any) { this._params[col] = `eq.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  neq(col: string, val: any) { this._params[col] = `neq.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  gt(col: string, val: any) { this._params[col] = `gt.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  lt(col: string, val: any) { this._params[col] = `lt.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  gte(col: string, val: any) { this._params[col] = `gte.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  lte(col: string, val: any) { this._params[col] = `lte.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  like(col: string, val: any) { this._params[col] = `like.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ilike(col: string, val: any) { this._params[col] = `ilike.${val}`; return this; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  in(col: string, vals: any[]) { this._params[col] = `in.(${vals.join(',')})`; return this; }
   or(cond: string) { this._params['or'] = `(${cond})`; return this; }
   order(col: string, opts?: { ascending?: boolean }) {
     this._params['order'] = `${col}.${opts?.ascending === false ? 'desc' : 'asc'}`;
@@ -59,11 +75,15 @@ class QueryBuilder {
   limit(n: number) { this._params['limit'] = String(n); return this; }
   single() { this._single = true; return this; }
 
-  then(resolve: (v: unknown) => void, reject?: (r: unknown) => void) {
-    return this._run().then(resolve).catch(reject);
+  // Implementação do PromiseLike para que `await queryBuilder` funcione com tipagem correta
+  then<TResult1 = ApiResult, TResult2 = never>(
+    onfulfilled?: ((value: ApiResult) => TResult1 | PromiseLike<TResult1>) | null,
+    onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null
+  ): Promise<TResult1 | TResult2> {
+    return this._run().then(onfulfilled as never, onrejected as never);
   }
 
-  private async _run(): Promise<unknown> {
+  private async _run(): Promise<ApiResult> {
     const qs = new URLSearchParams(this._params).toString();
     const url = `${API_URL}/api/${this._table}${qs ? `?${qs}` : ''}`;
 
@@ -91,7 +111,7 @@ class QueryBuilder {
       const json = await res.json();
 
       if (this._countMode) {
-        return { count: (json as any)?.count ?? null, data: (json as any)?.data ?? json, error: null };
+        return { count: json?.count ?? null, data: json?.data ?? json, error: null };
       }
 
       if (this._single) {
@@ -100,13 +120,13 @@ class QueryBuilder {
       }
 
       return { data: json, error: null };
-    } catch (e: unknown) {
+    } catch (e) {
       return { data: null, error: { message: (e as Error).message } };
     }
   }
 }
 
-// ── Realtime (polling a cada 5s como substituto) ───────────────────────────────
+// ── Realtime (polling a cada 5s como substituto) ──────────────────────────────
 
 class RealtimeChannel {
   private _cbs: Array<(p: unknown) => void> = [];
@@ -156,7 +176,7 @@ export const supabase = {
         if (!res.ok) return { data: null, error: json };
         setToken(json.token);
         return { data: { user: json.user }, error: null };
-      } catch (e: unknown) {
+      } catch (e) {
         return { data: null, error: { message: (e as Error).message } };
       }
     },
@@ -171,7 +191,7 @@ export const supabase = {
         const json = await res.json();
         if (!res.ok) return { data: null, error: json };
         return { data: { user: json.user }, error: null };
-      } catch (e: unknown) {
+      } catch (e) {
         return { data: null, error: { message: (e as Error).message } };
       }
     },
@@ -196,7 +216,7 @@ export const supabase = {
       const json = await res.json();
       if (!res.ok) return { data: null, error: json };
       return { data: json, error: null };
-    } catch (e: unknown) {
+    } catch (e) {
       return { data: null, error: { message: (e as Error).message } };
     }
   },

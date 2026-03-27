@@ -102,7 +102,7 @@ const AdminDashboard: React.FC = () => {
 
             // Load Projects (All, for stats)
             const { data: projectsData } = await supabase.from('projects').select('*');
-            if (projectsData) setProjects(projectsData.map(p => ({
+            if (projectsData) setProjects(projectsData.map((p: any) => ({
                 id: p.id,
                 userId: p.user_id,
                 service: p.service,

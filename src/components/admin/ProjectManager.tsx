@@ -338,7 +338,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
     const loadProjects = async () => {
         const { data } = await supabase.from('projects').select('*').eq('user_id', associate.id);
         if (data) {
-            setProjects(data.map(p => ({
+            setProjects(data.map((p: any) => ({
                 id: p.id,
                 userId: p.user_id,
                 service: p.service,
@@ -411,7 +411,6 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
             .from('project_logs')
             .select('*')
             .eq('project_id', projectId)
-            .is('deleted_at', null)
             .order('created_at', { ascending: false });
         if (data) setLogs(data);
     };

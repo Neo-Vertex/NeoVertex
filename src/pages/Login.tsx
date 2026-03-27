@@ -27,10 +27,11 @@ const Login: React.FC = () => {
         setError('');
 
         try {
-            const { data: { user }, error: authError } = await supabase.auth.signInWithPassword({
+            const { data, error: authError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
+            const user = data?.user;
 
             if (authError) throw authError;
 

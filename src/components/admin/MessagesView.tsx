@@ -13,7 +13,7 @@ const MessagesView: React.FC = () => {
 
         const subscription = supabase
             .channel('contact_requests')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'contact_requests' }, payload => {
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'contact_requests' }, (payload: any) => {
                 setRequests(prev => [payload.new as ContactRequest, ...prev]);
             })
             .subscribe();

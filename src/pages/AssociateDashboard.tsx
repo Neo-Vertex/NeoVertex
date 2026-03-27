@@ -102,14 +102,14 @@ const AssociateDashboard: React.FC = () => {
                 if (projectsError) {
                     console.error('Error fetching projects:', projectsError);
                 } else {
-                    const projectIds = projectsData.map(p => p.id);
+                    const projectIds = projectsData.map((p: any) => p.id);
                     const { data: logsData } = await supabase
                         .from('project_logs')
                         .select('*')
                         .in('project_id', projectIds)
                         .order('created_at', { ascending: false });
 
-                    setProjects(projectsData.map(p => ({
+                    setProjects(projectsData.map((p: any) => ({
                         id: p.id,
                         userId: p.user_id,
                         service: p.service,
@@ -121,7 +121,7 @@ const AssociateDashboard: React.FC = () => {
                         maintenanceEndDate: p.maintenance_end_date,
                         projectUrl: p.project_url,
                         stages: p.stages,
-                        logs: logsData?.filter(log => log.project_id === p.id) || []
+                        logs: logsData?.filter((log: any) => log.project_id === p.id) || []
                     })));
                 }
 

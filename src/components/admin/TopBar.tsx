@@ -28,7 +28,7 @@ const TopBar: React.FC<TopBarProps> = ({ activeSection, adminEmail = '', onMenuC
                 .eq('maintenance_due_day', day);
 
             if (data) {
-                const activeNotifs = data.filter(p => {
+                const activeNotifs = data.filter((p: any) => {
                     if (!p.maintenance_start_date) return false;
                     const startDate = new Date(p.maintenance_start_date);
                     // Check if maintenance has started (start date is today or in the past)
