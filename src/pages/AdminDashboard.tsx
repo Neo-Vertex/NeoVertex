@@ -14,6 +14,7 @@ import ProductsManager from '../components/admin/ProductsManager';
 import LanguagesManager from '../components/admin/LanguagesManager';
 import CRMView from '../components/crm/CRMView';
 import AgendaView from '../components/admin/AgendaView';
+import AmbientBackground from '../components/AmbientBackground';
 import type { Associate, Project, FinancialRecord } from '../types';
 import type { CRMLead } from '../types/crm';
 
@@ -261,7 +262,8 @@ const AdminDashboard: React.FC = () => {
     }
 
     return (
-        <div className="flex h-screen bg-[var(--color-bg)] text-white overflow-hidden">
+        <div className="flex h-screen text-white overflow-hidden relative" style={{ background: '#04040a' }}>
+            <AmbientBackground />
             {/* --- Password Confirmation Modal --- */}
             <AnimatePresence>
                 {isPasswordModalOpen && (
@@ -357,6 +359,7 @@ const AdminDashboard: React.FC = () => {
                 )}
             </AnimatePresence>
 
+            <div className="relative z-10 flex flex-row w-full min-h-screen overflow-hidden">
             <Sidebar
                 activeSection={activeSection}
                 setActiveSection={setActiveSection}
@@ -474,6 +477,7 @@ const AdminDashboard: React.FC = () => {
                         {activeSection === 'agenda' && <AgendaView />}
                     </div>
                 </main>
+            </div>
             </div>
 
             {/* Edit Modal */}
