@@ -234,7 +234,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
     };
 
     return (
-        <div className="space-y-8">
+        <div className="p-6 space-y-6 anim-fade-in">
             {/* Dashboard Header with Minimize Toggle */}
             <div className="flex justify-end mb-2">
                 <button
@@ -399,38 +399,30 @@ const FinancialView: React.FC<FinancialViewProps> = ({
             )}
 
             {/* Main Content Area */}
-            <div className="card-glass p-6">
+            <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden">
+                <div className="anim-shimmer" />
                 {/* Tabs */}
-                <div className="flex flex-wrap gap-4 mb-8 border-b border-[rgba(255,255,255,0.1)] pb-4">
-                    <button
-                        onClick={() => setActiveTab('summary')}
-                        className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'summary'
-                            ? 'border-[var(--color-primary)] bg-[rgba(212,175,55,0.1)] text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]'
-                            : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'
-                            }`}
-                    >
-                        Extrato Geral
-                    </button>
-                    <button
-                        onClick={() => { setActiveTab('income'); setFormData(prev => ({ ...prev, type: 'income' })); }}
-                        className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'income'
-                            ? 'border-green-500 bg-green-500/10 text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]'
-                            : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-green-500/10 hover:text-green-400 hover:border-green-500/30'
-                            }`}
-                    >
-                        <Plus size={16} className="inline mr-2 -mt-0.5" />
-                        Nova Receita
-                    </button>
-                    <button
-                        onClick={() => { setActiveTab('expense'); setFormData(prev => ({ ...prev, type: 'expense' })); }}
-                        className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'expense'
-                            ? 'border-red-500 bg-red-500/10 text-white shadow-[0_0_15px_rgba(239,68,68,0.3)]'
-                            : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30'
-                            }`}
-                    >
-                        <Plus size={16} className="inline mr-2 -mt-0.5" />
-                        Nova Despesa
-                    </button>
+                <div className="flex gap-1 p-1 rounded-xl mb-6" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,175,55,0.08)', display: 'inline-flex' }}>
+                    {(['summary', 'income', 'expense'] as const).map(tab => (
+                        <button
+                            key={tab}
+                            onClick={() => {
+                                setActiveTab(tab);
+                                if (tab === 'income') setFormData(prev => ({ ...prev, type: 'income' }));
+                                if (tab === 'expense') setFormData(prev => ({ ...prev, type: 'expense' }));
+                            }}
+                            className="px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all duration-200"
+                            style={activeTab === tab ? {
+                                background: 'rgba(212,175,55,0.12)', color: '#D4AF37',
+                                border: '1px solid rgba(212,175,55,0.2)',
+                                boxShadow: '0 2px 8px rgba(212,175,55,0.1)',
+                            } : {
+                                color: 'rgba(255,255,255,0.4)', border: '1px solid transparent',
+                            }}
+                        >
+                            {tab === 'summary' ? 'Resumo' : tab === 'income' ? 'Receitas' : 'Despesas'}
+                        </button>
+                    ))}
                 </div>
 
                 {activeTab === 'summary' ? (

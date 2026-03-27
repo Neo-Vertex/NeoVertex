@@ -54,19 +54,19 @@ export const CashFlowChart: React.FC<ChartProps> = ({ records = [], selectedDate
                 Fluxo de Caixa ({selectedDate.getFullYear()})
             </h3>
             <div className="flex-1 min-h-0">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" style={{ background: 'transparent' }}>
                     <BarChart data={data}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
-                        <XAxis dataKey="name" stroke="#6B7280" fontSize={12} tickLine={false} axisLine={false} interval={0} />
-                        <YAxis stroke="#6B7280" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `R$ ${value >= 1000 ? `${(value / 1000).toFixed(0)}k` : value}`} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(212,175,55,0.06)" vertical={false} />
+                        <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" tick={{ fill: 'rgba(255,255,255,0.3)' }} fontSize={12} tickLine={false} axisLine={false} interval={0} />
+                        <YAxis stroke="rgba(255,255,255,0.3)" tick={{ fill: 'rgba(255,255,255,0.3)' }} fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value: any) => `R$ ${value >= 1000 ? `${(value / 1000).toFixed(0)}k` : value}`} />
                         <Tooltip
-                            contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            contentStyle={{ background: 'rgba(8,8,16,0.95)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 8, fontSize: 11, color: '#fff' }}
                             itemStyle={{ color: '#fff' }}
                             formatter={(value: any) => [`R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, '']}
                         />
                         <Legend />
-                        <Bar dataKey="Entrada" fill="#10B981" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                        <Bar dataKey="Saída" fill="#EF4444" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                        <Bar dataKey="Entrada" fill="#D4AF37" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                        <Bar dataKey="Saída" fill="rgba(212,175,55,0.25)" radius={[4, 4, 0, 0]} maxBarSize={40} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -95,10 +95,10 @@ export const ProjectStatusChart: React.FC<ChartProps> = ({ projects = [] }) => {
 
         return [
             { name: 'Ativos', value: stats.active, color: '#D4AF37' }, // Gold
-            { name: 'Manutenção', value: stats.maintenance, color: '#3B82F6' }, // Blue
-            { name: 'Concluídos', value: stats.completed, color: '#10B981' }, // Green
-            { name: 'Briefing/Neg.', value: stats.briefing, color: '#F59E0B' }, // Amber
-            { name: 'Standby/Canc.', value: stats.standby, color: '#EF4444' }, // Red
+            { name: 'Manutenção', value: stats.maintenance, color: '#60a5fa' }, // Blue
+            { name: 'Concluídos', value: stats.completed, color: '#4ade80' }, // Green
+            { name: 'Briefing/Neg.', value: stats.briefing, color: 'rgba(212,175,55,0.2)' }, // Gold dim
+            { name: 'Standby/Canc.', value: stats.standby, color: '#f87171' }, // Red
         ].filter(d => d.value > 0);
     }, [projects]);
 
@@ -106,7 +106,7 @@ export const ProjectStatusChart: React.FC<ChartProps> = ({ projects = [] }) => {
         <div className="card-glass p-6 h-[350px] flex flex-col">
             <h3 className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-4 shrink-0">Status dos Projetos</h3>
             <div className="flex-1 min-h-0">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" style={{ background: 'transparent' }}>
                     <PieChart>
                         <Pie
                             data={data}
@@ -122,7 +122,7 @@ export const ProjectStatusChart: React.FC<ChartProps> = ({ projects = [] }) => {
                             ))}
                         </Pie>
                         <Tooltip
-                            contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            contentStyle={{ background: 'rgba(8,8,16,0.95)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 8, fontSize: 11, color: '#fff' }}
                             itemStyle={{ color: '#fff' }}
                         />
                         <Legend verticalAlign="bottom" height={36} />
@@ -143,7 +143,7 @@ export const ExpenseBreakdownChart: React.FC<ChartProps> = ({ records = [], asso
             let key = "Diversos";
 
             if (r.associate_id) {
-                const assoc = associates.find(a => a.id === r.associate_id);
+                const assoc = associates.find((a: any) => a.id === r.associate_id);
                 if (assoc) {
                     key = assoc.company_name || assoc.full_name || "Associado";
                 } else {
@@ -170,17 +170,17 @@ export const ExpenseBreakdownChart: React.FC<ChartProps> = ({ records = [], asso
         <div className="card-glass p-6 h-[350px] flex flex-col">
             <h3 className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-4 shrink-0">Maiores Despesas (Top 5)</h3>
             <div className="flex-1 min-h-0">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" style={{ background: 'transparent' }}>
                     <BarChart data={data} layout="vertical" margin={{ left: 20 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={false} />
-                        <XAxis type="number" stroke="#6B7280" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `R$${value / 1000}k`} />
-                        <YAxis dataKey="name" type="category" stroke="#fff" fontSize={11} tickLine={false} axisLine={false} width={100} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(212,175,55,0.06)" horizontal={false} />
+                        <XAxis type="number" stroke="rgba(255,255,255,0.3)" tick={{ fill: 'rgba(255,255,255,0.3)' }} fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value: any) => `R$${value / 1000}k`} />
+                        <YAxis dataKey="name" type="category" stroke="rgba(255,255,255,0.3)" tick={{ fill: 'rgba(255,255,255,0.3)' }} fontSize={11} tickLine={false} axisLine={false} width={100} />
                         <Tooltip
-                            contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                            contentStyle={{ background: 'rgba(8,8,16,0.95)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 8, fontSize: 11, color: '#fff' }}
                             itemStyle={{ color: '#fff' }}
                             cursor={{ fill: 'rgba(255,255,255,0.05)' }}
                         />
-                        <Bar dataKey="value" fill="#EF4444" radius={[0, 4, 4, 0]} barSize={20} />
+                        <Bar dataKey="value" fill="rgba(212,175,55,0.25)" radius={[0, 4, 4, 0]} barSize={20} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
