@@ -6,7 +6,8 @@ export default function AmbientBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     let raf: number;
 
     const resize = () => {
@@ -40,6 +41,7 @@ export default function AmbientBackground() {
         ctx.fillStyle = `rgba(212,175,55,${a})`;
         ctx.fill();
       });
+      ctx.lineWidth = 0.4;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -50,7 +52,6 @@ export default function AmbientBackground() {
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.strokeStyle = `rgba(212,175,55,${0.07 * (1 - dist / 88)})`;
-            ctx.lineWidth = 0.4;
             ctx.stroke();
           }
         }
