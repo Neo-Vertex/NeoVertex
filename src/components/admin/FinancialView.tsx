@@ -253,7 +253,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
             <AnimatePresence>
                 {showSummary && (
                     <motion.div
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 gap-4"
+                        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4"
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
@@ -402,7 +402,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
             <div className="panel relative overflow-hidden">
                 <div className="anim-shimmer" />
                 {/* Tabs */}
-                <div className="flex gap-1 p-1 rounded-xl mb-6 inline-flex" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,175,55,0.08)' }}>
+                <div className="tab-group">
                     {(['summary', 'income', 'expense'] as const).map(tab => (
                         <button
                             key={tab}
@@ -411,14 +411,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                                 if (tab === 'income') setFormData(prev => ({ ...prev, type: 'income' }));
                                 if (tab === 'expense') setFormData(prev => ({ ...prev, type: 'expense' }));
                             }}
-                            className="px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all duration-200"
-                            style={activeTab === tab ? {
-                                background: 'rgba(212,175,55,0.12)', color: '#D4AF37',
-                                border: '1px solid rgba(212,175,55,0.2)',
-                                boxShadow: '0 2px 8px rgba(212,175,55,0.1)',
-                            } : {
-                                color: 'rgba(255,255,255,0.4)', border: '1px solid transparent',
-                            }}
+                            className={`tab-btn${activeTab === tab ? ' active' : ''}`}
                         >
                             {tab === 'summary' ? 'Resumo' : tab === 'income' ? 'Receitas' : 'Despesas'}
                         </button>
@@ -427,16 +420,16 @@ const FinancialView: React.FC<FinancialViewProps> = ({
 
                 {activeTab === 'summary' ? (
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="data-table">
                             <thead>
-                                <tr className="border-b border-[rgba(255,255,255,0.1)]">
-                                    <th className="p-4 text-[var(--color-text-muted)] font-medium">Data</th>
-                                    <th className="p-4 text-[var(--color-text-muted)] font-medium">Descrição</th>
-                                    <th className="p-4 text-[var(--color-text-muted)] font-medium">Empresa/Associado</th>
-                                    <th className="p-4 text-[var(--color-text-muted)] font-medium">Categoria</th>
-                                    <th className="p-4 text-[var(--color-text-muted)] font-medium">Valor Original</th>
-                                    <th className="p-4 text-[var(--color-text-muted)] font-medium">Valor (BRL)</th>
-                                    <th className="p-4 text-[var(--color-text-muted)] font-medium text-right">Ações</th>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Empresa/Associado</th>
+                                    <th>Categoria</th>
+                                    <th>Valor Original</th>
+                                    <th>Valor (BRL)</th>
+                                    <th style={{ textAlign: 'right' }}>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
