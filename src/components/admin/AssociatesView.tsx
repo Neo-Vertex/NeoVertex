@@ -37,11 +37,7 @@ const AssociatesView: React.FC<AssociatesViewProps> = ({ associates, allProjects
                         placeholder="Buscar associado..." value={search} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
                     />
                 </div>
-                <button
-                    onClick={() => onNewAssociate()}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs transition-all duration-200"
-                    style={{ background: 'linear-gradient(135deg, #D4AF37, #8a6010)', color: '#000', letterSpacing: '0.08em', boxShadow: '0 4px 16px rgba(212,175,55,0.25)' }}
-                >
+                <button onClick={() => onNewAssociate()} className="btn btn-primary">
                     <Plus size={14} aria-hidden={true} /> NOVO ASSOCIADO
                 </button>
             </div>

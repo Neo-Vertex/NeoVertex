@@ -37,7 +37,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
 
     return (
         <div
-            className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden cursor-pointer transition-all duration-300"
+            className="card relative overflow-hidden cursor-pointer transition-all duration-300"
             onClick={() => onManageProjects(associate)}
             onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                 const el = e.currentTarget as HTMLElement;
@@ -98,13 +98,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
                         {/* Status Badge */}
                         <div className="mb-1 flex">
                             {isActive ? (
-                                <span style={{ background: 'rgba(74,222,128,0.1)', color: '#4ade80', border: '1px solid rgba(74,222,128,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }}>
+                                <span className="badge badge-active">
                                     {subStatus ? `${subStatus.days} dias restantes` : 'Ativo'}
                                 </span>
                             ) : (
-                                <span style={{ background: 'rgba(248,113,113,0.1)', color: '#f87171', border: '1px solid rgba(248,113,113,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }}>
-                                    Inativo
-                                </span>
+                                <span className="badge badge-inactive">Inativo</span>
                             )}
                         </div>
 
