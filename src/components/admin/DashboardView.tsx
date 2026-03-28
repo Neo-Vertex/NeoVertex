@@ -51,25 +51,23 @@ const DashboardView: React.FC<DashboardViewProps> = ({
             {/* KPI Grid */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                    { label: 'TOTAL ASSOCIADOS', value: animAssociates, suffix: '', sub: 'ativos na plataforma', color: 'var(--color-primary)' },
-                    { label: 'PROJETOS ATIVOS',  value: animProjects,   suffix: '', sub: 'em andamento',         color: 'var(--color-info)' },
-                    { label: 'RECEITA DO MÊS',   value: animRevenue,    suffix: 'R$', sub: 'faturamento mensal', color: 'var(--color-success)' },
-                    { label: 'SERVIÇOS ATIVOS',  value: animServices,   suffix: '', sub: 'tipos de serviço',     color: 'rgba(212,175,55,0.8)' },
+                    { label: 'TOTAL ASSOCIADOS', value: animAssociates, suffix: '',   sub: 'ativos na plataforma', barClass: '' },
+                    { label: 'PROJETOS ATIVOS',  value: animProjects,   suffix: '',   sub: 'em andamento',         barClass: 'bar-blue' },
+                    { label: 'RECEITA DO MÊS',   value: animRevenue,    suffix: 'R$', sub: 'faturamento mensal',   barClass: 'bar-green' },
+                    { label: 'SERVIÇOS ATIVOS',  value: animServices,   suffix: '',   sub: 'tipos de serviço',     barClass: '' },
                 ].map((kpi, i) => (
                     <div
                         key={kpi.label}
-                        className="glass glass-top-line relative overflow-hidden rounded-2xl p-5 cursor-default transition-all duration-300 anim-fade-up"
+                        className={`card-kpi ${kpi.barClass} anim-fade-up`}
                         style={{ animationDelay: `${i * 0.08}s` }}
-                        onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.transform = 'translateY(-3px)'; el.style.borderColor = 'rgba(212,175,55,0.28)'; }}
-                        onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.transform = ''; el.style.borderColor = ''; }}
                     >
                         <div className="anim-shimmer" />
-                        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.15em', color: 'rgba(212,175,55,0.55)', marginBottom: 8 }}>{kpi.label}</div>
+                        <div className="section-label">{kpi.label}</div>
                         <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
                             {kpi.suffix && <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginRight: 2 }}>{kpi.suffix}</span>}
                             {kpi.value.toLocaleString('pt-BR')}
                         </div>
-                        <div style={{ fontSize: 10, color: kpi.color, marginTop: 6 }}>{kpi.sub}</div>
+                        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 6 }}>{kpi.sub}</div>
                     </div>
                 ))}
             </div>
@@ -77,7 +75,7 @@ const DashboardView: React.FC<DashboardViewProps> = ({
             {/* Bottom row: charts + activity */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Chart panel */}
-                <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden anim-fade-up" style={{ animationDelay: '0.35s' }}>
+                <div className="panel relative overflow-hidden anim-fade-up" style={{ animationDelay: '0.35s' }}>
                     <div className="anim-shimmer" />
                     <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(212,175,55,0.55)', marginBottom: 16 }}>STATUS DOS PROJETOS</div>
                     <div className="space-y-2">
@@ -102,7 +100,7 @@ const DashboardView: React.FC<DashboardViewProps> = ({
                 </div>
 
                 {/* Recent activity */}
-                <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden anim-fade-up" style={{ animationDelay: '0.45s' }}>
+                <div className="panel relative overflow-hidden anim-fade-up" style={{ animationDelay: '0.45s' }}>
                     <div className="anim-shimmer" />
                     <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(212,175,55,0.55)', marginBottom: 16 }}>ASSOCIADOS RECENTES</div>
                     <div className="space-y-3">
