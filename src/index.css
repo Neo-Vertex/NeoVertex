@@ -80,26 +80,6 @@ a { text-decoration: none; color: inherit; }
   background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent);
 }
 
-/* Input */
-.input-field {
-  width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(212,175,55,0.15);
-  border-radius: 0.625rem;
-  padding: 0.625rem 0.875rem;
-  color: #fff;
-  font-size: 0.875rem;
-  outline: none;
-  transition: all 0.2s;
-}
-.input-field:focus {
-  border-color: var(--color-primary);
-  background: rgba(212,175,55,0.04);
-  box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
-}
-.input-field::placeholder { color: rgba(255,255,255,0.25); }
-select.input-field option { background-color: #0d0d15; color: white; }
-
 /* ── Keyframes ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
@@ -222,6 +202,7 @@ select.input-field option { background-color: #0d0d15; color: white; }
 .btn-sm { padding: 6px 14px; font-size: 11px; }
 .btn-lg { padding: 13px 28px; font-size: 13px; }
 .btn:disabled, .btn[disabled] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.btn:focus-visible { outline: 2px solid rgba(212,175,55,0.6); outline-offset: 2px; }
 
 /* ── Cards ── */
 .card {
