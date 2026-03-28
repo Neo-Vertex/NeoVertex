@@ -67,7 +67,7 @@ const MessagesView: React.FC = () => {
                 ) : (
                     <>
                         {/* Requests List */}
-                        <div className="w-1/3 glass glass-top-line relative rounded-2xl overflow-hidden flex flex-col">
+                        <div className="card w-1/3 relative overflow-hidden flex flex-col">
                             <div className="anim-shimmer" />
                             <div className="p-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                                 <h3 className="text-white font-bold flex items-center gap-2">
@@ -107,7 +107,7 @@ const MessagesView: React.FC = () => {
                         </div>
 
                         {/* Details Area */}
-                        <div className="flex-1 glass glass-top-line relative rounded-2xl overflow-hidden flex flex-col">
+                        <div className="card flex-1 relative overflow-hidden flex flex-col">
                             <div className="anim-shimmer" />
                             {selectedRequest ? (
                                 <div className="p-8 overflow-y-auto">
@@ -129,7 +129,7 @@ const MessagesView: React.FC = () => {
                                         </button>
                                     </div>
 
-                                    <div className="glass rounded-xl p-6" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
+                                    <div className="card rounded-xl p-6">
                                         <p className="text-white whitespace-pre-wrap leading-relaxed">{selectedRequest.message}</p>
                                     </div>
                                 </div>
