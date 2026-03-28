@@ -25,19 +25,19 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { id: 'dashboard',          label: 'Visão Geral',   icon: LayoutGrid, section: 'PRINCIPAL' },
+  { id: 'dashboard',          label: 'Visão Geral',   icon: LayoutGrid,   section: 'PRINCIPAL' },
   {
-    id: 'associates-section', label: 'Associados',    icon: Users, section: 'PRINCIPAL',
+    id: 'associates-section', label: 'Associados',    icon: Users,        section: 'PRINCIPAL',
     subItems: [
       { id: 'crm',                  label: 'Gestão de Leads' },
       { id: 'settings-associates',  label: 'Lista de Associados' },
     ],
   },
-  { id: 'financial-records',  label: 'Financeiro',    icon: CreditCard },
-  { id: 'agenda',             label: 'Agenda',        icon: CalendarDays, section: 'OPERAÇÕES' },
+  { id: 'financial-records',  label: 'Financeiro',    icon: CreditCard,   section: 'OPERAÇÕES' },
+  { id: 'agenda',             label: 'Agenda',        icon: CalendarDays },
   { id: 'messages',           label: 'Solicitações',  icon: MessageSquare },
   {
-    id: 'settings',           label: 'Configurações', icon: Settings2, section: 'SISTEMA',
+    id: 'settings',           label: 'Configurações', icon: Settings2,    section: 'SISTEMA',
     subItems: [
       { id: 'settings-products',  label: 'Produtos' },
       { id: 'settings-languages', label: 'Idiomas' },
@@ -132,10 +132,13 @@ const Sidebar: React.FC<SidebarProps> = ({
               <div key={item.id}>
                 {item.showSection && (
                   <div style={{
-                    fontSize: 9, letterSpacing: '0.18em', fontWeight: 600,
-                    color: 'rgba(212,175,55,0.35)', padding: '10px 8px 4px',
+                    fontSize: 9, letterSpacing: '0.18em', fontWeight: 700,
+                    color: 'rgba(212,175,55,0.4)', padding: '14px 8px 5px',
+                    display: 'flex', alignItems: 'center', gap: 6,
                   }}>
+                    <div style={{ flex: 1, height: 1, background: 'rgba(212,175,55,0.08)' }} />
                     {item.section}
+                    <div style={{ flex: 1, height: 1, background: 'rgba(212,175,55,0.08)' }} />
                   </div>
                 )}
 
@@ -163,7 +166,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   )}
 
                   <item.icon
-                    size={14}
+                    size={16}
                     strokeWidth={active ? 2.5 : 1.8}
                     aria-hidden={true}
                     style={{ flexShrink: 0, transition: 'color 0.2s' }}
@@ -252,21 +255,11 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-all duration-200 group"
-            style={{ border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.3)' }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(248,113,113,0.3)';
-              (e.currentTarget as HTMLElement).style.color = '#f87171';
-              (e.currentTarget as HTMLElement).style.background = 'rgba(248,113,113,0.05)';
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
-              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.3)';
-              (e.currentTarget as HTMLElement).style.background = 'transparent';
-            }}
+            className="btn btn-danger w-full"
+            style={{ fontSize: 10, letterSpacing: '0.1em', padding: '8px 12px' }}
           >
             <Power size={13} aria-hidden={true} />
-            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em' }}>ENCERRAR</span>
+            ENCERRAR
           </button>
         </div>
       </aside>

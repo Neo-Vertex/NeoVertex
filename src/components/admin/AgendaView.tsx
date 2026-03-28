@@ -428,18 +428,19 @@ const AgendaView: React.FC = () => {
             </div>
 
             {/* Filter Bar */}
-            <div className="flex gap-2 flex-wrap">
+            <div className="tab-group" style={{ marginBottom: 0 }}>
                 {(['all', ...Object.keys(TYPE_LABELS)] as const).map(type => (
                     <button
                         key={type}
                         onClick={() => setFilterType(type as AppointmentType | 'all')}
-                        style={filterType === type && type !== 'all' ? { borderColor: TYPE_COLORS[type as AppointmentType], color: TYPE_COLORS[type as AppointmentType] } : {}}
-                        className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold border transition-all ${filterType === type
-                            ? type === 'all' ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[var(--color-primary)]/10' : 'bg-current/10'
-                            : 'border-[#333] text-gray-500 hover:border-[#555] hover:text-gray-300'
-                            }`}
+                        className={`tab-btn${filterType === type ? ' active' : ''}`}
+                        style={filterType === type && type !== 'all' ? {
+                            color: TYPE_COLORS[type as AppointmentType],
+                            background: `${TYPE_COLORS[type as AppointmentType]}18`,
+                            borderColor: `${TYPE_COLORS[type as AppointmentType]}40`,
+                        } : {}}
                     >
-                        {type === 'all' ? 'TODOS' : TYPE_LABELS[type as AppointmentType].toUpperCase()}
+                        {type === 'all' ? 'Todos' : TYPE_LABELS[type as AppointmentType]}
                     </button>
                 ))}
             </div>
@@ -449,21 +450,18 @@ const AgendaView: React.FC = () => {
                 <div className="panel relative overflow-hidden lg:col-span-2">
                     <div className="anim-shimmer" />
                     {/* Nav do mês */}
-                    <div className="flex items-center justify-between mb-6">
-                        <button
-                            onClick={() => setCurrentDate(new Date(year, month - 1, 1))}
-                            className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-colors"
-                        >
-                            <ChevronLeft size={20} />
+                    <div className="flex items-center justify-between mb-5">
+                        <button onClick={() => setCurrentDate(new Date(year, month - 1, 1))} className="btn btn-ghost btn-sm">
+                            <ChevronLeft size={16} />
                         </button>
-                        <h2 className="text-base font-bold font-mono text-white uppercase tracking-widest">
-                            {MONTHS[month]} {year}
-                        </h2>
-                        <button
-                            onClick={() => setCurrentDate(new Date(year, month + 1, 1))}
-                            className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-colors"
-                        >
-                            <ChevronRight size={20} />
+                        <div className="text-center">
+                            <div className="section-label text-center" style={{ marginBottom: 2 }}>{year}</div>
+                            <h2 style={{ fontSize: 15, fontWeight: 700, color: '#fff', letterSpacing: '0.06em' }}>
+                                {MONTHS[month]}
+                            </h2>
+                        </div>
+                        <button onClick={() => setCurrentDate(new Date(year, month + 1, 1))} className="btn btn-ghost btn-sm">
+                            <ChevronRight size={16} />
                         </button>
                     </div>
 
@@ -488,16 +486,16 @@ const AgendaView: React.FC = () => {
                                 <button
                                     key={i}
                                     onClick={() => setSelectedDay(isSelected ? null : day)}
-                                    className={`relative aspect-square flex flex-col items-center justify-start pt-1.5 rounded-lg text-xs font-mono transition-all border`}
+                                    className="relative aspect-square flex flex-col items-center justify-start pt-1.5 rounded-lg text-xs font-mono transition-all"
                                     style={
                                         isSelected
-                                            ? { background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#D4AF37' }
+                                            ? { background: 'rgba(212,175,55,0.15)', outline: '2px solid rgba(212,175,55,0.5)', outlineOffset: -1, color: '#D4AF37' }
                                             : isToday
-                                                ? { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }
-                                                : { border: '1px solid transparent', color: '#6b7280' }
+                                                ? { background: 'rgba(212,175,55,0.08)', outline: '1px solid rgba(212,175,55,0.3)', outlineOffset: -1, color: '#D4AF37' }
+                                                : { color: '#6b7280' }
                                     }
                                 >
-                                    <span className={`text-xs font-bold ${isToday && !isSelected ? 'text-[var(--color-primary)]' : ''}`}>
+                                    <span style={{ fontSize: 12, fontWeight: isToday || isSelected ? 800 : 500 }}>
                                         {day.getDate()}
                                     </span>
                                     {dayAppsAll.length > 0 && (
@@ -569,9 +567,12 @@ const AgendaView: React.FC = () => {
                     {/* Próximos compromissos */}
                     <div className="panel relative overflow-hidden">
                         <div className="anim-shimmer" />
-                        <h3 className="text-xs font-bold font-mono text-gray-400 uppercase tracking-wider mb-3">
-                            Próximos Compromissos
-                        </h3>
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="section-label" style={{ marginBottom: 0 }}>Próximos Compromissos</h3>
+                            {upcomingAppts.length > 0 && (
+                                <span className="badge badge-pending">{upcomingAppts.length}</span>
+                            )}
+                        </div>
                         {upcomingAppts.length === 0 ? (
                             <p className="text-xs text-gray-600 font-mono py-4 text-center">Nenhum compromisso futuro.</p>
                         ) : (
