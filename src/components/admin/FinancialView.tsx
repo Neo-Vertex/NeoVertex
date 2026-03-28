@@ -399,10 +399,10 @@ const FinancialView: React.FC<FinancialViewProps> = ({
             )}
 
             {/* Main Content Area */}
-            <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden">
+            <div className="panel relative overflow-hidden">
                 <div className="anim-shimmer" />
                 {/* Tabs */}
-                <div className="flex gap-1 p-1 rounded-xl mb-6" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,175,55,0.08)', display: 'inline-flex' }}>
+                <div className="flex gap-1 p-1 rounded-xl mb-6 inline-flex" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,175,55,0.08)' }}>
                     {(['summary', 'income', 'expense'] as const).map(tab => (
                         <button
                             key={tab}
