@@ -106,15 +106,14 @@ const ProductsManager: React.FC = () => {
                 </div>
                 <button
                     onClick={() => { setCurrentService({ active: true }); setIsEditing(true); }}
-                    style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
-                    className="flex items-center gap-2"
+                    className="btn btn-primary flex items-center gap-2"
                 >
                     <Plus size={16} /> Novo Produto
                 </button>
             </div>
 
             {isEditing && (
-                <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.3)' }}>
+                <div className="panel relative overflow-hidden">
                     <div className="anim-shimmer" />
                     <button onClick={() => setIsEditing(false)} className="absolute top-4 right-4 text-[var(--color-text-muted)] hover:text-white z-10">
                         <X size={20} />
@@ -284,8 +283,7 @@ const ProductsManager: React.FC = () => {
                         <Button variant="outline" onClick={() => setIsEditing(false)}>Cancelar</Button>
                         <button
                             onClick={handleSave}
-                            style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
-                            className="flex items-center gap-2"
+                            className="btn btn-primary flex items-center gap-2"
                         >
                             <Save size={16} /> Salvar
                         </button>
