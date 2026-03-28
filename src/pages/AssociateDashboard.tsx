@@ -241,8 +241,8 @@ const AssociateDashboard: React.FC = () => {
                                             return (
                                                 <div
                                                     key={project.id || index}
-                                                    className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden"
-                                                    style={{ animation: `fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) ${index * 0.08}s both` }}
+                                                    className="card relative overflow-hidden anim-fade-up"
+                                                    style={{ animationDelay: `${index * 0.08}s` }}
                                                 >
                                                     <div className="anim-shimmer" />
                                                     <div className="flex justify-between items-start mb-6">
@@ -257,15 +257,12 @@ const AssociateDashboard: React.FC = () => {
                                                             </strong>
                                                         </div>
                                                         <div className="flex flex-col items-end gap-2">
-                                                            <span style={
-                                                                project.status === 'Ativo' || project.status?.toLowerCase() === 'ativo'
-                                                                    ? { background: 'rgba(74,222,128,0.1)', color: '#4ade80', border: '1px solid rgba(74,222,128,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
-                                                                    : project.status === 'Concluído' || project.status?.toLowerCase() === 'concluido' || project.status?.toLowerCase() === 'concluído'
-                                                                        ? { background: 'rgba(96,165,250,0.1)', color: '#60a5fa', border: '1px solid rgba(96,165,250,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
-                                                                        : project.status === 'Cancelado' || project.status?.toLowerCase() === 'cancelado'
-                                                                            ? { background: 'rgba(248,113,113,0.1)', color: '#f87171', border: '1px solid rgba(248,113,113,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
-                                                                            : { background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', fontSize: 9, padding: '2px 8px', borderRadius: 20, fontWeight: 700 }
-                                                            }>
+                                                            <span className={`badge ${
+                                                                project.status?.toLowerCase().includes('ativo') ? 'badge-active' :
+                                                                project.status?.toLowerCase().includes('conclu') ? 'badge-info' :
+                                                                project.status?.toLowerCase().includes('cancel') ? 'badge-inactive' :
+                                                                'badge-pending'
+                                                            }`}>
                                                                 {project.status}
                                                             </span>
                                                         </div>
