@@ -9,7 +9,6 @@ const Services: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    // Helper to get icon component
     const getIcon = (iconName: string, size: number) => {
         switch (iconName) {
             case 'LineChart': return <LineChart size={size} />;
@@ -23,36 +22,27 @@ const Services: React.FC = () => {
     };
 
     return (
-        <section id="services" className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
+        <section id="services" className="section-padding" style={{ backgroundColor: 'var(--color-bg)' }}>
             <div className="responsive-container">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    style={{ textAlign: 'center', marginBottom: '4rem' }}
+                    style={{ textAlign: 'center', marginBottom: '3rem' }}
                 >
-                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
-                        <Trans i18nKey="services.title" components={{ 1: <span style={{ color: 'var(--color-primary)' }} /> }} />
+                    <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', marginBottom: '0.75rem' }}>
+                        <Trans i18nKey="services.title" components={{ 1: <span className="text-liquid-gold" /> }} />
                     </h2>
-                    <p style={{ color: 'var(--color-text-muted)', maxWidth: '800px', margin: '0 auto' }}>
+                    <p style={{ color: 'var(--color-text-muted)', maxWidth: '600px', margin: '0 auto', fontSize: '1rem' }}>
                         {t('services.subtitle')}
-                    </p>
-                    <p style={{
-                        color: 'var(--color-primary)',
-                        marginTop: '1.5rem',
-                        fontSize: '1.2rem',
-                        fontWeight: 600,
-                        fontStyle: 'italic'
-                    }}>
-                        {t('services.slogan_text')}
                     </p>
                 </motion.div>
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                    gap: '2rem'
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                    gap: '1.25rem',
                 }}>
                     {services.map((service, index) => (
                         <motion.div
@@ -61,42 +51,71 @@ const Services: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            whileHover={{ y: -10 }}
+                            whileHover={{ y: -6 }}
                             onClick={() => navigate(`/services/${service.slug}`)}
                             style={{
-                                backgroundColor: 'var(--color-bg)',
-                                padding: '2.5rem',
-                                borderRadius: '1rem',
+                                backgroundColor: 'var(--color-surface)',
+                                padding: '1.75rem',
+                                borderRadius: '12px',
                                 border: '1px solid rgba(255,255,255,0.05)',
                                 cursor: 'pointer',
-                                transition: 'all 0.3s'
+                                transition: 'all 0.25s',
+                                display: 'flex',
+                                flexDirection: 'column',
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.borderColor = service.theme.primary;
-                                e.currentTarget.style.boxShadow = `0 10px 30px -10px ${service.theme.primary}40`;
+                                e.currentTarget.style.borderColor = `${service.theme.primary}40`;
+                                e.currentTarget.style.boxShadow = `0 8px 24px -8px ${service.theme.primary}30`;
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
                                 e.currentTarget.style.boxShadow = 'none';
                             }}
                         >
+                            {/* Icon container */}
                             <div style={{
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '10px',
+                                backgroundColor: `${service.theme.primary}18`,
+                                border: `1px solid ${service.theme.primary}28`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: '1.25rem',
+                                flexShrink: 0,
                                 color: service.theme.primary,
-                                marginBottom: '1.5rem',
-                                backgroundColor: `${service.theme.primary}20`,
-                                width: 'fit-content',
-                                padding: '1rem',
-                                borderRadius: '50%',
-                                border: `1px solid ${service.theme.primary}40`
                             }}>
-                                {getIcon(service.icon, 40)}
+                                {getIcon(service.icon, 20)}
                             </div>
-                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t(`services.${service.id}.title`)}</h3>
-                            <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+
+                            <h3 style={{ fontSize: '1.05rem', marginBottom: '0.6rem', fontWeight: 700 }}>
+                                {t(`services.${service.id}.title`)}
+                            </h3>
+
+                            <p style={{
+                                color: 'var(--color-text-muted)',
+                                lineHeight: 1.6,
+                                marginBottom: '1.25rem',
+                                fontSize: '0.9rem',
+                                flex: 1,
+                            }}>
                                 {t(`services.${service.id}.description`)}
                             </p>
-                            <div style={{ color: service.theme.primary, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
+                            <div style={{
+                                color: service.theme.primary,
+                                fontWeight: 600,
+                                fontSize: '0.85rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.4rem',
+                                marginTop: 'auto',
+                            }}>
                                 {t('services.viewDetails')}
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                                    <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
                             </div>
                         </motion.div>
                     ))}

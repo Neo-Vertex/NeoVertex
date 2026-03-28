@@ -1,23 +1,19 @@
 import React from 'react';
 import Hero from '../components/Hero';
-import WhyUs from '../components/WhyUs';
-import Process from '../components/Process';
+import PainSection from '../components/PainSection';
+import SolutionSection from '../components/SolutionSection';
 import Services from '../components/Services';
-import Audience from '../components/Audience';
-import CEOCommitment from '../components/CEOCommitment';
-import Results from '../components/Results';
+import SocialProof from '../components/SocialProof';
 import Contact from '../components/Contact';
 
 const Home: React.FC = () => {
     return (
         <>
             <Hero />
-            <WhyUs />
-            <Process />
+            <PainSection />
+            <SolutionSection />
             <Services />
-            <Audience />
-            <CEOCommitment />
-            <Results />
+            <SocialProof />
             <Contact />
         </>
     );
