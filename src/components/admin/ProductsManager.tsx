@@ -293,7 +293,7 @@ const ProductsManager: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {services.map((service: any) => (
-                    <div key={service.id} className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden group hover:border-[var(--color-primary)] transition-colors">
+                    <div key={service.id} className="card relative overflow-hidden group hover:border-[var(--color-primary)] transition-colors">
                         <div className="anim-shimmer" />
                         <div className="flex justify-between items-start mb-4">
                             <div className="p-3 rounded-lg text-[var(--color-primary)]" style={{ background: 'rgba(255,255,255,0.05)' }}>

@@ -446,7 +446,7 @@ const AgendaView: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* ── Calendário ── */}
-                <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden lg:col-span-2">
+                <div className="panel relative overflow-hidden lg:col-span-2">
                     <div className="anim-shimmer" />
                     {/* Nav do mês */}
                     <div className="flex items-center justify-between mb-6">
@@ -531,7 +531,7 @@ const AgendaView: React.FC = () => {
                 <div className="space-y-4">
                     {/* Dia selecionado */}
                     {selectedDay && (
-                        <div className="glass glass-top-line relative rounded-2xl p-4 overflow-hidden" style={{ borderColor: 'rgba(212,175,55,0.3)' }}>
+                        <div className="panel relative overflow-hidden">
                             <div className="anim-shimmer" />
                             <div className="flex items-center justify-between mb-3">
                                 <h3 className="text-xs font-bold font-mono text-[var(--color-primary)] uppercase tracking-wider">
@@ -567,7 +567,7 @@ const AgendaView: React.FC = () => {
                     )}
 
                     {/* Próximos compromissos */}
-                    <div className="glass glass-top-line relative rounded-2xl p-4 overflow-hidden">
+                    <div className="panel relative overflow-hidden">
                         <div className="anim-shimmer" />
                         <h3 className="text-xs font-bold font-mono text-gray-400 uppercase tracking-wider mb-3">
                             Próximos Compromissos

@@ -37,7 +37,7 @@ const LanguagesManager: React.FC = () => {
                     <div
                         key={lang.code}
                         onClick={() => toggleLanguage(lang.code)}
-                        className="glass glass-top-line relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300"
+                        className="card relative overflow-hidden cursor-pointer transition-all duration-300"
                         style={{
                             border: lang.active ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(255,255,255,0.05)',
                             background: lang.active ? 'rgba(212,175,55,0.08)' : undefined,
