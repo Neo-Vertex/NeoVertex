@@ -314,7 +314,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                         <button
                             type="submit"
                             disabled={saving}
-                            style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer', opacity: saving ? 0.5 : 1 }}
+                            className="btn btn-primary"
                         >
                             {saving ? 'Salvando...' : (appointment ? 'Salvar Alterações' : 'Criar Compromisso')}
                         </button>
@@ -420,8 +420,7 @@ const AgendaView: React.FC = () => {
                 </div>
                 <button
                     onClick={() => { setEditingAppointment(null); setSelectedDay(null); setIsModalOpen(true); }}
-                    style={{ background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000', fontWeight: 700, fontSize: 12, letterSpacing: '0.1em', padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
-                    className="flex items-center gap-2"
+                    className="btn btn-primary flex items-center gap-2"
                 >
                     <Plus size={16} />
                     Novo Compromisso
@@ -640,8 +639,8 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
 
     return (
         <div
-            className={`group relative rounded-lg border transition-all cursor-pointer ${a.status === 'completed' ? 'opacity-50' : ''} ${compact ? 'p-3' : 'p-4'}`}
-            style={{ borderLeftColor: TYPE_COLORS[a.type], borderLeftWidth: 3, borderColor: 'rgba(255,255,255,0.08)', borderTopColor: 'rgba(255,255,255,0.08)', borderRightColor: 'rgba(255,255,255,0.08)', borderBottomColor: 'rgba(255,255,255,0.08)' }}
+            className={`card group relative transition-all cursor-pointer ${a.status === 'completed' ? 'opacity-50' : ''} ${compact ? 'p-3' : 'p-4'}`}
+            style={{ borderLeftColor: TYPE_COLORS[a.type], borderLeftWidth: 3, borderLeftStyle: 'solid', borderColor: 'transparent' }}
             onClick={onEdit}
         >
             <div className="flex items-start justify-between gap-2">
