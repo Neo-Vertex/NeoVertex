@@ -74,7 +74,7 @@ const LanguagesManager: React.FC = () => {
                 ))}
             </div>
 
-            <div className="glass glass-top-line relative rounded-2xl p-5 overflow-hidden mt-8">
+            <div className="panel relative overflow-hidden mt-8">
                 <div className="anim-shimmer" />
                 <h3 className="text-lg font-bold text-white mb-2">Nota sobre Internacionalização</h3>
                 <p className="text-[var(--color-text-muted)] text-sm">
