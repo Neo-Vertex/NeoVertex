@@ -141,21 +141,9 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
         { id: 'colabs', label: 'Colabs', icon: Briefcase },
     ];
 
-    const goldBtn = {
-        background: 'linear-gradient(135deg,#D4AF37,#8a6010)',
-        color: '#000',
-        fontWeight: 700,
-        fontSize: 12,
-        letterSpacing: '0.1em',
-        padding: '8px 20px',
-        borderRadius: 8,
-        border: 'none',
-        cursor: 'pointer',
-    };
-
     return (
         <div className="p-6 anim-fade-in">
-            <div className="glass glass-top-line relative rounded-2xl p-8 overflow-hidden">
+            <div className="panel relative overflow-hidden" style={{ padding: 32 }}>
                 <div className="anim-shimmer" />
                 {/* Segmented Control Tabs */}
                 <div className="flex mb-8 p-1.5 rounded-xl relative w-fit mx-auto md:mx-0" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -226,7 +214,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
                                                 <X size={18} /> Cancelar
                                             </Button>
                                         )}
-                                        <button type="submit" style={goldBtn} className="flex items-center gap-2">
+                                        <button type="submit" className="btn btn-primary flex items-center gap-2">
                                             {editingService ? <><Save size={16} /> Salvar Alterações</> : <><Plus size={16} /> Adicionar Serviço</>}
                                         </button>
                                     </div>
@@ -309,7 +297,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
                                         />
                                     </div>
                                     <div className="md:col-span-12 flex justify-end mt-2">
-                                        <button type="submit" style={goldBtn} className="flex items-center gap-2">
+                                        <button type="submit" className="btn btn-primary flex items-center gap-2">
                                             <Plus size={16} /> Adicionar Produto
                                         </button>
                                     </div>
@@ -367,7 +355,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
                                         />
                                     </div>
                                     <div className="flex items-end">
-                                        <button type="submit" style={{ ...goldBtn, height: 50 }} className="flex items-center gap-2 w-full md:w-auto">
+                                        <button type="submit" className="btn btn-primary flex items-center gap-2 w-full md:w-auto" style={{ height: 50 }}>
                                             <Plus size={16} /> Adicionar
                                         </button>
                                     </div>
