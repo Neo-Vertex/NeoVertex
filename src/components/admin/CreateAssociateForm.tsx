@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, Check, Loader2, Save, Star, X } from 'lucide-react';
 import { supabase } from '../../services/supabase';
 import Stamp from '../common/Stamp';
-import Button from '../Button';
 
 interface CreateAssociateFormProps {
     onSuccess?: () => void;
@@ -243,7 +242,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 {/* ... (Form Fields) */}
                 {/* 1. Account Info Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
+                    <h4 className="section-label flex items-center gap-2">
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">1</span>
                         Dados de Acesso
                     </h4>
@@ -277,7 +276,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                 {/* 2. Personal/Company Info Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
+                    <h4 className="section-label flex items-center gap-2">
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">2</span>
                         Informações do Associado/Empresa
                     </h4>
@@ -340,7 +339,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                 {/* 3. Products/Services Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
+                    <h4 className="section-label flex items-center gap-2">
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">3</span>
                         Produtos Contratados
                     </h4>
@@ -368,7 +367,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                 {/* 4. Marketing & Colab Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
-                    <h4 className="mb-6 flex items-center gap-2" style={{ fontSize:10, fontWeight:700, letterSpacing:'0.15em', color:'rgba(212,175,55,0.55)', marginBottom:12 }}>
+                    <h4 className="section-label flex items-center gap-2">
                         <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">4</span>
                         Origem & Parcerias
                     </h4>
@@ -438,15 +437,11 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
 
                 <div className="pt-4 flex gap-4">
                     {onCancel && (
-                        <Button variant="outline" type="button" onClick={onCancel} className="flex-1 justify-center py-5">
+                        <button type="button" onClick={onCancel} className="btn btn-ghost">
                             Cancelar
-                        </Button>
+                        </button>
                     )}
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        style={{ background:'linear-gradient(135deg,#D4AF37,#8a6010)', color:'#000', fontWeight:700, fontSize:12, letterSpacing:'0.1em', padding:'10px 24px', borderRadius:10, boxShadow:'0 4px 16px rgba(212,175,55,0.25)', border:'none', cursor:'pointer', flex:2, display:'flex', alignItems:'center', justifyContent:'center', gap:8, opacity: loading ? 0.5 : 1 }}
-                    >
+                    <button type="submit" disabled={loading} className="btn btn-primary" style={{ flex: 2 }}>
                         {loading ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
                         {loading ? 'Cadastrando...' : 'Cadastrar Associado'}
                     </button>
