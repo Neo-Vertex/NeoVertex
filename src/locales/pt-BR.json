@@ -7,9 +7,41 @@
         "login": "Login"
     },
     "hero": {
-        "title": "Reach your <1>Peak</1>",
-        "subtitle": "Não vendemos soluções prontas. Criamos ecossistemas tecnológicos únicos que transformam a forma como sua empresa opera, compete e domina seu mercado.",
-        "cta": "Agendar Sessão Estratégica"
+        "tag": "Para donos de empresa que querem crescer",
+        "title": "Cansado de trabalhar muito e crescer <1>pouco?</1>",
+        "subtitle": "Sua empresa pode <2>faturar mais com menos esforço.</2> A NeoVertex combina estratégia e tecnologia para transformar esforço em resultado real.",
+        "cta": "Agendar Reunião Gratuita",
+        "proof": "Sessão gratuita · Sem compromisso · <1>Vagas limitadas</1>"
+    },
+    "pain": {
+        "title": "Se você é dono de empresa, provavelmente já sentiu <1>isso:</1>",
+        "subtitle": "Você não está sozinho. São os problemas mais comuns que bloqueiam o crescimento.",
+        "items": [
+            "Minha equipe está sempre ocupada, mas os resultados não aparecem.",
+            "Processo manual, retrabalho e erros que custam caro todo mês.",
+            "Não tenho dados para tomar decisões — tudo é no feeling."
+        ]
+    },
+    "solution": {
+        "tag": "Nossa abordagem",
+        "title": "Diagnóstico preciso. <1>Resultados mensuráveis.</1>",
+        "subtitle": "Não entregamos relatórios que ficam na gaveta. Implementamos as mudanças com você, passo a passo.",
+        "steps": [
+            { "num": "01", "title": "Diagnóstico 360°", "description": "Mapeamos gargalos, oportunidades e o que está travando seu crescimento." },
+            { "num": "02", "title": "Estratégia Personalizada", "description": "Plano de ação com metas claras e quick wins para resultados rápidos." },
+            { "num": "03", "title": "Tecnologia Sob Medida", "description": "IA e sistemas feitos para o seu negócio — não soluções genéricas." },
+            { "num": "04", "title": "Acompanhamento Real", "description": "Monitoramos resultados semanalmente e ajustamos em tempo real." }
+        ]
+    },
+    "socialProof": {
+        "stats": [
+            { "value": "40–60%", "label": "Ganho em eficiência operacional" },
+            { "value": "30–50%", "label": "Redução de custos com automação" },
+            { "value": "300%", "label": "ROI médio nos primeiros 12 meses" }
+        ],
+        "quote": "Quando você contrata a NeoVertex, não está comprando horas de consultoria — está investindo em uma parceria obcecada por resultados. Seu sucesso é nossa única métrica.",
+        "name": "Nelson Araujo",
+        "role": "CEO & Fundador — NeoVertex"
     },
     "about": {
         "title": "SOBRE A <1>NEOVERTEX</1>",
@@ -92,8 +124,8 @@
         ]
     },
     "services": {
-        "title": "NOSSAS SOLUÇÕES",
-        "subtitle": "Da consultoria estratégica ao desenvolvimento web, somos o parceiro completo para acelerar seu crescimento.",
+        "title": "Do diagnóstico à <1>execução completa</1>",
+        "subtitle": "Escolha o que sua empresa precisa agora — ou deixe a gente recomendar.",
         "slogan_text": "Reach your Peak. Conecte tecnologia e estratégia para alcançar resultados extraordinários.",
         "viewDetails": "Ver Detalhes →",
         "consulting": {
@@ -230,32 +262,23 @@
         ]
     },
     "contact": {
-        "title": "Pronto para alcançar seu topo?",
-        "subtitle": "Agende uma Sessão Estratégica Gratuita. Vamos analisar seu negócio, identificar 3 oportunidades de crescimento imediato e mostrar exatamente como a NeoVertex pode transformar sua empresa.",
-        "name": "Nome",
-        "country": "País",
-        "countryCode": "DDI",
-        "phone": "Telefone / WhatsApp",
-        "message": "Mensagem",
-        "placeholders": {
-            "country": "Ex: Brasil",
-            "phone": "Ex: (11) 99999-9999"
-        },
+        "title": "Pronto para <1>crescer de verdade?</1>",
+        "subtitle": "Agende uma sessão estratégica gratuita. Em 30 minutos identificamos 3 oportunidades de crescimento imediato para o seu negócio.",
+        "name": "Seu nome",
+        "phone": "WhatsApp (com DDD)",
+        "challenge": "Qual é o principal desafio da sua empresa hoje?",
+        "submit": "Agendar Minha Sessão Gratuita",
+        "disclaimer": "Vagas limitadas · Sem compromisso · Respondemos em até 24h",
+        "success": "Obrigado! Entraremos em contato em até 24h para agendar sua sessão.",
+        "sending": "Enviando...",
         "errors": {
             "nameInvalid": "Nome inválido (apenas letras, 2-100 caracteres).",
-            "countryInvalid": "Por favor, informe seu país.",
-            "countryCodeInvalid": "Informe o DDI.",
-            "phoneInvalid": "Por favor, informe um telefone válido.",
-            "messageLength": "Mensagem deve ter entre {{min}} e {{max}} caracteres.",
-            "spamDetected": "Conteúdo suspeito detectado.",
+            "phoneInvalid": "Por favor, informe um WhatsApp válido.",
+            "challengeRequired": "Por favor, descreva seu desafio.",
             "recaptcha": "Por favor, complete o reCAPTCHA.",
             "rateLimit": "Aguarde {{minutes}} minutos para enviar nova mensagem.",
             "generic": "Erro ao enviar mensagem. Tente novamente."
-        },
-        "submit": "Agendar Sessão Estratégica",
-        "disclaimer": "Vagas limitadas. Apenas empresas comprometidas com crescimento extraordinário.",
-        "success": "Obrigado! Entraremos em contato em breve para agendar sua sessão.",
-        "sending": "Enviando..."
+        }
     },
     "footer": {
         "rights": "Todos os direitos reservados.",
