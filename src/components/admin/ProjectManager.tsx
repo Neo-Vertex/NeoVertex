@@ -906,9 +906,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                         <button
                           onClick={onClose}
                           aria-label="Fechar"
-                          style={{ color:'rgba(255,255,255,0.4)', transition:'color 0.2s', background:'none', border:'none', cursor:'pointer', padding:8 }}
-                          onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
-                          onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,0.4)')}
+                          className="btn btn-ghost btn-sm"
                         >
                             <X size={24} aria-hidden={true}/>
                         </button>
@@ -1291,9 +1289,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                         <button
                                           onClick={() => setManagingStagesProject(null)}
                                           aria-label="Fechar"
-                                          style={{ color:'rgba(255,255,255,0.4)', transition:'color 0.2s', background:'none', border:'none', cursor:'pointer' }}
-                                          onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
-                                          onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,0.4)')}
+                                          className="btn btn-ghost btn-sm"
                                         >
                                           <X size={18} aria-hidden={true}/>
                                         </button>
@@ -1747,7 +1743,8 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                     <div className="mt-4">
                                         <button
                                             onClick={handleAddFinancialRecord}
-                                            style={{ background:'linear-gradient(135deg,#D4AF37,#8a6010)', color:'#000', fontWeight:700, fontSize:12, letterSpacing:'0.1em', padding:'10px 24px', borderRadius:10, boxShadow:'0 4px 16px rgba(212,175,55,0.25)', border:'none', cursor:'pointer', width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}
+                                            className="btn btn-primary"
+                                            style={{ width:'100%' }}
                                         >
                                             <Plus size={18} /> Adicionar Registro
                                         </button>
@@ -2165,7 +2162,8 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                     <button
                                         onClick={handleSaveProfile}
                                         disabled={isSavingProfile}
-                                        style={{ background:'linear-gradient(135deg,#D4AF37,#8a6010)', color:'#000', fontWeight:700, fontSize:12, letterSpacing:'0.1em', padding:'10px 24px', borderRadius:10, boxShadow:'0 4px 16px rgba(212,175,55,0.25)', border:'none', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:8, opacity: isSavingProfile ? 0.5 : 1 }}
+                                        className="btn btn-primary"
+                                        style={{ opacity: isSavingProfile ? 0.5 : 1 }}
                                     >
                                         {isSavingProfile ? <><Clock size={16} className="animate-spin" /> Salvando...</> : <><Save size={16} /> Salvar Alterações Detalhadas</>}
                                     </button>
