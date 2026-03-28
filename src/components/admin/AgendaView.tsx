@@ -483,10 +483,10 @@ const AgendaView: React.FC = () => {
                             const isSelected = selectedDay && isSameDay(day, selectedDay);
 
                             return (
-                                <button
+                                <div
                                     key={i}
                                     onClick={() => setSelectedDay(isSelected ? null : day)}
-                                    className="relative aspect-square flex flex-col items-center justify-start pt-1.5 rounded-lg text-xs font-mono transition-all"
+                                    className="group relative aspect-square flex flex-col items-center justify-start pt-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer"
                                     style={
                                         isSelected
                                             ? { background: 'rgba(212,175,55,0.15)', outline: '2px solid rgba(212,175,55,0.5)', outlineOffset: -1, color: '#D4AF37' }
@@ -509,7 +509,25 @@ const AgendaView: React.FC = () => {
                                             ))}
                                         </div>
                                     )}
-                                </button>
+                                    {/* Botão + no hover */}
+                                    <button
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            setSelectedDay(day);
+                                            setEditingAppointment(null);
+                                            setIsModalOpen(true);
+                                        }}
+                                        className="absolute top-0.5 right-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        style={{
+                                            width: 14, height: 14, borderRadius: 4,
+                                            background: 'rgba(212,175,55,0.85)',
+                                            color: '#000', fontSize: 12, fontWeight: 800,
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            lineHeight: 1,
+                                        }}
+                                        title={`Novo evento em ${day.toLocaleDateString('pt-BR')}`}
+                                    >+</button>
+                                </div>
                             );
                         })}
                     </div>
