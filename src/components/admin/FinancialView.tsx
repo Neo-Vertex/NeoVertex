@@ -262,7 +262,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                         {/* 1. Vendas (Contratos) */}
                         <motion.div
                             variants={itemVariants}
-                            className={`card-glass p-5 relative group hover:border-[var(--color-primary)] transition-colors cursor-pointer ${showSalesDetails ? 'z-[100] border-[var(--color-primary)]' : ''}`}
+                            className={`card-kpi group cursor-pointer ${showSalesDetails ? 'z-[100]' : ''}`}
                             onClick={() => setShowSalesDetails(!showSalesDetails)}
                         >
                             <div className="absolute right-0 top-0 p-3 opacity-5 group-hover:opacity-20 transition-opacity">
@@ -322,7 +322,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                         </motion.div>
 
                         {/* 2. Receita (Caixa) */}
-                        <motion.div variants={itemVariants} className="card-glass p-5 relative overflow-hidden group hover:border-green-500/50 transition-colors">
+                        <motion.div variants={itemVariants} className="card-kpi bar-green group">
                             <div className="absolute right-0 top-0 p-3 opacity-5 group-hover:opacity-20 transition-opacity">
                                 <Wallet size={64} />
                             </div>
@@ -334,7 +334,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                         </motion.div>
 
                         {/* 3. A Receber (Previsão) */}
-                        <motion.div variants={itemVariants} className="card-glass p-5 relative overflow-hidden group hover:border-blue-500/50 transition-colors">
+                        <motion.div variants={itemVariants} className="card-kpi bar-blue group">
                             <div className="absolute right-0 top-0 p-3 opacity-5 group-hover:opacity-20 transition-opacity">
                                 <Calendar size={64} />
                             </div>
@@ -346,7 +346,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                         </motion.div>
 
                         {/* 4. Despesas */}
-                        <motion.div variants={itemVariants} className="card-glass p-5 relative overflow-hidden group hover:border-red-500/50 transition-colors">
+                        <motion.div variants={itemVariants} className="card-kpi bar-red group">
                             <div className="absolute right-0 top-0 p-3 opacity-5 group-hover:opacity-20 transition-opacity">
                                 <TrendingDown size={64} />
                             </div>
@@ -358,7 +358,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                         </motion.div>
 
                         {/* 5. Maior Gasto */}
-                        <motion.div variants={itemVariants} className="card-glass p-5 relative overflow-hidden group hover:border-orange-500/50 transition-colors">
+                        <motion.div variants={itemVariants} className="card-kpi bar-purple group">
                             <div className="absolute right-0 top-0 p-3 opacity-5 group-hover:opacity-20 transition-opacity">
                                 <Building2 size={64} />
                             </div>
@@ -370,7 +370,7 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                         </motion.div>
 
                         {/* 6. Alertas (Vencimento) */}
-                        <motion.div variants={itemVariants} className="card-glass p-5 relative overflow-hidden group hover:border-red-500/50 transition-colors">
+                        <motion.div variants={itemVariants} className="card-kpi bar-red group">
                             <div className="absolute right-0 top-0 p-3 opacity-5 group-hover:opacity-20 transition-opacity">
                                 <Activity size={64} />
                             </div>

@@ -383,24 +383,21 @@ const AdminDashboard: React.FC = () => {
                             <>
                                 {/* --- Month Selector --- */}
                                 <div className="flex items-center justify-between mb-6">
-                                    <div className="flex items-center gap-4 bg-[#111] p-2 rounded-md border border-white/5 shadow-lg">
-                                        <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-white/5 rounded-sm text-[var(--color-text-muted)] hover:text-white transition-colors">
-                                            <ChevronLeft size={20} />
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={() => changeMonth(-1)} className="btn btn-ghost btn-sm">
+                                            <ChevronLeft size={16} />
                                         </button>
-                                        <div className="flex items-center gap-3 px-4 py-1 border-x border-white/5 min-w-[180px] justify-center">
-                                            <CalendarIcon size={18} className="text-[#D4AF37]" />
-                                            <span className="font-bold uppercase tracking-widest text-sm text-white">
+                                        <div className="flex items-center gap-2 px-4 py-2 card" style={{ borderRadius: 8, padding: '8px 16px' }}>
+                                            <CalendarIcon size={16} style={{ color: '#D4AF37' }} />
+                                            <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', color: '#fff', textTransform: 'uppercase' }}>
                                                 {selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
                                             </span>
                                         </div>
-                                        <button onClick={() => changeMonth(1)} className="p-2 hover:bg-white/5 rounded-sm text-[var(--color-text-muted)] hover:text-white transition-colors">
-                                            <ChevronRight size={20} />
+                                        <button onClick={() => changeMonth(1)} className="btn btn-ghost btn-sm">
+                                            <ChevronRight size={16} />
                                         </button>
                                     </div>
-                                    <button
-                                        onClick={() => setSelectedDate(new Date())}
-                                        className="px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/20 hover:bg-[#D4AF37]/20 transition-colors"
-                                    >
+                                    <button onClick={() => setSelectedDate(new Date())} className="btn btn-secondary btn-sm">
                                         Mês Atual
                                     </button>
                                 </div>
