@@ -7,9 +7,41 @@
         "login": "Login"
     },
     "hero": {
-        "title": "Reach <1>your Peak</1>",
-        "subtitle": "We are not just consultants. We are technology creators. We develop exclusive AI Agents and integrated systems that eliminate manual work and put your company on efficiency autopilot.",
-        "cta": "Schedule Strategic Consulting"
+        "tag": "For business owners who want to grow",
+        "title": "Tired of working hard<br>and growing <1>little?</1>",
+        "subtitle": "Your company can <2>earn more with less effort.</2> NeoVertex combines strategy and technology to turn effort into real results.",
+        "cta": "Schedule Free Meeting",
+        "proof": "Free session · No commitment · <1>Limited spots</1>"
+    },
+    "pain": {
+        "title": "If you're a business owner,<br>you've probably felt <1>this:</1>",
+        "subtitle": "You're not alone. These are the most common problems blocking growth.",
+        "items": [
+            "My team is always busy, but the results don't show.",
+            "Manual processes, rework, and errors that cost money every month.",
+            "I have no data to make decisions — everything is guesswork."
+        ]
+    },
+    "solution": {
+        "tag": "Our approach",
+        "title": "Precise diagnosis. <1>Measurable results.</1>",
+        "subtitle": "We don't deliver reports that sit in a drawer. We implement changes with you, step by step.",
+        "steps": [
+            { "num": "01", "title": "360° Diagnosis", "description": "We map bottlenecks, opportunities, and what's blocking your growth." },
+            { "num": "02", "title": "Personalized Strategy", "description": "Action plan with clear goals and quick wins for fast results." },
+            { "num": "03", "title": "Tailored Technology", "description": "AI and systems built for your business — not generic solutions." },
+            { "num": "04", "title": "Real Follow-up", "description": "We monitor results weekly and adjust in real time." }
+        ]
+    },
+    "socialProof": {
+        "stats": [
+            { "value": "40–60%", "label": "Operational efficiency gain" },
+            { "value": "30–50%", "label": "Cost reduction with automation" },
+            { "value": "300%", "label": "Average ROI in the first 12 months" }
+        ],
+        "quote": "When you hire NeoVertex, you're not buying consulting hours — you're investing in a partnership obsessed with results. Your success is our only metric.",
+        "name": "Nelson Araujo",
+        "role": "CEO & Founder — NeoVertex"
     },
     "about": {
         "title": "ABOUT <1>NEOVERTEX</1>",
@@ -92,8 +124,8 @@
         ]
     },
     "services": {
-        "title": "DIGITAL TRANSFORMATION THAT DRIVES RESULTS",
-        "subtitle": "From strategic consulting to web development, we are the complete partner to accelerate your growth. We unite business intelligence and advanced technology to take your company to the next level of performance and profitability.",
+        "title": "From diagnosis to <1>full execution</1>",
+        "subtitle": "Choose what your company needs now — or let us recommend.",
         "slogan_text": "Reach your Peak. Connect technology and strategy to achieve extraordinary results.",
         "viewDetails": "View Details →",
         "consulting": {
@@ -196,31 +228,23 @@
         }
     },
     "contact": {
-        "title": "Let's Talk?",
-        "subtitle": "Schedule a strategic consultation and discover how we can transform your business.",
-        "name": "Name",
-        "country": "Country",
-        "countryCode": "Country Code",
-        "phone": "Phone / WhatsApp",
-        "message": "Message",
-        "placeholders": {
-            "country": "Ex: Brazil",
-            "phone": "Ex: +1 555 123 4567"
-        },
+        "title": "Ready to <1>grow for real?</1>",
+        "subtitle": "Schedule a free strategic session. In 30 minutes we identify 3 immediate growth opportunities for your business.",
+        "name": "Your name",
+        "phone": "WhatsApp (with area code)",
+        "challenge": "What is your company's main challenge today?",
+        "submit": "Schedule My Free Session",
+        "disclaimer": "Limited spots · No commitment · We respond within 24h",
+        "success": "Thank you! We will contact you within 24h to schedule your session.",
+        "sending": "Sending...",
         "errors": {
             "nameInvalid": "Invalid name (letters only, 2-100 characters).",
-            "countryInvalid": "Please enter your country.",
-            "countryCodeInvalid": "Please enter the Country Code.",
-            "phoneInvalid": "Please enter a valid phone number.",
-            "messageLength": "Message must be between {{min}} and {{max}} characters.",
-            "spamDetected": "Suspicious content detected.",
+            "phoneInvalid": "Please enter a valid WhatsApp number.",
+            "challengeRequired": "Please describe your challenge.",
             "recaptcha": "Please complete the reCAPTCHA.",
             "rateLimit": "Please wait {{minutes}} minutes before sending a new message.",
             "generic": "Error sending message. Please try again."
-        },
-        "submit": "Send Message",
-        "success": "Thank you! We will be in touch shortly.",
-        "sending": "Sending..."
+        }
     },
     "footer": {
         "rights": "All rights reserved.",

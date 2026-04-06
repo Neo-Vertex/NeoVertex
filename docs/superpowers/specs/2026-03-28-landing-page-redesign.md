@@ -94,6 +94,24 @@ Donos de empresa com 5–50 funcionários que enfrentam ineficiência operaciona
 
 ---
 
+## Responsividade Mobile (obrigatório)
+
+| Seção | Desktop | Mobile (< 768px) |
+|-------|---------|-------------------|
+| Hero | Split: texto esquerda + foto direita | Foto como background com overlay escuro, texto centralizado em cima |
+| Dor | 3 cards em linha | Stack vertical (1 por linha) |
+| Solução | 4 steps em linha | 2 colunas (2×2) |
+| Serviços | Grid 2×2 | Stack vertical (1 por linha) |
+| Prova Social | Foto + texto lado a lado | Foto pequena topo + texto abaixo |
+| CTA | Form centralizado max-width 400px | Form 100% largura com padding lateral |
+
+- Botão CTA no Hero: largura total no mobile
+- Fonte hero-h1: `clamp(1.8rem, 5vw, 2.8rem)` — nunca quebra feio
+- Touch targets mínimo 44px de altura
+- Sem scroll horizontal em nenhuma tela
+
+---
+
 ## O Que Não Muda
 
 - Roteamento e páginas de serviço individuais (`/services/*`)
