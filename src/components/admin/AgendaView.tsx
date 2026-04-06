@@ -217,7 +217,16 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             <input
                                 type="datetime-local"
                                 value={form.start_at}
-                                onChange={e => setForm({ ...form, start_at: e.target.value })}
+                                onChange={e => {
+                                    const newStart = e.target.value;
+                                    const startDay = newStart.slice(0, 10);
+                                    // Se fim já está preenchido e é em outro dia, ajusta para o mesmo dia
+                                    let newEnd = form.end_at;
+                                    if (newEnd && newEnd.slice(0, 10) !== startDay) {
+                                        newEnd = `${startDay}${newEnd.slice(10)}`;
+                                    }
+                                    setForm({ ...form, start_at: newStart, end_at: newEnd });
+                                }}
                                 className="input-field"
                                 required
                             />
@@ -227,6 +236,8 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             <input
                                 type="datetime-local"
                                 value={form.end_at}
+                                min={form.start_at || undefined}
+                                max={form.start_at ? `${form.start_at.slice(0, 10)}T23:59` : undefined}
                                 onChange={e => setForm({ ...form, end_at: e.target.value })}
                                 className="input-field"
                             />

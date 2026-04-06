@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
@@ -285,8 +286,9 @@ app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 // ── Auto Migration ────────────────────────────────────────────────────────────
 
 async function runMigrations() {
-  const client = await pool.connect();
+  let client;
   try {
+    client = await pool.connect();
     await client.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
     await client.query(`CREATE EXTENSION IF NOT EXISTS pgcrypto`);
 
@@ -525,9 +527,9 @@ async function runMigrations() {
 
     console.log('Migrations concluídas com sucesso.');
   } catch (err) {
-    console.error('Erro na migration:', err.message);
+    console.error('Erro na migration (servidor continua rodando):', err.message);
   } finally {
-    client.release();
+    if (client) client.release();
   }
 }
 

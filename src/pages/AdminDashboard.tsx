@@ -262,7 +262,7 @@ const AdminDashboard: React.FC = () => {
     }
 
     return (
-        <div className="flex h-screen text-white overflow-hidden relative" style={{ background: 'var(--color-bg)' }}>
+        <div data-theme="dracula" className="flex h-screen text-white overflow-hidden relative" style={{ background: 'var(--color-bg)' }}>
             <AmbientBackground />
             {/* --- Password Confirmation Modal --- */}
             <AnimatePresence>

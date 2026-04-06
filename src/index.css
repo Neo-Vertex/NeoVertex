@@ -165,6 +165,87 @@ a { text-decoration: none; color: inherit; }
 .btn-shine:hover { border-color: var(--color-primary); box-shadow: 0 0 12px rgba(212,175,55,0.2); }
 
 /* ═══════════════════════════════════════════
+   DRACULA THEME — Fundo preto + paleta Dracula
+   ═══════════════════════════════════════════ */
+
+[data-theme="dracula"] {
+  /* Backgrounds — preto + superfícies escuras */
+  --color-bg:            #000000;
+  --color-surface:       rgba(40,42,54,0.55);
+  --color-surface-2:     rgba(40,42,54,0.80);
+
+  /* Borders */
+  --color-border:        rgba(189,147,249,0.18);
+  --color-border-strong: rgba(189,147,249,0.38);
+
+  /* Primary — Dracula Purple */
+  --color-primary:       #bd93f9;
+  --color-primary-bright:#cca9fa;
+  --color-primary-dim:   #7c5cbf;
+  --color-primary-glow:  rgba(189,147,249,0.20);
+
+  /* Text */
+  --color-text:          #f8f8f2;
+  --color-text-muted:    #6272a4;
+  --color-text-soft:     rgba(248,248,242,0.72);
+
+  /* Semantic */
+  --color-success:       #50fa7b;
+  --color-error:         #ff5555;
+  --color-info:          #8be9fd;
+
+  /* Component tokens */
+  --bg-card:             #0d0d15;
+  --bg-elevated:         #111119;
+  --border-gold-strong:  rgba(189,147,249,0.38);
+  --gold-gradient:       linear-gradient(135deg, #bd93f9, #7c5cbf);
+}
+
+/* Scrollbar tinted */
+[data-theme="dracula"] ::-webkit-scrollbar-thumb         { background: rgba(189,147,249,0.25); }
+[data-theme="dracula"] ::-webkit-scrollbar-thumb:hover   { background: rgba(189,147,249,0.45); }
+
+/* Shimmer tint */
+[data-theme="dracula"] .anim-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(189,147,249,0.06), transparent);
+}
+
+/* Input accent border */
+[data-theme="dracula"] .input-field,
+[data-theme="dracula"] .form-input {
+  border-left-color: rgba(189,147,249,0.38);
+}
+[data-theme="dracula"] .input-field:focus,
+[data-theme="dracula"] .form-input:focus {
+  border-color: #bd93f9;
+  border-left-color: #bd93f9;
+  box-shadow: 0 0 0 3px rgba(189,147,249,0.14);
+  background: rgba(189,147,249,0.04);
+}
+[data-theme="dracula"] select.input-field option,
+[data-theme="dracula"] select.form-input option { background-color: #111119; }
+
+/* Tab active tint */
+[data-theme="dracula"] .tab-btn.active {
+  background: rgba(189,147,249,0.14);
+  color: #bd93f9;
+  border-color: rgba(189,147,249,0.28);
+  box-shadow: 0 2px 8px rgba(189,147,249,0.12);
+}
+
+/* Badge overrides */
+[data-theme="dracula"] .badge-pending { background: rgba(189,147,249,0.14); color: #bd93f9; border-color: rgba(189,147,249,0.25); }
+
+/* Section label */
+[data-theme="dracula"] .section-label { color: rgba(189,147,249,0.6); }
+
+/* Ambient glow override — top left purple */
+[data-theme="dracula"] .ambient-a { background: radial-gradient(circle, rgba(189,147,249,0.10) 0%, transparent 65%) !important; }
+[data-theme="dracula"] .ambient-b { background: radial-gradient(circle, rgba(139,233,253,0.06) 0%, transparent 65%) !important; }
+
+/* Card KPI left bar uses primary by default — keep semantic colors */
+
+/* ═══════════════════════════════════════════
    COMPONENT SYSTEM — Glass Gold / Sólido & Bold
    ═══════════════════════════════════════════ */
 
