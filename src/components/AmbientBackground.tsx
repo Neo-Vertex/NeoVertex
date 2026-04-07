@@ -17,6 +17,10 @@ export default function AmbientBackground() {
     resize();
     window.addEventListener('resize', resize);
 
+    // Read primary RGB from CSS theme — supports Dracula override via --color-primary-rgb
+    const getRGB = () =>
+      getComputedStyle(canvas).getPropertyValue('--color-primary-rgb').trim() || '212, 175, 55';
+
     const particles = Array.from({ length: 55 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -28,6 +32,7 @@ export default function AmbientBackground() {
     }));
 
     const draw = () => {
+      const rgb = getRGB();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
         p.x += p.vx; p.y += p.vy; p.pulse += 0.018;
@@ -38,7 +43,7 @@ export default function AmbientBackground() {
         const a = p.alpha * (0.7 + 0.3 * Math.sin(p.pulse));
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(212,175,55,${a})`;
+        ctx.fillStyle = `rgba(${rgb},${a})`;
         ctx.fill();
       });
       ctx.lineWidth = 0.4;
@@ -51,7 +56,7 @@ export default function AmbientBackground() {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(212,175,55,${0.07 * (1 - dist / 88)})`;
+            ctx.strokeStyle = `rgba(${rgb},${0.07 * (1 - dist / 88)})`;
             ctx.stroke();
           }
         }
@@ -74,23 +79,23 @@ export default function AmbientBackground() {
         style={{ opacity: 0.9 }}
       />
       <div className="fixed inset-0 pointer-events-none z-0" aria-hidden>
-        <div style={{
-          position:'absolute', width:600, height:600, borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(212,175,55,0.13) 0%, transparent 70%)',
-          top:-200, left:-150, filter:'blur(90px)',
-          animation:'driftA 14s ease-in-out infinite alternate',
+        <div className="ambient-a" style={{
+          position: 'absolute', width: 600, height: 600, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(212,175,55,0.13) 0%, transparent 70%)',
+          top: -200, left: -150, filter: 'blur(90px)',
+          animation: 'driftA 14s ease-in-out infinite alternate',
         }} />
-        <div style={{
-          position:'absolute', width:500, height:500, borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(170,100,15,0.08) 0%, transparent 70%)',
-          bottom:-150, right:100, filter:'blur(90px)',
-          animation:'driftB 17s ease-in-out infinite alternate',
+        <div className="ambient-b" style={{
+          position: 'absolute', width: 500, height: 500, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(170,100,15,0.08) 0%, transparent 70%)',
+          bottom: -150, right: 100, filter: 'blur(90px)',
+          animation: 'driftB 17s ease-in-out infinite alternate',
         }} />
-        <div style={{
-          position:'absolute', width:300, height:300, borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)',
-          top:'45%', right:-60, filter:'blur(80px)',
-          animation:'driftC 10s ease-in-out infinite alternate',
+        <div className="ambient-a" style={{
+          position: 'absolute', width: 300, height: 300, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)',
+          top: '45%', right: -60, filter: 'blur(80px)',
+          animation: 'driftC 10s ease-in-out infinite alternate',
         }} />
       </div>
     </>

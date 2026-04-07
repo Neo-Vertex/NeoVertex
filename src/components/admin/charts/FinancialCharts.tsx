@@ -58,13 +58,13 @@ export const CashFlowChart: React.FC<ChartProps> = ({ records = [], selectedDate
                         <XAxis dataKey="name" stroke="transparent" tick={{ fill: 'rgba(255,255,255,0.35)', fontSize: 11 }} tickLine={false} axisLine={false} interval={0} />
                         <YAxis stroke="transparent" tick={{ fill: 'rgba(255,255,255,0.35)', fontSize: 11 }} tickLine={false} axisLine={false} tickFormatter={(v: number) => v >= 1000 ? `${(v/1000).toFixed(0)}k` : String(v)} width={40} />
                         <Tooltip
-                            contentStyle={{ background: '#0a0a14', border: '1px solid rgba(212,175,55,0.25)', borderRadius: 8, fontSize: 12, color: '#fff', padding: '8px 12px' }}
+                            contentStyle={{ background: '#0a0a14', border: '1px solid var(--color-primary-a25)', borderRadius: 8, fontSize: 12, color: '#fff', padding: '8px 12px' }}
                             itemStyle={{ color: '#fff', padding: '2px 0' }}
                             cursor={{ fill: 'rgba(255,255,255,0.03)' }}
                             formatter={(value: number | undefined) => [`R$ ${(value ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, '']}
                         />
                         <Legend wrapperStyle={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', paddingTop: 8 }} />
-                        <Bar dataKey="Entrada" fill="#D4AF37" radius={[4,4,0,0]} maxBarSize={32} />
+                        <Bar dataKey="Entrada" fill="var(--color-primary)" radius={[4,4,0,0]} maxBarSize={32} />
                         <Bar dataKey="Saída" fill="#f87171" radius={[4,4,0,0]} maxBarSize={32} />
                     </BarChart>
                 </ResponsiveContainer>
@@ -93,10 +93,10 @@ export const ProjectStatusChart: React.FC<ChartProps> = ({ projects = [] }) => {
         });
 
         return [
-            { name: 'Ativos', value: stats.active, color: '#D4AF37' }, // Gold
+            { name: 'Ativos', value: stats.active, color: 'var(--color-primary)' },
             { name: 'Manutenção', value: stats.maintenance, color: '#60a5fa' }, // Blue
             { name: 'Concluídos', value: stats.completed, color: '#4ade80' }, // Green
-            { name: 'Briefing/Neg.', value: stats.briefing, color: 'rgba(212,175,55,0.2)' }, // Gold dim
+            { name: 'Briefing/Neg.', value: stats.briefing, color: 'var(--color-primary-a20)' },
             { name: 'Standby/Canc.', value: stats.standby, color: '#f87171' }, // Red
         ].filter(d => d.value > 0);
     }, [projects]);
@@ -113,7 +113,7 @@ export const ProjectStatusChart: React.FC<ChartProps> = ({ projects = [] }) => {
                             ))}
                         </Pie>
                         <Tooltip
-                            contentStyle={{ background: '#0a0a14', border: '1px solid rgba(212,175,55,0.25)', borderRadius: 8, fontSize: 12, color: '#fff', padding: '8px 12px' }}
+                            contentStyle={{ background: '#0a0a14', border: '1px solid var(--color-primary-a25)', borderRadius: 8, fontSize: 12, color: '#fff', padding: '8px 12px' }}
                             itemStyle={{ color: '#fff' }}
                         />
                         <Legend verticalAlign="bottom" height={32} wrapperStyle={{ fontSize: 11, color: 'rgba(255,255,255,0.5)' }} />
@@ -167,12 +167,12 @@ export const ExpenseBreakdownChart: React.FC<ChartProps> = ({ records = [], asso
                         <XAxis type="number" stroke="transparent" tick={{ fill: 'rgba(255,255,255,0.35)', fontSize: 11 }} tickLine={false} axisLine={false} tickFormatter={(v: number) => v >= 1000 ? `${(v/1000).toFixed(0)}k` : String(v)} />
                         <YAxis dataKey="name" type="category" stroke="transparent" tick={{ fill: 'rgba(255,255,255,0.55)', fontSize: 11 }} tickLine={false} axisLine={false} width={110} />
                         <Tooltip
-                            contentStyle={{ background: '#0a0a14', border: '1px solid rgba(212,175,55,0.25)', borderRadius: 8, fontSize: 12, color: '#fff', padding: '8px 12px' }}
+                            contentStyle={{ background: '#0a0a14', border: '1px solid var(--color-primary-a25)', borderRadius: 8, fontSize: 12, color: '#fff', padding: '8px 12px' }}
                             itemStyle={{ color: '#fff' }}
                             cursor={{ fill: 'rgba(255,255,255,0.03)' }}
                             formatter={(value: number | undefined) => [`R$ ${(value ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, 'Valor']}
                         />
-                        <Bar dataKey="value" fill="#D4AF37" radius={[0,4,4,0]} barSize={18} />
+                        <Bar dataKey="value" fill="var(--color-primary)" radius={[0,4,4,0]} barSize={18} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

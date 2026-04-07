@@ -63,7 +63,7 @@ const LeadsList: React.FC<LeadsListProps> = ({ onConvertLead }) => {
                         placeholder="Filtrar por nome, email ou empresa..."
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
-                        className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm pl-9 pr-4 py-2.5 text-xs font-medium text-white focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all placeholder:text-zinc-600 uppercase tracking-wide"
+                        className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm pl-9 pr-4 py-2.5 text-xs font-medium text-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all placeholder:text-zinc-600 uppercase tracking-wide"
                     />
                 </div>
             </div>
@@ -111,7 +111,7 @@ const LeadsList: React.FC<LeadsListProps> = ({ onConvertLead }) => {
                                     {onConvertLead && (
                                         <button
                                             onClick={() => onConvertLead(lead)}
-                                            className="p-2 hover:bg-[#D4AF37]/20 rounded-sm text-gray-500 hover:text-[#D4AF37] transition-colors"
+                                            className="p-2 hover:bg-[var(--color-primary-a20)] rounded-sm text-gray-500 hover:text-[var(--color-primary)] transition-colors"
                                             title="Converter em Associado"
                                         >
                                             <UserPlus size={16} />

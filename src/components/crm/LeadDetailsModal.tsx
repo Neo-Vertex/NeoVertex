@@ -76,14 +76,14 @@ const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ lead, isOpen, onClo
                         <h2 className="text-xl font-bold text-white mb-1 tracking-tight">{lead.name}</h2>
                         <div className="flex flex-col gap-1">
                             <p className="text-sm text-gray-400 font-medium">{lead.company || 'Sem empresa'}</p>
-                            {lead.position && <p className="text-xs text-[#D4AF37] uppercase tracking-wider font-bold">{lead.position}</p>}
+                            {lead.position && <p className="text-xs text-[var(--color-primary)] uppercase tracking-wider font-bold">{lead.position}</p>}
                         </div>
                         <div className="flex gap-2 mt-4">
                             <span className="text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-sm text-gray-300 uppercase tracking-wider font-bold">
                                 {lead.status === 'active' ? 'Ativo' : lead.status}
                             </span>
                             {lead.value > 0 && (
-                                <span className="text-[10px] bg-[#D4AF37]/10 border border-[#D4AF37]/20 px-2.5 py-1 rounded-sm text-[#D4AF37] font-mono font-bold">
+                                <span className="text-[10px] bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 px-2.5 py-1 rounded-sm text-[var(--color-primary)] font-mono font-bold">
                                     R$ {lead.value.toLocaleString('pt-BR')}
                                 </span>
                             )}
@@ -100,13 +100,13 @@ const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ lead, isOpen, onClo
                 <div className="flex border-b border-white/5 bg-[#0a0a0a] px-6 gap-6">
                     <button
                         onClick={() => setActiveTab('timeline')}
-                        className={`py-4 px-2 text-[11px] font-bold uppercase tracking-widest border-b-2 transition-all ${activeTab === 'timeline' ? 'border-[#D4AF37] text-[#D4AF37]' : 'border-transparent text-gray-500 hover:text-white'}`}
+                        className={`py-4 px-2 text-[11px] font-bold uppercase tracking-widest border-b-2 transition-all ${activeTab === 'timeline' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-gray-500 hover:text-white'}`}
                     >
                         Histórico
                     </button>
                     <button
                         onClick={() => setActiveTab('info')}
-                        className={`py-4 px-2 text-[11px] font-bold uppercase tracking-widest border-b-2 transition-all ${activeTab === 'info' ? 'border-[#D4AF37] text-[#D4AF37]' : 'border-transparent text-gray-500 hover:text-white'}`}
+                        className={`py-4 px-2 text-[11px] font-bold uppercase tracking-widest border-b-2 transition-all ${activeTab === 'info' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-gray-500 hover:text-white'}`}
                     >
                         Informações
                     </button>
@@ -130,7 +130,7 @@ const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ lead, isOpen, onClo
                                             <button
                                                 key={type.id}
                                                 onClick={() => setInteractionType(type.id as any)}
-                                                className={`flex items-center gap-2 px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-colors whitespace-nowrap ${interactionType === type.id ? 'bg-[#D4AF37] text-[#556B2F]' : 'bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300'}`}
+                                                className={`flex items-center gap-2 px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-colors whitespace-nowrap ${interactionType === type.id ? 'bg-[var(--color-primary)] text-black' : 'bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300'}`}
                                             >
                                                 <type.icon size={12} /> {type.label}
                                             </button>
@@ -140,7 +140,7 @@ const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ lead, isOpen, onClo
                                     {onConvertLead && (
                                         <button
                                             onClick={handleConvert}
-                                            className="ml-4 flex items-center gap-2 px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all bg-gradient-to-r from-[#D4AF37] via-[#FFE5B4] to-[#D4AF37] bg-[length:200%_auto] hover:bg-[position:right_center] text-[#556B2F] shadow-[0_0_15px_-3px_rgba(212,175,55,0.6)] hover:shadow-[0_0_20px_-3px_rgba(212,175,55,0.8)] hover:scale-105 border border-[#D4AF37]"
+                                            className="ml-4 flex items-center gap-2 px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all bg-gradient-to-r from-[var(--color-primary)] via-[#FFE5B4] to-[var(--color-primary)] bg-[length:200%_auto] hover:bg-[position:right_center] text-black shadow-[0_0_15px_-3px_var(--color-primary-a60)] hover:shadow-[0_0_20px_-3px_var(--color-primary-a85)] hover:scale-105 border border-[var(--color-primary)]"
                                             title="Converter Lead em Associado"
                                         >
                                             <UserPlus size={14} /> CONVERTER
@@ -152,13 +152,13 @@ const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ lead, isOpen, onClo
                                         value={newNote}
                                         onChange={(e) => setNewNote(e.target.value)}
                                         placeholder="Digite os detalhes da interação..."
-                                        className="w-full bg-[#111] border border-zinc-800 rounded-sm p-3 text-sm text-gray-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none min-h-[80px] mb-3 resize-none transition-all placeholder:text-zinc-700"
+                                        className="w-full bg-[#111] border border-zinc-800 rounded-sm p-3 text-sm text-gray-300 focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none min-h-[80px] mb-3 resize-none transition-all placeholder:text-zinc-700"
                                     />
                                     <div className="flex justify-end">
                                         <button
                                             type="submit"
                                             disabled={loading || !newNote.trim()}
-                                            className="bg-white/5 hover:bg-[#D4AF37] text-gray-400 hover:text-[#556B2F] px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 transition-all disabled:opacity-50"
+                                            className="bg-white/5 hover:bg-[var(--color-primary)] text-gray-400 hover:text-black px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 transition-all disabled:opacity-50"
                                         >
                                             <Send size={12} /> Registrar
                                         </button>
@@ -170,10 +170,10 @@ const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ lead, isOpen, onClo
                             <div className="space-y-6 relative before:absolute before:left-4 before:top-4 before:bottom-0 before:w-px before:bg-white/5">
                                 {interactions.map(interaction => (
                                     <div key={interaction.id} className="relative pl-0 group">
-                                        <div className="bg-[#0a0a0a] p-4 rounded-sm border border-zinc-900 group-hover:border-[#D4AF37]/30 transition-all shadow-sm">
+                                        <div className="bg-[#0a0a0a] p-4 rounded-sm border border-zinc-900 group-hover:border-[var(--color-primary)]/30 transition-all shadow-sm">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-widest">
+                                                    <span className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-widest">
                                                         {interaction.type === 'note' ? 'Nota' : interaction.type}
                                                     </span>
                                                     <span className="text-[10px] text-zinc-700">•</span>

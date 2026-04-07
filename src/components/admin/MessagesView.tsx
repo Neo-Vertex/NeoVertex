@@ -84,14 +84,14 @@ const MessagesView: React.FC = () => {
                                             key={req.id}
                                             className="flex gap-4 p-4 rounded-xl transition-all duration-200 cursor-pointer"
                                             style={{
-                                                background: req.read ? 'transparent' : 'rgba(212,175,55,0.04)',
-                                                border: `1px solid ${req.read ? 'rgba(255,255,255,0.04)' : 'rgba(212,175,55,0.12)'}`,
+                                                background: req.read ? 'transparent' : 'var(--color-primary-a04)',
+                                                border: `1px solid ${req.read ? 'rgba(255,255,255,0.04)' : 'var(--color-primary-a12)'}`,
                                                 marginBottom: 8,
-                                                ...(selectedRequest?.id === req.id ? { borderColor: 'rgba(212,175,55,0.3)', background: 'rgba(212,175,55,0.06)' } : {}),
+                                                ...(selectedRequest?.id === req.id ? { borderColor: 'var(--color-primary-a30)', background: 'var(--color-primary-a06)' } : {}),
                                             }}
                                             onClick={() => handleSelectRequest(req)}
-                                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(212,175,55,0.06)'; }}
-                                            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = selectedRequest?.id === req.id ? 'rgba(212,175,55,0.06)' : req.read ? 'transparent' : 'rgba(212,175,55,0.04)'; }}
+                                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--color-primary-a06)'; }}
+                                            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = selectedRequest?.id === req.id ? 'var(--color-primary-a06)' : req.read ? 'transparent' : 'var(--color-primary-a04)'; }}
                                         >
                                             <div className="flex flex-col gap-1 w-full">
                                                 <div className="flex justify-between items-center w-full">

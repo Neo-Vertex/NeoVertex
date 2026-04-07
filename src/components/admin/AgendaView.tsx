@@ -153,12 +153,12 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                 className="w-full max-w-2xl shadow-2xl overflow-y-auto max-h-[90vh] rounded-2xl"
                 style={{
                     background: 'rgba(8,8,18,0.95)',
-                    border: '1px solid rgba(212,175,55,0.3)',
+                    border: '1px solid var(--color-primary-a30)',
                 }}
             >
                 <div
                     className="flex items-center justify-between p-6"
-                    style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}
+                    style={{ borderBottom: '1px solid var(--color-primary-a15)' }}
                 >
                     <h2 className="text-lg font-bold text-white font-mono tracking-wider">
                         {appointment ? 'EDITAR COMPROMISSO' : 'NOVO COMPROMISSO'}
@@ -500,9 +500,9 @@ const AgendaView: React.FC = () => {
                                     className="group relative aspect-square flex flex-col items-center justify-start pt-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer"
                                     style={
                                         isSelected
-                                            ? { background: 'rgba(212,175,55,0.15)', outline: '2px solid rgba(212,175,55,0.5)', outlineOffset: -1, color: '#D4AF37' }
+                                            ? { background: 'var(--color-primary-a15)', outline: '2px solid var(--color-primary-a50)', outlineOffset: -1, color: 'var(--color-primary)' }
                                             : isToday
-                                                ? { background: 'rgba(212,175,55,0.08)', outline: '1px solid rgba(212,175,55,0.3)', outlineOffset: -1, color: '#D4AF37' }
+                                                ? { background: 'var(--color-primary-a08)', outline: '1px solid var(--color-primary-a30)', outlineOffset: -1, color: 'var(--color-primary)' }
                                                 : { color: '#6b7280' }
                                     }
                                 >
@@ -531,7 +531,7 @@ const AgendaView: React.FC = () => {
                                         className="absolute top-0.5 right-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
                                         style={{
                                             width: 14, height: 14, borderRadius: 4,
-                                            background: 'rgba(212,175,55,0.85)',
+                                            background: 'var(--color-primary-a85)',
                                             color: '#000', fontSize: 12, fontWeight: 800,
                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                             lineHeight: 1,

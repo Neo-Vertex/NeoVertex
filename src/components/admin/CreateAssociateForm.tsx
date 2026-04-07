@@ -173,19 +173,19 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
           <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl"
             style={{
               background:'rgba(8,8,18,0.95)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)',
-              border:'1px solid rgba(212,175,55,0.15)',
+              border:'1px solid var(--color-primary-a15)',
               boxShadow:'0 40px 80px rgba(0,0,0,0.7)',
               animation:'scaleIn 0.3s cubic-bezier(0.16,1,0.3,1) both',
             }}
           >
             {/* Top shimmer line */}
-            <div style={{ position:'absolute', top:0, left:0, right:0, height:1, background:'linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent)' }} />
+            <div style={{ position:'absolute', top:0, left:0, right:0, height:1, background:'linear-gradient(90deg,transparent,var(--color-primary-a50),transparent)' }} />
 
             {/* Header */}
             <div className="flex items-center justify-between p-6 sticky top-0 z-10"
-              style={{ borderBottom:'1px solid rgba(212,175,55,0.08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
+              style={{ borderBottom:'1px solid var(--color-primary-a08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
             >
-              <h2 style={{ fontFamily:'Cinzel, serif', fontSize:14, fontWeight:700, color:'#D4AF37', letterSpacing:'0.1em' }}>
+              <h2 style={{ fontFamily:'Cinzel, serif', fontSize:14, fontWeight:700, color:'var(--color-primary)', letterSpacing:'0.1em' }}>
                 CADASTRAR NOVO ASSOCIADO
               </h2>
               <button
@@ -219,7 +219,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 <button
                     type="button"
                     onClick={triggerStamp}
-                    className="absolute right-0 top-0 p-2 text-[var(--color-primary)] hover:bg-[rgba(212,175,55,0.1)] rounded-full transition-colors flex flex-col items-center gap-1 group"
+                    className="absolute right-0 top-0 p-2 text-[var(--color-primary)] hover:bg-[var(--color-primary-a10)] rounded-full transition-colors flex flex-col items-center gap-1 group"
                     title="Carimbar Manualmente"
                 >
                     <div className="w-8 h-8 rounded-full border-2 border-[var(--color-primary)] flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -243,7 +243,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 {/* 1. Account Info Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
                     <h4 className="section-label flex items-center gap-2">
-                        <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">1</span>
+                        <span className="w-8 h-8 rounded-full bg-[var(--color-primary-a10)] flex items-center justify-center text-[var(--color-primary)] text-sm">1</span>
                         Dados de Acesso
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -277,7 +277,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 {/* 2. Personal/Company Info Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
                     <h4 className="section-label flex items-center gap-2">
-                        <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">2</span>
+                        <span className="w-8 h-8 rounded-full bg-[var(--color-primary-a10)] flex items-center justify-center text-[var(--color-primary)] text-sm">2</span>
                         Informações do Associado/Empresa
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -340,7 +340,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 {/* 3. Products/Services Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
                     <h4 className="section-label flex items-center gap-2">
-                        <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">3</span>
+                        <span className="w-8 h-8 rounded-full bg-[var(--color-primary-a10)] flex items-center justify-center text-[var(--color-primary)] text-sm">3</span>
                         Produtos Contratados
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -351,7 +351,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                 className={`
                                     cursor-pointer p-4 rounded-xl border transition-all duration-300 flex flex-col gap-2 relative overflow-hidden
                                     ${formData.contractedProducts.includes(service.id)
-                                        ? 'bg-[rgba(212,175,55,0.1)] border-[var(--color-primary)]'
+                                        ? 'bg-[var(--color-primary-a10)] border-[var(--color-primary)]'
                                         : 'bg-black/20 border-white/10 hover:bg-black/40'}
                                 `}
                             >
@@ -368,7 +368,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                 {/* 4. Marketing & Colab Section */}
                 <div className="bg-[rgba(255,255,255,0.02)] p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
                     <h4 className="section-label flex items-center gap-2">
-                        <span className="w-8 h-8 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-[var(--color-primary)] text-sm">4</span>
+                        <span className="w-8 h-8 rounded-full bg-[var(--color-primary-a10)] flex items-center justify-center text-[var(--color-primary)] text-sm">4</span>
                         Origem & Parcerias
                     </h4>
                     <div className="space-y-6">
@@ -409,7 +409,7 @@ const CreateAssociateForm: React.FC<CreateAssociateFormProps> = ({ onSuccess, on
                                     exit={{ opacity: 0, height: 0, marginTop: 0 }}
                                     className="overflow-hidden"
                                 >
-                                    <div className="bg-gradient-to-r from-[rgba(212,175,55,0.1)] to-transparent p-6 rounded-xl border border-[rgba(212,175,55,0.3)] relative overflow-hidden">
+                                    <div className="bg-gradient-to-r from-[var(--color-primary-a10)] to-transparent p-6 rounded-xl border border-[var(--color-primary-a30)] relative overflow-hidden">
                                         <div className="absolute top-0 right-0 p-4 opacity-10">
                                             <Save size={100} />
                                         </div>

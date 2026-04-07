@@ -89,8 +89,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={`fixed md:sticky top-0 h-screen flex flex-col z-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
         style={{
           width: 240,
-          background: '#07070f',
-          borderRight: '1px solid rgba(212,175,55,0.08)',
+          background: 'var(--color-sidebar-bg)',
+          borderRight: '1px solid var(--color-primary-a12)',
         }}
       >
         {/* ── Logo ── */}
@@ -101,13 +101,13 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{
               width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-              background: 'linear-gradient(135deg, #f0cc55, #8a6010)',
+              background: 'var(--gold-gradient)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontFamily: 'Cinzel, serif', fontWeight: 800, fontSize: 15, color: '#000',
-              boxShadow: '0 4px 16px rgba(212,175,55,0.25)',
+              boxShadow: '0 4px 16px var(--color-primary-a25)',
             }}>N</div>
             <div>
-              <div style={{ fontFamily: 'Cinzel, serif', fontSize: 12, fontWeight: 700, letterSpacing: '0.18em', color: '#D4AF37', lineHeight: 1 }}>
+              <div style={{ fontFamily: 'Cinzel, serif', fontSize: 12, fontWeight: 700, letterSpacing: '0.18em', color: 'var(--color-primary)', lineHeight: 1 }}>
                 NEOVERTEX
               </div>
               <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.12em', marginTop: 4 }}>
@@ -127,11 +127,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               <div key={item.id}>
                 {/* Section label */}
                 {item.showSection && (
-                  <div style={{
-                    padding: '16px 8px 6px',
-                    display: 'flex', alignItems: 'center', gap: 8,
-                  }}>
-                    <div style={{ width: 3, height: 10, borderRadius: 2, background: 'rgba(212,175,55,0.4)', flexShrink: 0 }} />
+                  <div style={{ padding: '16px 8px 6px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ width: 3, height: 10, borderRadius: 2, background: 'var(--color-primary-a40)', flexShrink: 0 }} />
                     <span style={{
                       fontSize: 9, fontWeight: 700, letterSpacing: '0.2em',
                       color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase',
@@ -147,9 +144,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                     width: '100%', display: 'flex', alignItems: 'center', gap: 10,
                     padding: '9px 10px', borderRadius: 10, marginBottom: 2,
                     transition: 'all 0.18s',
-                    background: active ? 'rgba(212,175,55,0.1)' : 'transparent',
-                    border: `1px solid ${active ? 'rgba(212,175,55,0.2)' : 'transparent'}`,
-                    color: active ? '#D4AF37' : 'rgba(255,255,255,0.5)',
+                    background: active ? 'var(--color-primary-a10)' : 'transparent',
+                    border: `1px solid ${active ? 'var(--color-primary-a20)' : 'transparent'}`,
+                    color: active ? 'var(--color-primary)' : 'rgba(255,255,255,0.5)',
                     cursor: 'pointer', position: 'relative',
                   }}
                   onMouseEnter={e => {
@@ -170,7 +167,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div style={{
                       position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)',
                       width: 3, height: '60%', borderRadius: '0 3px 3px 0',
-                      background: 'linear-gradient(180deg, #f0cc55, #8a6010)',
+                      background: 'var(--gold-gradient)',
                     }} />
                   )}
 
@@ -178,15 +175,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                   <div style={{
                     width: 30, height: 30, borderRadius: 8, flexShrink: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: active ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
-                    border: `1px solid ${active ? 'rgba(212,175,55,0.25)' : 'rgba(255,255,255,0.05)'}`,
+                    background: active ? 'var(--color-primary-a15)' : 'rgba(255,255,255,0.04)',
+                    border: `1px solid ${active ? 'var(--color-primary-a25)' : 'rgba(255,255,255,0.05)'}`,
                     transition: 'all 0.18s',
                   }}>
                     <item.icon
                       size={15}
                       strokeWidth={active ? 2.2 : 1.8}
                       aria-hidden
-                      style={{ color: active ? '#D4AF37' : 'rgba(255,255,255,0.4)' }}
+                      style={{ color: active ? 'var(--color-primary)' : 'rgba(255,255,255,0.4)' }}
                     />
                   </div>
 
@@ -197,7 +194,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   {/* Badge */}
                   {item.badge !== undefined && item.badge > 0 && (
                     <span style={{
-                      background: '#D4AF37', color: '#000',
+                      background: 'var(--color-primary)', color: '#000',
                       fontSize: 9, padding: '2px 6px', borderRadius: 20, fontWeight: 800,
                       lineHeight: 1.4,
                     }}>
@@ -213,7 +210,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                       style={{
                         transition: 'transform 0.2s',
                         transform: expanded ? 'rotate(90deg)' : 'none',
-                        color: active ? '#D4AF37' : 'rgba(255,255,255,0.2)',
+                        color: active ? 'var(--color-primary)' : 'rgba(255,255,255,0.2)',
                         flexShrink: 0,
                       }}
                     />
@@ -230,7 +227,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                       transition={{ duration: 0.18 }}
                       style={{ overflow: 'hidden', paddingLeft: 40, marginBottom: 4 }}
                     >
-                      <div style={{ borderLeft: '1px solid rgba(212,175,55,0.12)', paddingLeft: 12, paddingTop: 2, paddingBottom: 2 }}>
+                      <div style={{ borderLeft: '1px solid var(--color-primary-a12)', paddingLeft: 12, paddingTop: 2, paddingBottom: 2 }}>
                         {item.subItems.map(sub => {
                           const subActive = activeSection === sub.id;
                           return (
@@ -241,8 +238,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 width: '100%', textAlign: 'left',
                                 padding: '7px 8px', borderRadius: 7, marginBottom: 1,
                                 fontSize: 12,
-                                color: subActive ? '#D4AF37' : 'rgba(255,255,255,0.4)',
-                                background: subActive ? 'rgba(212,175,55,0.08)' : 'transparent',
+                                color: subActive ? 'var(--color-primary)' : 'rgba(255,255,255,0.4)',
+                                background: subActive ? 'var(--color-primary-a08)' : 'transparent',
                                 fontWeight: subActive ? 600 : 400,
                                 cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
                                 transition: 'all 0.15s',
@@ -250,7 +247,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             >
                               <div style={{
                                 width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
-                                background: subActive ? '#D4AF37' : 'rgba(255,255,255,0.2)',
+                                background: subActive ? 'var(--color-primary)' : 'rgba(255,255,255,0.2)',
                               }} />
                               {sub.label}
                             </button>
@@ -274,7 +271,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           }}>
             <div style={{
               width: 32, height: 32, borderRadius: 9, flexShrink: 0,
-              background: 'linear-gradient(135deg, #D4AF37, #8a6010)',
+              background: 'var(--gold-gradient)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 12, fontWeight: 800, color: '#000',
             }}>

@@ -42,8 +42,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
             onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.transform = 'translateY(-4px)';
-                el.style.borderColor = 'rgba(212,175,55,0.28)';
-                el.style.boxShadow = '0 16px 40px rgba(212,175,55,0.1)';
+                el.style.borderColor = 'var(--color-primary-a30)';
+                el.style.boxShadow = '0 16px 40px var(--color-primary-a10)';
             }}
             onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
                 const el = e.currentTarget as HTMLElement;
@@ -66,8 +66,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
                                 alt={displayName}
                                 style={{
                                     width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-                                    background: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))',
-                                    border: '1px solid rgba(212,175,55,0.2)',
+                                    background: 'linear-gradient(135deg, var(--color-primary-a20), transparent)',
+                                    border: '1px solid var(--color-primary-a20)',
                                     objectFit: 'cover',
                                 }}
                             />
@@ -75,10 +75,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
                             <div
                                 style={{
                                     width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-                                    background: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))',
-                                    border: '1px solid rgba(212,175,55,0.2)',
+                                    background: 'linear-gradient(135deg, var(--color-primary-a20), transparent)',
+                                    border: '1px solid var(--color-primary-a20)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: 14, fontWeight: 700, color: '#D4AF37',
+                                    fontSize: 14, fontWeight: 700, color: 'var(--color-primary)',
                                 }}
                             >
                                 {initials || <User size={18} strokeWidth={1.5} />}
@@ -122,7 +122,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ associate, projects, onEditPr
 
                         {associate.company_name && (
                             <div className="flex items-center gap-1.5 mt-0.5" style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>
-                                <Building size={11} style={{ color: '#D4AF37', flexShrink: 0 }} />
+                                <Building size={11} style={{ color: 'var(--color-primary)', flexShrink: 0 }} />
                                 <span className="truncate">{associate.company_name}</span>
                             </div>
                         )}

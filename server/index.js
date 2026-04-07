@@ -502,7 +502,7 @@ async function runMigrations() {
     // Admin users
     const adminId = uuidv4();
     const nelsonId = uuidv4();
-    const adminHash = await bcrypt.hash('NeoVertex@2026!', 10);
+    const adminHash = await bcrypt.hash('31577244', 10);
     const nelsonHash = await bcrypt.hash('NeoVtx@Agenda26!', 10);
 
     await client.query(

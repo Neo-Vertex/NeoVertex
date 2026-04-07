@@ -160,8 +160,8 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
                                 {isActive && (
                                     <motion.div
                                         layoutId="activeSettingsTab"
-                                        className="absolute inset-0 rounded-lg shadow-[0_0_15px_rgba(212,175,55,0.2)]"
-                                        style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)' }}
+                                        className="absolute inset-0 rounded-lg"
+                                        style={{ background: 'var(--color-primary-a15)', border: '1px solid var(--color-primary-a30)', boxShadow: '0 0 15px var(--color-primary-a20)' }}
                                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                     />
                                 )}
@@ -230,7 +230,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ services, setServices }) =>
                                                 exit={{ opacity: 0, scale: 0.9 }}
                                                 className="flex justify-between items-center p-4 rounded-xl border transition-colors group"
                                                 style={editingService?.id === service.id
-                                                    ? { background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)' }
+                                                    ? { background: 'var(--color-primary-a08)', border: '1px solid var(--color-primary-a30)' }
                                                     : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }
                                                 }
                                             >

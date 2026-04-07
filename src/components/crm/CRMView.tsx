@@ -54,7 +54,7 @@ const CRMView: React.FC<CRMViewProps> = ({ onConvertLead }) => {
                     </button>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        style={{ backgroundColor: '#D4AF37', color: '#556B2F' }}
+                        style={{ background: 'var(--color-primary)', color: '#000' }}
                         className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg hover:brightness-110"
                     >
                         <Plus size={16} color="#556B2F" /> NOVO LEAD

@@ -388,7 +388,7 @@ const AdminDashboard: React.FC = () => {
                                             <ChevronLeft size={16} />
                                         </button>
                                         <div className="flex items-center gap-2 px-4 py-2 card" style={{ borderRadius: 8, padding: '8px 16px' }}>
-                                            <CalendarIcon size={16} style={{ color: '#D4AF37' }} />
+                                            <CalendarIcon size={16} style={{ color: 'var(--color-primary)' }} />
                                             <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', color: '#fff', textTransform: 'uppercase' }}>
                                                 {selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
                                             </span>

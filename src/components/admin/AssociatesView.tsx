@@ -31,7 +31,7 @@ const AssociatesView: React.FC<AssociatesViewProps> = ({ associates, allProjects
         <div className="p-6 anim-fade-in">
             <div className="flex gap-3 mb-6">
                 <div className="relative flex-1">
-                    <Search size={14} aria-hidden={true} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'rgba(212,175,55,0.4)', pointerEvents: 'none' }} />
+                    <Search size={14} aria-hidden={true} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-primary-a40)', pointerEvents: 'none' }} />
                     <input
                         className="input-field" style={{ paddingLeft: 36 }}
                         placeholder="Buscar associado..." value={search} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}

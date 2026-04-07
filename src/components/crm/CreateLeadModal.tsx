@@ -93,7 +93,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
             <div className="bg-[#111111] w-full max-w-lg rounded-xl border border-white/10 shadow-2xl overflow-hidden relative">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b border-white/5 bg-gradient-to-r from-zinc-900 to-zinc-800">
-                    <h2 className="text-lg font-bold text-[#D4AF37] uppercase tracking-wider">Novo Lead</h2>
+                    <h2 className="text-lg font-bold text-[var(--color-primary)] uppercase tracking-wider">Novo Lead</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
                         <X size={20} />
                     </button>
@@ -107,7 +107,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                             type="text"
                             value={formData.name}
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                            className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                             placeholder="Ex: João Silva"
                         />
                     </div>
@@ -119,7 +119,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                 type="text"
                                 value={formData.company}
                                 onChange={e => setFormData({ ...formData, company: e.target.value })}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                                 placeholder="Empresa Ltda"
                             />
                         </div>
@@ -129,7 +129,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                 type="text"
                                 value={formData.position}
                                 onChange={e => setFormData({ ...formData, position: e.target.value })}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                                 placeholder="CEO / Diretor"
                             />
                         </div>
@@ -141,7 +141,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                     type="number"
                                     value={formData.value}
                                     onChange={e => setFormData({ ...formData, value: e.target.value })}
-                                    className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 pl-9 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                    className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 pl-9 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                                     placeholder="0.00"
                                 />
                             </div>
@@ -155,7 +155,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                 type="text"
                                 value={formData.address}
                                 onChange={e => setFormData({ ...formData, address: e.target.value })}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                                 placeholder="Rua..."
                             />
                         </div>
@@ -165,7 +165,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                 type="text"
                                 value={formData.country}
                                 onChange={e => setFormData({ ...formData, country: e.target.value })}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                                 placeholder="Brasil"
                             />
                         </div>
@@ -178,7 +178,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                 type="email"
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                                 placeholder="joao@email.com"
                             />
                         </div>
@@ -188,7 +188,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                 type="text"
                                 value={formData.phone}
                                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700"
                                 placeholder="(11) 99999-9999"
                             />
                         </div>
@@ -199,7 +199,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                         <textarea
                             value={formData.observation}
                             onChange={e => setFormData({ ...formData, observation: e.target.value })}
-                            className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700 min-h-[80px]"
+                            className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all placeholder:text-zinc-700 min-h-[80px]"
                             placeholder="Notas importantes sobre o lead..."
                         />
                     </div>
@@ -213,7 +213,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                                     setFormData({ ...formData, pipeline_id: e.target.value });
                                     loadStages(e.target.value);
                                 }}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all appearance-none"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all appearance-none"
                             >
                                 {pipelines.map(p => (
                                     <option key={p.id} value={p.id}>{p.name}</option>
@@ -225,7 +225,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                             <select
                                 value={formData.stage_id}
                                 onChange={e => setFormData({ ...formData, stage_id: e.target.value })}
-                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all appearance-none"
+                                className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-sm p-3 text-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none transition-all appearance-none"
                             >
                                 {stages.map(s => (
                                     <option key={s.id} value={s.id}>{s.name}</option>
@@ -245,7 +245,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({ onClose, onSuccess })
                         <button
                             type="submit"
                             disabled={loading}
-                            style={{ backgroundColor: '#D4AF37', color: '#000000' }}
+                            style={{ background: 'var(--color-primary)', color: '#000000' }}
                             className="px-8 py-2.5 rounded-sm text-xs font-bold uppercase tracking-wider shadow-lg hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-50"
                         >
                             {loading ? 'Salvando...' : <><Save size={16} /> Salvar Lead</>}

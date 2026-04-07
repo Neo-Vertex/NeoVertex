@@ -39,8 +39,8 @@ const LanguagesManager: React.FC = () => {
                         onClick={() => toggleLanguage(lang.code)}
                         className="card relative overflow-hidden cursor-pointer transition-all duration-300"
                         style={{
-                            border: lang.active ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(255,255,255,0.05)',
-                            background: lang.active ? 'rgba(212,175,55,0.08)' : undefined,
+                            border: lang.active ? '1px solid var(--color-primary-a30)' : '1px solid rgba(255,255,255,0.05)',
+                            background: lang.active ? 'var(--color-primary-a08)' : undefined,
                         }}
                     >
                         <div className="anim-shimmer" />
@@ -49,7 +49,7 @@ const LanguagesManager: React.FC = () => {
                                 <div
                                     className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold"
                                     style={lang.active
-                                        ? { background: 'linear-gradient(135deg,#D4AF37,#8a6010)', color: '#000' }
+                                        ? { background: 'var(--gold-gradient)', color: '#000' }
                                         : { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }
                                     }
                                 >

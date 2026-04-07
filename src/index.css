@@ -199,6 +199,9 @@ a { text-decoration: none; color: inherit; }
   --bg-elevated:         #111119;
   --border-gold-strong:  rgba(189,147,249,0.38);
   --gold-gradient:       linear-gradient(135deg, #bd93f9, #7c5cbf);
+
+  /* RGB channel for canvas/JS usage */
+  --color-primary-rgb:   189, 147, 249;
 }
 
 /* Scrollbar tinted */
@@ -254,6 +257,44 @@ a { text-decoration: none; color: inherit; }
   --bg-elevated: #0d0d18;
   --border-gold-strong: rgba(212,175,55,0.35);
   --gold-gradient: linear-gradient(135deg, #D4AF37, #8a6010);
+
+  /* RGB channel for canvas/JS usage */
+  --color-primary-rgb: 212, 175, 55;
+
+  /* Alpha variants for inline-style theming */
+  --color-primary-a04: rgba(212,175,55,0.04);
+  --color-primary-a06: rgba(212,175,55,0.06);
+  --color-primary-a08: rgba(212,175,55,0.08);
+  --color-primary-a10: rgba(212,175,55,0.10);
+  --color-primary-a12: rgba(212,175,55,0.12);
+  --color-primary-a15: rgba(212,175,55,0.15);
+  --color-primary-a20: rgba(212,175,55,0.20);
+  --color-primary-a25: rgba(212,175,55,0.25);
+  --color-primary-a30: rgba(212,175,55,0.30);
+  --color-primary-a40: rgba(212,175,55,0.40);
+  --color-primary-a50: rgba(212,175,55,0.50);
+  --color-primary-a55: rgba(212,175,55,0.55);
+  --color-primary-a60: rgba(212,175,55,0.60);
+  --color-primary-a85: rgba(212,175,55,0.85);
+  --color-sidebar-bg:  #07070f;
+}
+
+[data-theme="dracula"] {
+  --color-primary-a04: rgba(189,147,249,0.04);
+  --color-primary-a06: rgba(189,147,249,0.06);
+  --color-primary-a08: rgba(189,147,249,0.08);
+  --color-primary-a10: rgba(189,147,249,0.10);
+  --color-primary-a12: rgba(189,147,249,0.12);
+  --color-primary-a15: rgba(189,147,249,0.15);
+  --color-primary-a20: rgba(189,147,249,0.20);
+  --color-primary-a25: rgba(189,147,249,0.25);
+  --color-primary-a30: rgba(189,147,249,0.30);
+  --color-primary-a40: rgba(189,147,249,0.40);
+  --color-primary-a50: rgba(189,147,249,0.50);
+  --color-primary-a55: rgba(189,147,249,0.55);
+  --color-primary-a60: rgba(189,147,249,0.60);
+  --color-primary-a85: rgba(189,147,249,0.85);
+  --color-sidebar-bg:  #0a0a0a;
 }
 
 /* ── Buttons ── */

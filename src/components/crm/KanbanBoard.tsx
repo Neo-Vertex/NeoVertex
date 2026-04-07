@@ -144,7 +144,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ onConvertLead }) => {
                                         draggable
                                         onDragStart={() => handleDragStart(lead)}
                                         onClick={() => setSelectedLead(lead)}
-                                        className="bg-[#1a1a1a] p-3 rounded-sm border border-zinc-900 hover:border-[#D4AF37]/50 group cursor-pointer transition-all hover:shadow-[0_4px_20px_-1px_rgba(0,0,0,0.3)] active:cursor-grabbing"
+                                        className="bg-[#1a1a1a] p-3 rounded-sm border border-zinc-900 hover:border-[var(--color-primary-a50)] group cursor-pointer transition-all hover:shadow-[0_4px_20px_-1px_rgba(0,0,0,0.3)] active:cursor-grabbing"
                                     >
                                         <div className="flex justify-between items-start mb-2">
                                             <h4 className="font-bold text-gray-200 text-sm">{lead.name}</h4>

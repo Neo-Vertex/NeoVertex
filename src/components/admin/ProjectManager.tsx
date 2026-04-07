@@ -104,7 +104,7 @@ const ProjectStatusTimeline = ({
                     <motion.div
                         animate={{ left: `${progress * 100}%` }}
                         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 bg-[var(--color-primary)] rounded-full shadow-[0_0_15px_rgba(212,175,55,0.6)] flex items-center justify-center z-30"
+                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 bg-[var(--color-primary)] rounded-full shadow-[0_0_15px_var(--color-primary-a60)] flex items-center justify-center z-30"
                     >
                         <div className="w-1.5 h-1.5 bg-[#09090b] rounded-full" />
                     </motion.div>
@@ -876,11 +876,11 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 28, stiffness: 300 }}
                 className="fixed inset-y-0 right-0 w-full max-w-[95vw] md:max-w-[1600px] z-50 overflow-hidden flex flex-col"
-                style={{ background:'rgba(8,8,18,0.95)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderLeft:'1px solid rgba(212,175,55,0.15)', boxShadow:'0 40px 80px rgba(0,0,0,0.7)' }}
+                style={{ background:'rgba(8,8,18,0.95)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderLeft:'1px solid var(--color-primary-a15)', boxShadow:'0 40px 80px rgba(0,0,0,0.7)' }}
             >
                 {/* Cabeçalho */}
                 <div className="shrink-0 p-8 flex justify-between items-center z-10 sticky top-0"
-                  style={{ borderBottom:'1px solid rgba(212,175,55,0.08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
+                  style={{ borderBottom:'1px solid var(--color-primary-a08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
                 >
                     <div className="flex items-center gap-6">
                         <div className="relative group">
@@ -916,13 +916,13 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                 {/* Barra Superior de Abas e Estatísticas */}
                 <div className="shrink-0 flex items-center justify-between px-8 py-4 border-b border-white/5 bg-[#09090b]">
                     <div className="flex gap-4">
-                        <button onClick={() => setActiveTab('projects')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'projects' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
+                        <button onClick={() => setActiveTab('projects')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'projects' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_var(--color-primary-a30)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
                             Portfólio de Projetos
                         </button>
-                        <button onClick={() => setActiveTab('profile')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'profile' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
+                        <button onClick={() => setActiveTab('profile')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'profile' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_var(--color-primary-a30)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
                             Dados do Perfil
                         </button>
-                        <button onClick={() => setActiveTab('financial')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'financial' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
+                        <button onClick={() => setActiveTab('financial')} className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 border-2 ${activeTab === 'financial' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-white shadow-[0_0_15px_var(--color-primary-a30)]' : 'border-transparent bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white hover:border-white/10'}`}>
                             Financeiro
                         </button>
                     </div>
@@ -954,7 +954,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                 <h4 className="text-lg font-bold text-white flex items-center gap-2">
                                     <Briefcase size={20} className="text-[var(--color-primary)]" /> Meus Projetos
                                 </h4>
-                                <Button onClick={() => setIsAddingProject(!isAddingProject)} className="text-sm px-6 py-2.5 h-auto shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all">
+                                <Button onClick={() => setIsAddingProject(!isAddingProject)} className="text-sm px-6 py-2.5 h-auto shadow-[0_0_20px_var(--color-primary-a15)] hover:shadow-[0_0_30px_var(--color-primary-a30)] transition-all">
                                     <Plus size={16} className="mr-2" /> Novo Projeto
                                 </Button>
                             </div>
@@ -1268,20 +1268,20 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ associate, onClose, ini
                                     className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl flex flex-col"
                                     style={{
                                       background:'rgba(8,8,18,0.95)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)',
-                                      border:'1px solid rgba(212,175,55,0.15)',
+                                      border:'1px solid var(--color-primary-a15)',
                                       boxShadow:'0 40px 80px rgba(0,0,0,0.7)',
                                       animation:'scaleIn 0.3s cubic-bezier(0.16,1,0.3,1) both',
                                     }}
                                     onClick={e => e.stopPropagation()}
                                 >
                                     {/* Top shimmer line */}
-                                    <div style={{ position:'absolute', top:0, left:0, right:0, height:1, background:'linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent)' }} />
+                                    <div style={{ position:'absolute', top:0, left:0, right:0, height:1, background:'linear-gradient(90deg,transparent,var(--color-primary-a50),transparent)' }} />
                                     {/* Cabeçalho */}
                                     <div className="flex items-center justify-between p-6 sticky top-0 z-10"
-                                      style={{ borderBottom:'1px solid rgba(212,175,55,0.08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
+                                      style={{ borderBottom:'1px solid var(--color-primary-a08)', background:'rgba(8,8,18,0.95)', backdropFilter:'blur(12px)' }}
                                     >
                                         <div>
-                                            <h2 style={{ fontFamily:'Cinzel, serif', fontSize:14, fontWeight:700, color:'#D4AF37', letterSpacing:'0.1em' }}>
+                                            <h2 style={{ fontFamily:'Cinzel, serif', fontSize:14, fontWeight:700, color:'var(--color-primary)', letterSpacing:'0.1em' }}>
                                                 GERENCIAR PROJETO
                                             </h2>
                                             <p className="text-sm text-[var(--color-text-muted)] mt-1">{managingStagesProject.service}</p>

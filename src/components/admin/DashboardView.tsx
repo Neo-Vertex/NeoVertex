@@ -77,13 +77,13 @@ const DashboardView: React.FC<DashboardViewProps> = ({
                 {/* Chart panel */}
                 <div className="panel relative overflow-hidden anim-fade-up" style={{ animationDelay: '0.35s' }}>
                     <div className="anim-shimmer" />
-                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(212,175,55,0.55)', marginBottom: 16 }}>STATUS DOS PROJETOS</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--color-primary-a55)', marginBottom: 16 }}>STATUS DOS PROJETOS</div>
                     <div className="space-y-2">
                         {(['active', 'pending', 'completed', 'cancelled'] as const).map(status => {
                             const count = projects?.filter((p: any) => p.status === status)?.length ?? 0;
                             const total = projects?.length || 1;
                             const labels: Record<string, string> = { active: 'Ativos', pending: 'Pendentes', completed: 'Concluídos', cancelled: 'Cancelados' };
-                            const colors: Record<string, string> = { active: '#4ade80', pending: '#D4AF37', completed: '#60a5fa', cancelled: '#f87171' };
+                            const colors: Record<string, string> = { active: '#4ade80', pending: 'var(--color-primary)', completed: '#60a5fa', cancelled: '#f87171' };
                             return (
                                 <div key={status}>
                                     <div className="flex justify-between mb-1">
@@ -102,16 +102,16 @@ const DashboardView: React.FC<DashboardViewProps> = ({
                 {/* Recent activity */}
                 <div className="panel relative overflow-hidden anim-fade-up" style={{ animationDelay: '0.45s' }}>
                     <div className="anim-shimmer" />
-                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(212,175,55,0.55)', marginBottom: 16 }}>ASSOCIADOS RECENTES</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--color-primary-a55)', marginBottom: 16 }}>ASSOCIADOS RECENTES</div>
                     <div className="space-y-3">
                         {(associates || []).slice(0, 5).map((a: any, i: number) => (
                             <div key={a.id || i} className="flex items-center gap-3">
                                 <div style={{
                                     width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                                    background: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))',
-                                    border: '1px solid rgba(212,175,55,0.15)',
+                                    background: 'linear-gradient(135deg, var(--color-primary-a20), transparent)',
+                                    border: '1px solid var(--color-primary-a15)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: 11, fontWeight: 700, color: '#D4AF37',
+                                    fontSize: 11, fontWeight: 700, color: 'var(--color-primary)',
                                 }}>
                                     {(a.full_name || a.name || '?')[0]?.toUpperCase()}
                                 </div>
