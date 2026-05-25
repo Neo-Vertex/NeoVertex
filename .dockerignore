@@ -1,0 +1,30 @@
+# Arquivos e pastas que NAO devem ir para o container de producao.
+# Continuam versionados no Git, mas o Coolify/Nixpacks ignora no COPY.
+
+# Infra interna (workflows n8n, automacoes, scripts privados)
+n8n/
+
+# Pastas de trabalho e referencias internas
+brand/
+uploads/
+scraps/
+
+# Documentacao tecnica (nao precisa em prod)
+DOCUMENTACAO.md
+MIDIA-DESKTOP-PARTE-2-ANIMACAO.md
+MIDIA-MOBILE-PARTE-2-ANIMACAO.md
+
+# Git e CI
+.git/
+.github/
+.gitignore
+
+# Node e dev tooling
+node_modules/
+npm-debug.log*
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
