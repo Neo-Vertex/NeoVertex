@@ -10,12 +10,13 @@
 O projeto é uma **single-page application** estática que entrega:
 
 1. **Landing institucional** em PT-BR (hero, serviços, processo, cases, manifesto, formulário de contato).
-2. **Painel administrativo** privado (login local) com 5 módulos:
+2. **Painel administrativo** privado (login local) com 6 módulos:
    - **Leads (CRM)** — pipeline de prospects (Novo → Conversa → Proposta → Ganho/Perdido).
    - **Clientes** — base ativa, com mensalidade, dia de vencimento e perfil completo.
    - **Financeiro** — entradas e saídas, status pago/pendente, totais, MRR.
    - **Agenda** — compromissos com visões Lista e Mês.
    - **Tarefas** — afazeres pessoais e por cliente, com prioridade e prazo.
+   - **Configurações** — dados de integração e chaves do analytics do Umami.
 
 Toda a informação do painel é persistida no **`localStorage`** do navegador — não há backend nesta versão.
 
@@ -114,6 +115,7 @@ Todas as chaves usam o padrão kebab-case versionado `nv-<entidade>-v1`. Os hook
 | `NV_TASKS` | `nv-tasks-v1` | tarefas pessoais e por cliente |
 | `NV_NOTES` | `nv-notes-v1` | mapa `{ [clienteId]: textoNota }` |
 | `NV_PROJECTS` | `nv-projects-v1` | timeline de entregas por cliente |
+| `NV_UMAMI_CONFIG` | `nv-umami-config-v1` | configurações da integração do Umami Analytics (URL e ID) |
 
 > O `sessionStorage` é usado apenas para `nv-intro-seen` (controla se a apresentação inicial já tocou nesta sessão).
 
