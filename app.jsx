@@ -1196,16 +1196,8 @@ function Intro({ onDone }) {
 /* ────────────── APP ────────────── */
 function App() {
   useReveal();
-  const [showIntro, setShowIntro] = useState(() => {
-    try { return sessionStorage.getItem('nv-intro-seen') !== '1'; } catch { return true; }
-  });
-  const dismissIntro = () => {
-    try { sessionStorage.setItem('nv-intro-seen', '1'); } catch {}
-    setShowIntro(false);
-  };
   return (
     <>
-      {showIntro && <Intro onDone={dismissIntro}/>}
       <Nav />
       <main>
         <Hero />
