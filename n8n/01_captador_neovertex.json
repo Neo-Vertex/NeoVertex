@@ -1,0 +1,1332 @@
+{
+  "name": "01. Captador Neo Vertex",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ba5dfe9c-dc78-4a7d-b304-56afa771ec77",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        260,
+        700
+      ],
+      "id": "10000000-0001-4001-8001-000000000001",
+      "name": "Mensagem recebida",
+      "webhookId": "ba5dfe9c-dc78-4a7d-b304-56afa771ec77"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10000000-0a01-4a01-8a01-000000000001",
+              "name": "url_chatwoot",
+              "value": "https://chatwoot.neovertexia.com",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a02-4a02-8a02-000000000002",
+              "name": "id_conta",
+              "value": "=1",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a03-4a03-8a03-000000000003",
+              "name": "id_inbox",
+              "value": "=5",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a04-4a04-8a04-000000000004",
+              "name": "owner_whatsapp",
+              "value": "+5521972808355",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a05-4a05-8a05-000000000005",
+              "name": "id_conversa",
+              "value": "={{ $json.body.conversation ? $json.body.conversation.id : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a06-4a06-8a06-000000000006",
+              "name": "id_contato",
+              "value": "={{ $json.body.sender ? $json.body.sender.id : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a07-4a07-8a07-000000000007",
+              "name": "telefone",
+              "value": "={{ $json.body.sender ? $json.body.sender.phone_number : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a08-4a08-8a08-000000000008",
+              "name": "nome",
+              "value": "={{ $json.body.sender ? ($json.body.sender.name || '') : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a09-4a09-8a09-000000000009",
+              "name": "mensagem",
+              "value": "={{ $json.body.content || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a0a-4a0a-8a0a-00000000000a",
+              "name": "tipo",
+              "value": "={{ $json.body.message_type || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a0b-4a0b-8a0b-00000000000b",
+              "name": "evento",
+              "value": "={{ $json.body.event || $json.body.event_type || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a0c-4a0c-8a0c-00000000000c",
+              "name": "inbox_recebida",
+              "value": "={{ $json.body.inbox ? $json.body.inbox.id : ($json.body.conversation ? $json.body.conversation.inbox_id : '') }}",
+              "type": "string"
+            },
+            {
+              "id": "10000000-0a0d-4a0d-8a0d-00000000000d",
+              "name": "etiquetas",
+              "value": "={{ $json.body.conversation && $json.body.conversation.labels ? $json.body.conversation.labels : [] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        700
+      ],
+      "id": "10000000-0002-4002-8002-000000000002",
+      "name": "Info"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "10000000-0b01-4b01-8b01-000000000001",
+              "leftValue": "={{ $json.evento }}",
+              "rightValue": "message_created",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "10000000-0b02-4b02-8b02-000000000002",
+              "leftValue": "={{ $json.tipo }}",
+              "rightValue": "incoming",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "10000000-0b03-4b03-8b03-000000000003",
+              "leftValue": "={{ String($json.inbox_recebida) }}",
+              "rightValue": "5",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "10000000-0b04-4b04-8b04-000000000004",
+              "leftValue": "={{ $json.etiquetas }}",
+              "rightValue": "agente-off",
+              "operator": {
+                "type": "array",
+                "operation": "notContains",
+                "rightType": "any"
+              }
+            },
+            {
+              "id": "10000000-0b05-4b05-8b05-000000000005",
+              "leftValue": "={{ $json.mensagem }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        700,
+        700
+      ],
+      "id": "10000000-0003-4003-8003-000000000003",
+      "name": "Processar mensagem?"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nv_fila_mensagens",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Info').item.json.telefone }}",
+            "conteudo": "={{ $('Info').item.json.mensagem }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "conteudo",
+              "displayName": "conteudo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "criado_em",
+              "displayName": "criado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        920,
+        700
+      ],
+      "id": "10000000-0004-4004-8004-000000000004",
+      "name": "Enfileirar mensagem"
+    },
+    {
+      "parameters": {
+        "amount": 8
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1140,
+        700
+      ],
+      "id": "10000000-0005-4005-8005-000000000005",
+      "name": "Debounce 8s",
+      "webhookId": "nv-debounce-webhook"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nv_fila_mensagens",
+          "mode": "list"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "telefone",
+              "value": "={{ $('Info').item.json.telefone }}"
+            }
+          ]
+        },
+        "sort": {
+          "values": [
+            {
+              "column": "criado_em"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1360,
+        700
+      ],
+      "id": "10000000-0006-4006-8006-000000000006",
+      "name": "Buscar fila completa"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detecta mensagens encavaladas. Se chegou mensagem nova depois desta\n// execução (id maior do que a última do payload original), aborta.\nconst itens = $input.all();\nif (itens.length === 0) return [];\n\nconst ultimoIdFila = Math.max(...itens.map(i => Number(i.json.id) || 0));\n\n// Recupera o id da mensagem que iniciou esta execução\nconst inicial = $('Enfileirar mensagem').first();\nconst idInicial = inicial && inicial.json && inicial.json.id ? Number(inicial.json.id) : 0;\n\n// Se a última mensagem na fila tem id maior do que a inicial e não somos nós\n// o último item, deixa a execução mais recente cuidar de tudo.\nif (ultimoIdFila > idInicial) {\n  // Mensagem encavalada — sai sem produzir itens\n  return [];\n}\n\n// Concatena conteúdo em uma única string para passar ao agente\nconst mensagemConcat = itens\n  .map(i => i.json.conteudo)\n  .filter(Boolean)\n  .join('\\n');\n\nreturn [{ json: { mensagem: mensagemConcat, total_itens: itens.length, telefone: itens[0].json.telefone } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1580,
+        700
+      ],
+      "id": "10000000-0007-4007-8007-000000000007",
+      "name": "Mensagem encavalada?"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nv_status_atendimento",
+          "mode": "list"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "telefone",
+              "value": "={{ $('Info').item.json.telefone }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1800,
+        700
+      ],
+      "id": "10000000-0008-4008-8008-000000000008",
+      "name": "Verificar status atendimento",
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "10000000-0c01-4c01-8c01-000000000001",
+              "leftValue": "={{ $json.isEmpty ? $json.isEmpty() : !$json.lock_conversa }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "10000000-0c02-4c02-8c02-000000000002",
+              "leftValue": "={{ $json.agente_pausado === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2020,
+        700
+      ],
+      "id": "10000000-0009-4009-8009-000000000009",
+      "name": "Pode responder?"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nv_status_atendimento",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Info').item.json.telefone }}",
+            "lock_conversa": true,
+            "atualizado_em": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "telefone"
+          ],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lock_conversa",
+              "displayName": "lock_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "agente_pausado",
+              "displayName": "agente_pausado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2240,
+        700
+      ],
+      "id": "10000000-000a-400a-800a-00000000000a",
+      "name": "Travar conversa"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Mensagem encavalada?').item.json.mensagem }}",
+        "options": {
+          "systemMessage": "=<papel>\nVocê é o assistente virtual oficial da Neo Vertex no WhatsApp. Sua missão é receber leads que chegam pelo número da empresa, entender brevemente a demanda e SEMPRE buscar marcar uma conversa com a equipe humana. Você fala em nome da empresa — usa NÓS, nunca primeira pessoa singular.\n</papel>\n\n<personalidade>\n- Profissional, acolhedora, concisa.\n- Sem jargão técnico desnecessário.\n- Sem emoji decorativo. Sem markdown decorativo. Sem caixa alta para gritar.\n- Voz da Neo Vertex: \"nós, a Neo Vertex\" — nunca \"eu\".\n- Direto ao ponto, sem floreio. O lead está com pressa.\n- Mensagens curtas. Cada resposta cabe em poucas frases.\n</personalidade>\n\n<servicos>\nA Neo Vertex é uma software house brasileira. Mais de 150 projetos entregues. Atendimento global em PT-BR, EN, ES e FR.\n\nOs 6 serviços do site (somente estes estão em escopo):\n1. Sistemas sob medida — ERPs, CRMs, plataformas internas, sistemas web e mobile do zero.\n2. Central de atendimento unificada — WhatsApp, e-mail, redes sociais em uma só caixa de entrada, com automação e IA.\n3. Automação inteligente — agentes IA, workflows n8n, integração entre ferramentas, eliminação de trabalho manual.\n4. Sistemas verticais — soluções específicas para advocacia, saúde e beleza.\n5. Consultoria em tecnologia — diagnóstico técnico, escolha de stack, arquitetura, revisão de projetos.\n6. Manutenção de sistema existente — bugfix, evolução, refatoração, escalabilidade.\n\nFora desses 6: design gráfico puro, marketing/tráfego pago, social media, hardware, infraestrutura física — NÃO É ESCOPO. Educar e escalar com motivo \"fora_escopo\".\n</servicos>\n\n<diferenciais>\n- Diagnóstico sem compromisso: a primeira conversa sai com escopo + prazo estimado + orçamento estimado.\n- Sem deck genérico, sem proposta padrão. Cada projeto é avaliado individualmente.\n- Atendimento humano em PT-BR, EN, ES, FR.\n- Tagline: \"Reach your Peak — Alcance o seu Topo.\"\n</diferenciais>\n\n<sop>\n1. Cumprimentar com simpatia. Pedir contexto: nome, empresa e qual a dor/objetivo.\n2. Validar fit. Se cai num dos 6 serviços: segue. Se não: educa em uma frase e usa Escalar_humano motivo=fora_escopo.\n3. SEMPRE tentar marcar reunião. Sugere 2 ou 3 horários genéricos usando a tool Sugerir_horario. Exemplo: \"Posso te encaixar amanhã às 10h, quinta às 15h ou sexta às 11h. Qual fica melhor?\"\n4. Se o lead aceitar um horário: usa Escalar_humano motivo=horario_marcado, passando o horário escolhido em horario_sugerido. NÃO confirme o horário com o lead — diga apenas \"Show, vamos encaixar. Nossa equipe confirma em instantes por aqui.\"\n5. Se o lead pedir orçamento, preço, prazo fechado: responde \"Pra passar um número certo, nossa equipe precisa entender melhor o caso. Por isso a conversa rápida.\" → tentativa de marcar.\n6. Se o lead pedir falar com humano / atendente / responsável: usa Escalar_humano motivo=pedido_humano.\n7. Se o lead for desrespeitoso ou usar linguagem ofensiva: UMA única resposta cordial pedindo respeito. Se persistir: Escalar_humano motivo=desrespeito.\n8. NUNCA dar preço fechado, NUNCA prometer prazo, NUNCA falar mal de concorrente, NUNCA inventar números (\"R$ X\", \"em Y semanas\") sem a equipe ter analisado.\n</sop>\n\n<ferramentas>\n<ferramenta id=\"Sugerir_horario\">\nRetorna 3 horários genéricos sugeridos (dias úteis, entre 9h e 18h, nos próximos 5 dias úteis). Use ANTES de oferecer horários no texto, pra não inventar dia/hora aleatório.\n</ferramenta>\n\n<ferramenta id=\"Escalar_humano\">\nUse SOMENTE quando:\n- O lead aceitou um horário (motivo=horario_marcado, passar horario_sugerido)\n- O lead pediu falar com humano (motivo=pedido_humano)\n- Demanda fora dos 6 serviços (motivo=fora_escopo)\n- Lead desrespeitoso após uma chance (motivo=desrespeito)\n\nSempre passar um resumo_conversa de 2 a 3 linhas com os pontos chave.\n</ferramenta>\n\n<ferramenta id=\"Refletir\">\nUse antes de tomar decisões delicadas (escalar, classificar fit, escolher tom de resposta).\n</ferramenta>\n</ferramentas>\n\n<validacoes>\n- NUNCA prometer prazo (\"entregamos em 30 dias\") sem a equipe avaliar.\n- NUNCA dar preço fechado (\"custa R$ 5.000\").\n- NUNCA falar em primeira pessoa singular. Sempre NÓS / a Neo Vertex / nossa equipe.\n- NUNCA usar emoji decorativo. Marcadores como ✓ ou ✕ podem aparecer no MÁXIMO em listas técnicas curtas — evite mesmo assim.\n- NUNCA expor problemas técnicos ao lead.\n- NUNCA inventar profissionais ou nomes de pessoas da equipe.\n</validacoes>\n\n<exemplos>\n## Exemplo 1: Lead novo entrando\nLead: oi, vi vocês no Instagram\nAgente: Olá! Aqui é da Neo Vertex. Tudo bem? Pra te orientar direitinho, pode nos contar seu nome, empresa e o que você está buscando resolver?\n\n## Exemplo 2: Lead pedindo automação\nLead: tô precisando automatizar uns processos no meu escritório de advocacia\nAgente: Perfeito, esse é exatamente um dos nossos focos — temos linha específica pra advocacia e bastante automação rodando.\nPra entender o seu caso e já voltar com um diagnóstico, vamos marcar uma conversa rápida?\n(Em seguida: chama Sugerir_horario e oferece 2-3 opções)\n\n## Exemplo 3: Lead aceita horário\nLead: amanhã 10h tá ótimo\nAgente: (chama Escalar_humano com motivo=horario_marcado, horario_sugerido=\"amanhã 10h\")\nShow, vamos encaixar. Nossa equipe confirma em instantes por aqui pra você.\n\n## Exemplo 4: Lead pede preço\nLead: quanto custa um sistema?\nAgente: Depende muito do escopo — cada projeto é avaliado individualmente. Pra passar um número certo, nossa equipe precisa entender melhor o caso. Que tal uma conversa rápida pra fechar um diagnóstico?\n(Em seguida: oferece horários)\n\n## Exemplo 5: Fora de escopo\nLead: vocês fazem design de logo?\nAgente: Logo e design gráfico puro não é a nossa praia — a Neo Vertex foca em software, automação e sistemas. Vou passar pra equipe te orientar sobre indicações, ok?\n(Em seguida: chama Escalar_humano motivo=fora_escopo)\n\n## Exemplo 6: Pede humano direto\nLead: quero falar com alguém de verdade\nAgente: Claro, vou chamar agora.\n(Em seguida: chama Escalar_humano motivo=pedido_humano)\n</exemplos>\n\n<casos-especiais>\n## Idioma do lead\nResponda no idioma que o lead usar (PT, EN, ES, FR). Se misturado, segue em PT-BR.\n\n## Lead manda só \"oi\" ou figurinha\nResponda pedindo contexto, sem fazer rodeio.\n\n## Lead manda áudio (não temos transcrição)\nPede pra digitar: \"Pra agilizar, pode mandar por texto? Assim conseguimos te responder mais rápido.\"\n\n## Lead com pressa / urgência\nNão prometa SLA. Use Escalar_humano motivo=pedido_humano.\n\n## Lead que já é cliente\nSe mencionar que é cliente / projeto em andamento, escalar (pedido_humano) — não é o seu papel.\n</casos-especiais>\n\n<informacoes-sistema>\nData e hora atual: {{ $now.format('FFFF') }}\nTelefone do lead: {{ $('Info').item.json.telefone }}\nNome registrado (se houver): {{ $('Info').item.json.nome }}\nID da conversa Chatwoot: {{ $('Info').item.json.id_conversa }}\n</informacoes-sistema>\n",
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2460,
+        700
+      ],
+      "id": "10000000-000b-400b-800b-00000000000b",
+      "name": "Agente Neo Vertex",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2300,
+        940
+      ],
+      "id": "10000000-000c-400c-800c-00000000000c",
+      "name": "Modelo principal GPT-4.1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Info').item.json.telefone }}",
+        "tableName": "nv_historico_mensagens",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2440,
+        940
+      ],
+      "id": "10000000-000d-400d-800d-00000000000d",
+      "name": "Memória Postgres"
+    },
+    {
+      "parameters": {
+        "description": "Use essa ferramenta para refletir sobre algo. Ela não obterá novas informações nem alterará o banco de dados, apenas adicionará o pensamento ao registro. Use sempre antes de decidir escalar a conversa, classificar o fit do lead, ou escolher o tom de resposta."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        2580,
+        940
+      ],
+      "id": "10000000-000e-400e-800e-00000000000e",
+      "name": "Refletir"
+    },
+    {
+      "parameters": {
+        "description": "Retorna 3 sugestões de horário genéricos para ofertar ao lead. Cada sugestão é um horário entre 9h e 18h em um dia útil dos próximos 5 dias úteis. Use sempre que precisar oferecer horários — não invente dia ou hora.",
+        "workflowId": {
+          "__rl": true,
+          "value": "NVSugerirHorarioId",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2720,
+        940
+      ],
+      "id": "10000000-000f-400f-800f-00000000000f",
+      "name": "Sugerir_horario"
+    },
+    {
+      "parameters": {
+        "description": "Use esta ferramenta para escalar o atendimento para o Nelson (dono da Neo Vertex). Use SOMENTE quando: o lead aceitou um horário (motivo=horario_marcado), o lead pediu falar com humano (motivo=pedido_humano), a demanda está fora dos 6 serviços (motivo=fora_escopo), ou o lead foi desrespeitoso após uma chance (motivo=desrespeito). Sempre informe um resumo_conversa curto (2 a 3 linhas).",
+        "workflowId": {
+          "__rl": true,
+          "value": "NV02EscalarHumanoId",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Info').item.json.telefone }}",
+            "nome": "={{ $('Info').item.json.nome }}",
+            "motivo": "={{ $fromAI('motivo', 'Motivo da escalada. Valores permitidos: pedido_humano, horario_marcado, fora_escopo, desrespeito.', 'string') }}",
+            "resumo_conversa": "={{ $fromAI('resumo_conversa', 'Resumo curto da conversa (2 a 3 linhas) com os pontos chave: o que o lead quer, fit, etc.', 'string') }}",
+            "horario_sugerido": "={{ $fromAI('horario_sugerido', 'Horário escolhido pelo lead, se motivo=horario_marcado. Caso contrário, deixe vazio.', 'string') }}",
+            "id_conta": "={{ $('Info').item.json.id_conta }}",
+            "id_conversa": "={{ $('Info').item.json.id_conversa }}",
+            "url_chatwoot": "={{ $('Info').item.json.url_chatwoot }}",
+            "owner_whatsapp": "={{ $('Info').item.json.owner_whatsapp }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "resumo_conversa",
+              "displayName": "resumo_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "horario_sugerido",
+              "displayName": "horario_sugerido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "id_conta",
+              "displayName": "id_conta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "id_conversa",
+              "displayName": "id_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "url_chatwoot",
+              "displayName": "url_chatwoot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "owner_whatsapp",
+              "displayName": "owner_whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2860,
+        940
+      ],
+      "id": "10000000-0010-4010-8010-000000000010",
+      "name": "Escalar_humano"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "10000000-0d01-4d01-8d01-000000000001",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "10000000-0d02-4d02-8d02-000000000002",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "Agent stopped due to max iterations.",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2920,
+        700
+      ],
+      "id": "10000000-0011-4011-8011-000000000011",
+      "name": "Output válido?"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "NV03QuebrarEnviarId",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "mensagem": "={{ $('Agente Neo Vertex').item.json.output }}",
+            "url_chatwoot": "={{ $('Info').item.json.url_chatwoot }}",
+            "id_conta": "={{ $('Info').item.json.id_conta }}",
+            "id_conversa": "={{ $('Info').item.json.id_conversa }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "url_chatwoot",
+              "displayName": "url_chatwoot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "id_conta",
+              "displayName": "id_conta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "id_conversa",
+              "displayName": "id_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        3160,
+        620
+      ],
+      "id": "10000000-0012-4012-8012-000000000012",
+      "name": "Quebrar e enviar resposta"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nv_fila_mensagens",
+          "mode": "list"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "telefone",
+              "value": "={{ $('Info').item.json.telefone }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3400,
+        620
+      ],
+      "id": "10000000-0013-4013-8013-000000000013",
+      "name": "Limpar fila"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nv_status_atendimento",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Info').item.json.telefone }}",
+            "lock_conversa": false,
+            "atualizado_em": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "telefone"
+          ],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lock_conversa",
+              "displayName": "lock_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "agente_pausado",
+              "displayName": "agente_pausado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3620,
+        620
+      ],
+      "id": "10000000-0014-4014-8014-000000000014",
+      "name": "Liberar lock"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"status\": \"ok\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3840,
+        620
+      ],
+      "id": "10000000-0015-4015-8015-000000000015",
+      "name": "Responder OK"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nv_status_atendimento",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Info').item.json.telefone }}",
+            "lock_conversa": false,
+            "atualizado_em": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "telefone"
+          ],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lock_conversa",
+              "displayName": "lock_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3160,
+        820
+      ],
+      "id": "10000000-0016-4016-8016-000000000016",
+      "name": "Liberar lock (output inválido)"
+    },
+    {
+      "parameters": {
+        "content": "## 01. Captador Neo Vertex\n\nWorkflow principal. Recebe o webhook do Chatwoot com cada mensagem nova, faz debounce, consulta o agente IA da Neo Vertex e responde no WhatsApp do lead via Baileys (Chatwoot).\n\nEstratégia:\n1. Webhook -> Info (extrai dados do payload Chatwoot)\n2. Filtra: só processa message_created + incoming + inbox 5 + sem etiqueta agente-off\n3. Enfileira a mensagem em nv_fila_mensagens\n4. Aguarda 8s (debounce — agrupa mensagens fragmentadas do lead)\n5. Busca a fila do telefone e detecta mensagem encavalada\n6. Verifica lock + pausa em nv_status_atendimento\n7. Trava conversa, chama o agente (gpt-4.1, memória Postgres nv_historico_mensagens)\n8. Quebra a resposta humanizada e envia via sub-workflow 03\n9. Limpa fila, libera lock, responde 200 OK\n\nTrocar UUIDs dos sub-workflows nas tools \"Escalar_humano\", \"Sugerir_horario\" e no node \"Quebrar e enviar resposta\" pelos IDs reais após importar.",
+        "height": 420,
+        "width": 800,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        140
+      ],
+      "id": "10000000-0017-4017-8017-000000000017",
+      "name": "Sticky Note Header"
+    },
+    {
+      "parameters": {
+        "content": "## Tratar input + filtrar",
+        "height": 420,
+        "width": 700,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        580
+      ],
+      "id": "10000000-0018-4018-8018-000000000018",
+      "name": "Sticky Note Input"
+    },
+    {
+      "parameters": {
+        "content": "## Debounce + dedup + lock",
+        "height": 420,
+        "width": 1380,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        960,
+        580
+      ],
+      "id": "10000000-0019-4019-8019-000000000019",
+      "name": "Sticky Note Debounce"
+    },
+    {
+      "parameters": {
+        "content": "## Agente Neo Vertex",
+        "height": 480,
+        "width": 700,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        580
+      ],
+      "id": "10000000-001a-401a-801a-00000000001a",
+      "name": "Sticky Note Agente"
+    },
+    {
+      "parameters": {
+        "content": "## Enviar resposta + finalizar",
+        "height": 420,
+        "width": 920,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3080,
+        580
+      ],
+      "id": "10000000-001b-401b-801b-00000000001b",
+      "name": "Sticky Note Finalizar"
+    },
+    {
+      "parameters": {
+        "content": "## Pendência: criar workflow auxiliar \"Sugerir_horario\"\n\nApós importar, crie um workflow novo MUITO simples:\n- Trigger: executeWorkflowTrigger (sem inputs)\n- 1 node Code que devolve 3 horários genéricos úteis (9h-18h, dias úteis, próximos 5 dias úteis)\n- Copie o ID do workflow e cole na tool `Sugerir_horario` deste workflow.\n\nExemplo de Code:\n```\nconst hoje = new Date();\nconst dias = [];\nlet d = new Date(hoje);\nwhile (dias.length < 5) {\n  d.setDate(d.getDate() + 1);\n  const wd = d.getDay();\n  if (wd !== 0 && wd !== 6) dias.push(new Date(d));\n}\nconst horas = [10, 14, 16];\nconst nomesDia = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];\nconst sugestoes = dias.slice(0,3).map((dt,i) => `${nomesDia[dt.getDay()]} ${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')} às ${horas[i]}h`);\nreturn [{ json: { sugestoes } }];\n```",
+        "height": 540,
+        "width": 540,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2720,
+        1120
+      ],
+      "id": "10000000-001c-401c-801c-00000000001c",
+      "name": "Sticky Note Sugerir Horario"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Mensagem recebida": {
+      "main": [
+        [
+          {
+            "node": "Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info": {
+      "main": [
+        [
+          {
+            "node": "Processar mensagem?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar mensagem?": {
+      "main": [
+        [
+          {
+            "node": "Enfileirar mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enfileirar mensagem": {
+      "main": [
+        [
+          {
+            "node": "Debounce 8s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Debounce 8s": {
+      "main": [
+        [
+          {
+            "node": "Buscar fila completa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar fila completa": {
+      "main": [
+        [
+          {
+            "node": "Mensagem encavalada?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem encavalada?": {
+      "main": [
+        [
+          {
+            "node": "Verificar status atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar status atendimento": {
+      "main": [
+        [
+          {
+            "node": "Pode responder?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pode responder?": {
+      "main": [
+        [
+          {
+            "node": "Travar conversa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Travar conversa": {
+      "main": [
+        [
+          {
+            "node": "Agente Neo Vertex",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modelo principal GPT-4.1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Neo Vertex",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memória Postgres": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Neo Vertex",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refletir": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Neo Vertex",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sugerir_horario": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Neo Vertex",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalar_humano": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Neo Vertex",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Neo Vertex": {
+      "main": [
+        [
+          {
+            "node": "Output válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output válido?": {
+      "main": [
+        [
+          {
+            "node": "Quebrar e enviar resposta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Liberar lock (output inválido)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quebrar e enviar resposta": {
+      "main": [
+        [
+          {
+            "node": "Limpar fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpar fila": {
+      "main": [
+        [
+          {
+            "node": "Liberar lock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Liberar lock": {
+      "main": [
+        [
+          {
+            "node": "Responder OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "00000000-0000-4000-8000-000000000010",
+  "meta": {
+    "instanceId": "neovertex-instance"
+  },
+  "id": "NV01CaptadorBaseId",
+  "tags": []
+}

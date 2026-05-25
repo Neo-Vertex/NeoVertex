@@ -1,0 +1,506 @@
+{
+  "name": "00. Configurações - Neo Vertex",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        400,
+        600
+      ],
+      "id": "a1c4f5e6-1111-4111-8111-111111111111",
+      "name": "Rodar configuração"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11111111-aaaa-4aaa-8aaa-111111111111",
+              "name": "url_chatwoot",
+              "value": "https://chatwoot.neovertexia.com",
+              "type": "string"
+            },
+            {
+              "id": "22222222-aaaa-4aaa-8aaa-222222222222",
+              "name": "id_conta",
+              "value": "=1",
+              "type": "string"
+            },
+            {
+              "id": "33333333-aaaa-4aaa-8aaa-333333333333",
+              "name": "id_inbox",
+              "value": "=5",
+              "type": "string"
+            },
+            {
+              "id": "44444444-aaaa-4aaa-8aaa-444444444444",
+              "name": "owner_whatsapp",
+              "value": "+5521972808355",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        600
+      ],
+      "id": "b2c4f5e6-2222-4222-8222-222222222222",
+      "name": "Info"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Tabela de memória do agente (compatível com memoryPostgresChat do langchain)\nCREATE TABLE IF NOT EXISTS nv_historico_mensagens (\n  id          SERIAL PRIMARY KEY,\n  session_id  TEXT NOT NULL,\n  message     JSONB NOT NULL\n);\n\nCREATE INDEX IF NOT EXISTS idx_nv_historico_mensagens_session_id\n  ON nv_historico_mensagens (session_id);\n\n-- Fila de mensagens recebidas (debounce)\nCREATE TABLE IF NOT EXISTS nv_fila_mensagens (\n  id         SERIAL PRIMARY KEY,\n  telefone   TEXT NOT NULL,\n  conteudo   TEXT NOT NULL,\n  criado_em  TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\n\nCREATE INDEX IF NOT EXISTS idx_nv_fila_mensagens_telefone\n  ON nv_fila_mensagens (telefone);\n\nCREATE INDEX IF NOT EXISTS idx_nv_fila_mensagens_criado_em\n  ON nv_fila_mensagens (criado_em);\n\n-- Status de atendimento por contato (lock + flags)\nCREATE TABLE IF NOT EXISTS nv_status_atendimento (\n  telefone        TEXT PRIMARY KEY,\n  lock_conversa   BOOLEAN NOT NULL DEFAULT FALSE,\n  agente_pausado  BOOLEAN NOT NULL DEFAULT FALSE,\n  atualizado_em   TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\n\n-- CRM leve - leads que passaram pelo agente\nCREATE TABLE IF NOT EXISTS nv_leads (\n  id                SERIAL PRIMARY KEY,\n  telefone          TEXT NOT NULL,\n  nome              TEXT,\n  empresa           TEXT,\n  area_interesse    TEXT,\n  motivo_escala     TEXT,\n  horario_sugerido  TEXT,\n  criado_em         TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\n\nCREATE INDEX IF NOT EXISTS idx_nv_leads_telefone\n  ON nv_leads (telefone);\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        880,
+        400
+      ],
+      "id": "c3c4f5e6-3333-4333-8333-333333333333",
+      "name": "Criar tabelas Postgres"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info').item.json.id_conta }}/labels",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "agente-off"
+            },
+            {
+              "name": "description",
+              "value": "Desabilita o agente IA da Neo Vertex para esta conversa."
+            },
+            {
+              "name": "color",
+              "value": "#FF0000"
+            },
+            {
+              "name": "show_on_sidebar",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        600
+      ],
+      "id": "d4c4f5e6-4444-4444-8444-444444444444",
+      "name": "Criar etiqueta agente-off",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info').item.json.id_conta }}/labels",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "testando-agente"
+            },
+            {
+              "name": "description",
+              "value": "Marca conversas em modo de teste do agente Neo Vertex."
+            },
+            {
+              "name": "color",
+              "value": "#39EB08"
+            },
+            {
+              "name": "show_on_sidebar",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        600
+      ],
+      "id": "e5c4f5e6-5555-4555-8555-555555555555",
+      "name": "Criar etiqueta testando-agente",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info').item.json.id_conta }}/labels",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "lead-novo"
+            },
+            {
+              "name": "description",
+              "value": "Lead recém capturado pelo agente."
+            },
+            {
+              "name": "color",
+              "value": "#1F93FF"
+            },
+            {
+              "name": "show_on_sidebar",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        600
+      ],
+      "id": "f6c4f5e6-6666-4666-8666-666666666666",
+      "name": "Criar etiqueta lead-novo",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info').item.json.id_conta }}/labels",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "aguardando-horario"
+            },
+            {
+              "name": "description",
+              "value": "Lead escolheu um horário e está aguardando confirmação do Nelson."
+            },
+            {
+              "name": "color",
+              "value": "#FFB100"
+            },
+            {
+              "name": "show_on_sidebar",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        600
+      ],
+      "id": "07c4f5e6-7777-4777-8777-777777777777",
+      "name": "Criar etiqueta aguardando-horario",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info').item.json.id_conta }}/labels",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "pediu-humano"
+            },
+            {
+              "name": "description",
+              "value": "Lead pediu para falar com um humano."
+            },
+            {
+              "name": "color",
+              "value": "#9333EA"
+            },
+            {
+              "name": "show_on_sidebar",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        600
+      ],
+      "id": "18c4f5e6-8888-4888-8888-888888888888",
+      "name": "Criar etiqueta pediu-humano",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info').item.json.id_conta }}/labels",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "fora-escopo"
+            },
+            {
+              "name": "description",
+              "value": "Lead com demanda fora dos serviços da Neo Vertex."
+            },
+            {
+              "name": "color",
+              "value": "#6B7280"
+            },
+            {
+              "name": "show_on_sidebar",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2080,
+        600
+      ],
+      "id": "29c4f5e6-9999-4999-8999-999999999999",
+      "name": "Criar etiqueta fora-escopo",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info').item.json.id_conta }}/labels",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "desrespeito"
+            },
+            {
+              "name": "description",
+              "value": "Lead foi desrespeitoso ou ofensivo."
+            },
+            {
+              "name": "color",
+              "value": "#7F1D1D"
+            },
+            {
+              "name": "show_on_sidebar",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        600
+      ],
+      "id": "3ac4f5e6-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "name": "Criar etiqueta desrespeito",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## 00. Configurações - Neo Vertex\n\nRode este workflow UMA VEZ (manualmente) para:\n\n1. Criar tabelas Postgres: `nv_historico_mensagens`, `nv_fila_mensagens`, `nv_status_atendimento`, `nv_leads`.\n2. Criar etiquetas no Chatwoot: `agente-off`, `testando-agente`, `lead-novo`, `aguardando-horario`, `pediu-humano`, `fora-escopo`, `desrespeito`.\n\nAntes de rodar:\n- Configure credencial `postgres` (Postgres dedicado da Neo Vertex).\n- Configure credencial `chatwootApi` predefinida no n8n com o token de acesso do Chatwoot.\n- Confirme no node `Info` que `url_chatwoot`, `id_conta`, `id_inbox` e `owner_whatsapp` estão corretos.",
+        "height": 320,
+        "width": 640,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        160
+      ],
+      "id": "4bc4f5e6-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      "name": "Sticky Note Header"
+    },
+    {
+      "parameters": {
+        "content": "## Postgres\n\nTabelas dedicadas com prefixo `nv_` para o agente Neo Vertex.",
+        "height": 200,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        320
+      ],
+      "id": "5cc4f5e6-cccc-4ccc-8ccc-cccccccccccc",
+      "name": "Sticky Note Postgres"
+    },
+    {
+      "parameters": {
+        "content": "## Chatwoot - Etiquetas\n\nCria as etiquetas que o agente e o Nelson usarão para controlar a conversa.",
+        "height": 200,
+        "width": 1680,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        540
+      ],
+      "id": "6dc4f5e6-dddd-4ddd-8ddd-dddddddddddd",
+      "name": "Sticky Note Chatwoot"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Rodar configuração": {
+      "main": [
+        [
+          {
+            "node": "Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info": {
+      "main": [
+        [
+          {
+            "node": "Criar tabelas Postgres",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Criar etiqueta agente-off",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar etiqueta agente-off": {
+      "main": [
+        [
+          {
+            "node": "Criar etiqueta testando-agente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar etiqueta testando-agente": {
+      "main": [
+        [
+          {
+            "node": "Criar etiqueta lead-novo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar etiqueta lead-novo": {
+      "main": [
+        [
+          {
+            "node": "Criar etiqueta aguardando-horario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar etiqueta aguardando-horario": {
+      "main": [
+        [
+          {
+            "node": "Criar etiqueta pediu-humano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar etiqueta pediu-humano": {
+      "main": [
+        [
+          {
+            "node": "Criar etiqueta fora-escopo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar etiqueta fora-escopo": {
+      "main": [
+        [
+          {
+            "node": "Criar etiqueta desrespeito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "00000000-0000-4000-8000-000000000001",
+  "meta": {
+    "instanceId": "neovertex-instance"
+  },
+  "id": "NV00ConfigsBaseId",
+  "tags": []
+}
