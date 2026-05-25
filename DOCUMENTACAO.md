@@ -116,7 +116,7 @@ Todas as chaves usam o padrão kebab-case versionado `nv-<entidade>-v1`. Os hook
 | `NV_NOTES` | `nv-notes-v1` | mapa `{ [clienteId]: textoNota }` |
 | `NV_PROJECTS` | `nv-projects-v1` | timeline de entregas por cliente |
 
-> O script do Umami Analytics está hardcoded em `NeoVertex Landing.html` e `index.html` (apontando para `https://umami-xkgs8sccokkskc808c8k448c.76.13.224.17.sslip.io`, websiteId `5fa6bb7e-cc68-4383-917b-23fba4a43e16`, domínio rastreado `neovertex.top`). A aba **Configurações** do painel apenas oferece um atalho para abrir o dashboard do Umami em nova aba — não há mais persistência em localStorage para essa integração.
+> O script do Umami Analytics está hardcoded em `NeoVertex Landing.html` e `index.html` (apontando para `https://analytics.neovertexia.com`, websiteId `5fa6bb7e-cc68-4383-917b-23fba4a43e16`, domínio rastreado `neovertex.top`). A instância do Umami é hospedada num subdomínio próprio do `neovertexia.com` (com Let's Encrypt automático do Coolify) — o site rastreado continua sendo `neovertex.top`. A aba **Configurações** do painel apenas oferece um atalho para abrir o dashboard do Umami em nova aba — não há mais persistência em localStorage para essa integração.
 
 > O `sessionStorage` é usado apenas para `nv-intro-seen` (controla se a apresentação inicial já tocou nesta sessão).
 

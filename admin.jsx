@@ -1093,7 +1093,7 @@ function MensagemViewer({ msg, onClose, onDelete, onConvert }) {
 }
 
 /* ── CONFIGURAÇÕES TAB ── */
-const UMAMI_PAINEL_URL = 'https://umami-xkgs8sccokkskc808c8k448c.76.13.224.17.sslip.io';
+const UMAMI_PAINEL_URL = 'https://analytics.neovertexia.com';
 const UMAMI_WEBSITE_ID = '5fa6bb7e-cc68-4383-917b-23fba4a43e16';
 const UMAMI_DOMINIO_RASTREADO = 'neovertex.top';
 

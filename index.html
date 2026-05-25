@@ -9,55 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 <link rel="stylesheet" href="admin.css"/>
-<!-- Umami Analytics (com log investigativo - REMOVER quando estabilizar) -->
-<script>
-  (function () {
-    var URL_UMAMI = 'https://umami-xkgs8sccokkskc808c8k448c.76.13.224.17.sslip.io';
-    var WEBSITE_ID = '5fa6bb7e-cc68-4383-917b-23fba4a43e16';
-    var tag = '[Umami debug]';
-
-    console.log(tag, 'inicio', {
-      url: URL_UMAMI,
-      websiteId: WEBSITE_ID,
-      paginaProtocolo: location.protocol,
-      paginaHost: location.host,
-      paginaHref: location.href,
-      userAgent: navigator.userAgent
-    });
-
-    var protocoloPagina = location.protocol;
-    var protocoloUmami = URL_UMAMI.split(':')[0] + ':';
-    if (protocoloPagina === 'https:' && protocoloUmami === 'http:') {
-      console.warn(tag, 'ALERTA mixed content: pagina HTTPS tentando carregar script HTTP. O navegador vai bloquear silenciosamente.');
-    }
-
-    var s = document.createElement('script');
-    s.defer = true;
-    s.src = URL_UMAMI + '/script.js';
-    s.setAttribute('data-website-id', WEBSITE_ID);
-
-    s.onload = function () {
-      console.log(tag, 'script.js carregado (onload) - typeof window.umami =', typeof window.umami);
-      setTimeout(function () {
-        console.log(tag, 'apos 2s - window.umami =', window.umami);
-        if (typeof window.umami === 'undefined') {
-          console.warn(tag, 'script carregou mas window.umami nao foi definido. Pode ser bloqueador de anuncios (uBlock, Brave, etc) sobrescrevendo o objeto.');
-        }
-      }, 2000);
-    };
-
-    s.onerror = function (e) {
-      console.error(tag, 'falha ao carregar script.js. Causas possiveis: mixed content, certificado SSL invalido, servidor offline, CORS, ou bloqueador de anuncios.');
-      console.error(tag, 'evento de erro:', e);
-      fetch(URL_UMAMI + '/script.js', { mode: 'no-cors' })
-        .then(function (r) { console.log(tag, 'fetch direto retornou (opaque):', r.type); })
-        .catch(function (err) { console.error(tag, 'fetch direto falhou:', err.message); });
-    };
-
-    document.head.appendChild(s);
-    console.log(tag, 'tag <script> injetada no <head>', { src: s.src, dataWebsiteId: s.getAttribute('data-website-id') });
-  })();
-</script>
+<!-- Umami Analytics -->
+<script defer src="https://analytics.neovertexia.com/script.js" data-website-id="5fa6bb7e-cc68-4383-917b-23fba4a43e16"></script>
 </head>
 <body>
 <div id="root"></div>
