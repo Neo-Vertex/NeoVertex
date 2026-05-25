@@ -2,6 +2,28 @@
 
 Conjunto de workflows que rodam o agente IA da Neo Vertex no WhatsApp via Chatwoot + Baileys.
 
+## Status atual
+
+Os 5 workflows já foram **criados via REST API** em `https://n8n.neovertexia.com`, todos linkados entre si. Estão **inativos** aguardando configuração de credenciais.
+
+| Workflow | ID no n8n |
+|---|---|
+| 00. Configurações - Neo Vertex | `pjGouN7nr3vEjcxQ` |
+| 01. Captador Neo Vertex | `4dtWlS7q1aHZEuhL` |
+| 02. Escalar humano - Neo Vertex | `B21t6ruEBzaVjdBe` |
+| 03. Quebrar e enviar mensagens - Neo Vertex | `Xxp5PtdaAybjie0L` |
+| Sugerir_horario (Neo Vertex) | `QJnwCMaTklA4EqhL` |
+
+Pendências do lado do usuário antes de ativar:
+
+1. Subir Postgres dedicado no Coolify.
+2. Configurar 3 credenciais no n8n (Postgres, Chatwoot API, OpenAI API).
+3. Selecionar a credencial certa em cada nó dos 5 workflows.
+4. Rodar o `00. Configurações` uma vez (cria tabelas + etiquetas).
+5. Cadastrar o webhook no Chatwoot.
+6. Ativar o `01. Captador Neo Vertex`.
+7. Deletar o workflow antigo `Agente Neo Vertex` (ID `FECLeeBbVu8B80io`) — está vazio e atrapalha.
+
 ## Arquivos
 
 | Arquivo | Tipo | Função |
