@@ -2,11 +2,14 @@
   "name": "neo-vertex",
   "version": "1.0.0",
   "description": "Neo Vertex - Desenvolvimento de Software e Consultoria em Tecnologia",
-  "main": "NeoVertex Landing.html",
+  "main": "index.html",
   "scripts": {
-    "dev": "live-server --port=3000 --open=\"NeoVertex Landing.html\""
+    "dev": "live-server --port=3000 --open=\"NeoVertex Landing.html\"",
+    "start": "serve -l $PORT"
   },
-  "dependencies": {},
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
   "devDependencies": {
     "live-server": "^1.2.2"
   }
