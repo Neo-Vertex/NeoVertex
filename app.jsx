@@ -1034,8 +1034,6 @@ function Footer() {
           </div>
           <div className="foot-col">
             <h4>Conecte-se</h4>
-            <a href="#" target="_blank">LinkedIn</a>
-            <a href="#" target="_blank">GitHub</a>
             <a href="#" target="_blank">Instagram</a>
           </div>
         </div>

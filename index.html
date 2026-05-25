@@ -10,32 +10,7 @@
 <link rel="stylesheet" href="styles.css"/>
 <link rel="stylesheet" href="admin.css"/>
 <!-- Umami Analytics -->
-<script>
-  (function() {
-    var url = "SUA_URL_DO_UMAMI_AQUI"; // Ex: https://umami.neovertexia.com
-    var websiteId = "SEU_WEBSITE_ID_AQUI"; // Ex: 9b2d8e4f-7c1a-4d3b-8f5c-2a6d7e8f9c0b
-    
-    // Tenta carregar do localStorage caso as variáveis do HTML ainda sejam placeholders
-    if (url.indexOf("SUA_URL_DO_UMAMI_AQUI") !== -1 || websiteId.indexOf("SEU_WEBSITE_ID_AQUI") !== -1) {
-      try {
-        var localConfig = JSON.parse(localStorage.getItem('nv-umami-config-v1'));
-        if (localConfig && localConfig.url && localConfig.websiteId) {
-          url = localConfig.url;
-          websiteId = localConfig.websiteId;
-        }
-      } catch (e) {}
-    }
-    
-    if (url && websiteId && url.indexOf("SUA_URL_DO_UMAMI_AQUI") === -1 && websiteId.indexOf("SEU_WEBSITE_ID_AQUI") === -1) {
-      var script = document.createElement('script');
-      script.async = true;
-      script.defer = true;
-      script.src = url + (url.endsWith('/') ? '' : '/') + 'script.js';
-      script.setAttribute('data-website-id', websiteId);
-      document.head.appendChild(script);
-    }
-  })();
-</script>
+<script defer src="https://umami-xkgs8sccokkskc808c8k448c.76.13.224.17.sslip.io/script.js" data-website-id="5fa6bb7e-cc68-4383-917b-23fba4a43e16"></script>
 </head>
 <body>
 <div id="root"></div>

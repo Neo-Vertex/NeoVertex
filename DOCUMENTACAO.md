@@ -16,7 +16,7 @@ O projeto é uma **single-page application** estática que entrega:
    - **Financeiro** — entradas e saídas, status pago/pendente, totais, MRR.
    - **Agenda** — compromissos com visões Lista e Mês.
    - **Tarefas** — afazeres pessoais e por cliente, com prioridade e prazo.
-   - **Configurações** — dados de integração e chaves do analytics do Umami.
+   - **Configurações** — atalho para abrir o painel do Umami Analytics em nova aba.
 
 Toda a informação do painel é persistida no **`localStorage`** do navegador — não há backend nesta versão.
 
@@ -115,7 +115,8 @@ Todas as chaves usam o padrão kebab-case versionado `nv-<entidade>-v1`. Os hook
 | `NV_TASKS` | `nv-tasks-v1` | tarefas pessoais e por cliente |
 | `NV_NOTES` | `nv-notes-v1` | mapa `{ [clienteId]: textoNota }` |
 | `NV_PROJECTS` | `nv-projects-v1` | timeline de entregas por cliente |
-| `NV_UMAMI_CONFIG` | `nv-umami-config-v1` | configurações da integração do Umami Analytics (URL e ID) |
+
+> O script do Umami Analytics está hardcoded em `NeoVertex Landing.html` e `index.html` (apontando para `https://umami-xkgs8sccokkskc808c8k448c.76.13.224.17.sslip.io`, websiteId `5fa6bb7e-cc68-4383-917b-23fba4a43e16`, domínio rastreado `neovertex.top`). A aba **Configurações** do painel apenas oferece um atalho para abrir o dashboard do Umami em nova aba — não há mais persistência em localStorage para essa integração.
 
 > O `sessionStorage` é usado apenas para `nv-intro-seen` (controla se a apresentação inicial já tocou nesta sessão).
 

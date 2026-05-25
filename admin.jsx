@@ -10,7 +10,6 @@ const NV_TASKS = 'nv-tasks-v1';
 const NV_NOTES = 'nv-notes-v1';
 const NV_PROJECTS = 'nv-projects-v1';
 const NV_MENSAGENS = 'nv-mensagens-v1';
-const NV_UMAMI_CONFIG = 'nv-umami-config-v1';
 const NV_CRED = { user: 'nelsinhololx', pass: '31577244' };
 
 const SEED_CLIENTES = [
@@ -1085,43 +1084,39 @@ function MensagemViewer({ msg, onClose, onDelete, onConvert }) {
         </div>
 
         <div className="adm-actions">
-          <button className="adm-btn-ghost" style={{borderCo}
+          <button className="adm-btn-ghost" style={{borderColor: 'var(--red)', color: 'var(--red)'}} onClick={(e) => { onDelete(msg.id, e); onClose(); }}>Excluir Mensagem</button>
+          <button className="adm-btn-primary" onClick={(e) => { onConvert(msg, e); onClose(); }}>Converter em Lead (CRM)</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* ── CONFIGURAÇÕES TAB ── */
+const UMAMI_PAINEL_URL = 'https://umami-xkgs8sccokkskc808c8k448c.76.13.224.17.sslip.io';
+const UMAMI_WEBSITE_ID = '5fa6bb7e-cc68-4383-917b-23fba4a43e16';
+const UMAMI_DOMINIO_RASTREADO = 'neovertex.top';
+
 function ConfigTab() {
-  const [config, setConfig] = aUseState(() => loadLS(NV_UMAMI_CONFIG, { url: '', websiteId: '' }));
-  const [editing, setEditing] = aUseState(() => ({ ...config }));
-  const [salvo, setSalvo] = aUseState(false);
-
-  const save = (e) => {
-    e.preventDefault();
-    saveLS(NV_UMAMI_CONFIG, editing);
-    setConfig(editing);
-    setSalvo(true);
-    setTimeout(() => setSalvo(false), 3000);
+  const abrirPainel = () => {
+    window.open(`${UMAMI_PAINEL_URL}/websites/${UMAMI_WEBSITE_ID}`, '_blank', 'noopener,noreferrer');
   };
-
-  const isConfigured = config.url && config.websiteId;
 
   return (
     <div className="adm-tab">
       <div className="adm-kpis">
-        <div className="adm-kpi" style={{ borderLeft: isConfigured ? '3px solid var(--green)' : '3px solid var(--comment)' }}>
+        <div className="adm-kpi" style={{ borderLeft: '3px solid var(--green)' }}>
           <span>Status do Umami</span>
-          <strong style={{ color: isConfigured ? 'var(--green)' : 'var(--comment)' }}>
-            {isConfigured ? 'Ativo' : 'Inativo'}
-          </strong>
+          <strong style={{ color: 'var(--green)' }}>Ativo</strong>
         </div>
         <div className="adm-kpi">
-          <span>Servidor</span>
-          <strong style={{ fontSize: '15px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-            {config.url || 'Não configurado'}
-          </strong>
+          <span>Domínio rastreado</span>
+          <strong style={{ fontSize: '15px' }}>{UMAMI_DOMINIO_RASTREADO}</strong>
         </div>
         <div className="adm-kpi">
-          <span>ID do Site</span>
+          <span>ID do site</span>
           <strong style={{ fontSize: '13px', fontFamily: 'var(--mono)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-            {config.websiteId || 'Não configurado'}
+            {UMAMI_WEBSITE_ID}
           </strong>
         </div>
       </div>
@@ -1134,51 +1129,19 @@ function ConfigTab() {
         maxWidth: '640px',
         margin: '0 auto'
       }}>
-        <h3 style={{ margin: '0 0 8px', font: '700 20px/1.2 var(--sans)' }}>Configuração do Umami Analytics</h3>
+        <h3 style={{ margin: '0 0 8px', font: '700 20px/1.2 var(--sans)' }}>Analytics — Umami</h3>
         <p className="adm-sub" style={{ marginBottom: 24 }}>
-          Insira os dados da sua instância do Umami instalada no Coolify para carregar o script de rastreamento de visitas no seu site automaticamente.
+          O rastreamento de visitas está embutido diretamente no site. Para consultar visitas, páginas mais acessadas, origens de tráfego e tempo real, abra o painel do Umami.
         </p>
 
-        <form onSubmit={save} className="adm-form">
-          <div className="adm-form-grid" style={{ gridTemplateColumns: '1fr' }}>
-            <label>
-              <span>URL da Instância Umami</span>
-              <input 
-                type="text" 
-                value={editing.url} 
-                onChange={e => setEditing(p => ({ ...p, url: e.target.value.trim() }))} 
-                placeholder="Ex: http://umami-xkgs8scc0kkskc808c8k448c.78.13.224.17.sslip.io"
-              />
-              <span className="adm-sub" style={{ fontSize: '11px', marginTop: '2px' }}>
-                A URL base do seu painel do Umami gerado pelo Coolify.
-              </span>
-            </label>
-
-            <label style={{ marginTop: '12px' }}>
-              <span>ID do Website (Website ID)</span>
-              <input 
-                type="text" 
-                value={editing.websiteId} 
-                onChange={e => setEditing(p => ({ ...p, websiteId: e.target.value.trim() }))} 
-                placeholder="Ex: 9b2d8e4f-7c1a-4d3b-8f5c-2a6d7e8f9c0b"
-              />
-              <span className="adm-sub" style={{ fontSize: '11px', marginTop: '2px' }}>
-                O ID único gerado ao adicionar o site no painel do Umami (Settings &gt; Websites).
-              </span>
-            </label>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '24px' }}>
-            <button type="submit" className="adm-btn-primary" style={{ padding: '12px 24px' }}>
-              Salvar Configurações
-            </button>
-            {salvo && (
-              <span style={{ color: 'var(--green)', fontWeight: '600', fontSize: '13px', animation: 'adm-fade .2s var(--ease)' }}>
-                ✓ Configurações salvas!
-              </span>
-            )}
-          </div>
-        </form>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <button type="button" onClick={abrirPainel} className="adm-btn-primary" style={{ padding: '12px 24px' }}>
+            Abrir painel do Umami
+          </button>
+          <span className="adm-sub" style={{ fontSize: '12px' }}>
+            Abre em nova aba · login do Umami separado
+          </span>
+        </div>
       </div>
     </div>
   );
