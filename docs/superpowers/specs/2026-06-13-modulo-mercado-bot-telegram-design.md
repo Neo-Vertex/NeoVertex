@@ -96,9 +96,9 @@ grátis). CME entra depois, se houver chave CoinGlass. Para ações, alerta inst
 - **Monitor (cron):** a cada N minutos lê `market_alerts` ativos, checa preço/institucional,
   dispara no Telegram e grava em `market_alert_events` (com deduplicação via `last_triggered_at`).
 
-**Robustez:** como o n8n esteve fora do ar, o monitor pode ser movido para um cron no
-backend (`node-cron`) — mais confiável — mantendo só a conversa no n8n. Decisão deixada
-para a fase de alertas conforme estabilidade do n8n.
+**Decisão (2026-06-13):** o monitor roda **no n8n** (workflow agendado), junto da conversa.
+Trade-off aceito pelo usuário: se o n8n cair, os alertas pausam até voltar. Pré-requisito,
+portanto, é manter o n8n no ar (`n8n.neovertexia.com`).
 
 ## 8. Painel React — módulo "Mercado"
 
