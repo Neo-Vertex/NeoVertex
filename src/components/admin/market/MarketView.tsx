@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   TrendingUp, TrendingDown, BarChart3, Newspaper, Building2,
-  RefreshCw, Coins, LineChart, ExternalLink,
+  RefreshCw, Coins, LineChart, ExternalLink, Bell,
 } from 'lucide-react';
 import { supabase } from '../../../services/supabase';
+import AlertsManager from './AlertsManager';
 import {
   marketApi, fmtCompact, fmtPrice,
   type PriceRow, type StockRow, type InflowRow, type Institutional, type NewsResult,
@@ -19,13 +20,14 @@ interface WatchItem {
   active: boolean;
 }
 
-type Tab = 'watchlist' | 'ranking' | 'institucional' | 'noticias';
+type Tab = 'watchlist' | 'ranking' | 'institucional' | 'noticias' | 'alertas';
 
 const TABS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: 'watchlist', label: 'Watchlist', icon: Coins },
   { id: 'ranking', label: 'Ranking de Entradas', icon: BarChart3 },
   { id: 'institucional', label: 'Institucional', icon: Building2 },
   { id: 'noticias', label: 'Notícias', icon: Newspaper },
+  { id: 'alertas', label: 'Alertas', icon: Bell },
 ];
 
 // Variação colorida (verde/vermelho) reutilizada nas tabelas.
@@ -304,6 +306,11 @@ const MarketView: React.FC = () => {
             </a>
           ))}
         </div>
+      )}
+
+      {/* ── Alertas ── */}
+      {activeTab === 'alertas' && (
+        <AlertsManager symbols={watchlist.map(w => ({ symbol: w.symbol, display_name: w.display_name }))} />
       )}
     </div>
   );
