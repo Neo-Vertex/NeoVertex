@@ -1,0 +1,178 @@
+{
+  "name": "NeoVertex Mercado - Monitor de Alertas",
+  "nodes": [
+    {
+      "id": "6f8a45e9-61f7-4a0e-bcbf-e9535f5a9aef",
+      "name": "A cada 2 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ef988566-5404-4b7b-825c-1df1fa97e2ff",
+      "name": "Ler alertas ativos",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT a.id, a.kind, a.symbol, a.operator, a.target_value, a.last_triggered_at, COALESCE(a.telegram_chat_id, (SELECT chat_id FROM telegram_subscribers WHERE is_admin = true ORDER BY created_at LIMIT 1)) AS dest_chat FROM market_alerts a WHERE a.active = true",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "aJKw8OGZ2pzPHt0E",
+          "name": "NeoVertex Postgres"
+        }
+      }
+    },
+    {
+      "id": "5738bfac-f6bf-4da7-adcf-bb90b9ef4614",
+      "name": "Avaliar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst SIX_H = 6*60*60*1000;\nconst out = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  if (!a.dest_chat) continue;\n  if (a.last_triggered_at) {\n    const last = new Date(a.last_triggered_at).getTime();\n    if (Date.now() - last < SIX_H) continue;\n  }\n  const sym = String(a.symbol).replace('USDT','').toUpperCase();\n  let current = null; let label = '';\n  try {\n    if (a.kind === 'price') {\n      const r = await this.helpers.httpRequest({ url: `https://api.binance.com/api/v3/ticker/price?symbol=${sym}USDT`, json: true });\n      current = parseFloat(r.price);\n      label = `preço ${current}`;\n    } else {\n      const cb = await this.helpers.httpRequest({ url: `https://api.exchange.coinbase.com/products/${sym}-USD/ticker`, json: true, headers: { 'User-Agent': 'neovertex' } });\n      const bn = await this.helpers.httpRequest({ url: `https://api.binance.com/api/v3/ticker/price?symbol=${sym}USDT`, json: true });\n      const c = parseFloat(cb.price); const b = parseFloat(bn.price);\n      current = b ? ((c - b) / b * 100) : 0;\n      label = `prêmio Coinbase ${current.toFixed(3)}%`;\n    }\n  } catch (e) { continue; }\n  const t = parseFloat(a.target_value);\n  const met = (a.operator === 'gte') ? (current >= t) : (current <= t);\n  if (!met) continue;\n  const op = a.operator === 'gte' ? '>=' : '<=';\n  const tipo = a.kind === 'price' ? 'Alerta de preço' : 'Alerta institucional';\n  out.push({ json: { alert_id: a.id, symbol: sym, dest_chat: a.dest_chat,\n    message: `${tipo} ${sym}: ${label} atingiu o alvo (${op} ${t}).` } });\n}\nreturn out;\n"
+      }
+    },
+    {
+      "id": "ff79abf3-bfb9-4558-8113-00298efff5b5",
+      "name": "Enviar Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        760,
+        -120
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $json.dest_chat }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "JshBGRby8HIJowz3",
+          "name": "Telegram NeoVertex Mercado"
+        }
+      },
+      "webhookId": "de45934e-d41b-4b81-97ba-3c773eeeb4e6"
+    },
+    {
+      "id": "6b270ad4-4ddf-43a3-b6b0-b03b44d45d72",
+      "name": "Registrar evento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        760,
+        40
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO market_alert_events (alert_id, symbol, message) VALUES ($1, $2, $3)",
+        "options": {
+          "queryReplacement": "={{ $json.alert_id }},{{ $json.symbol }},{{ $json.message }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "aJKw8OGZ2pzPHt0E",
+          "name": "NeoVertex Postgres"
+        }
+      }
+    },
+    {
+      "id": "73954772-70db-45ad-810d-c0beb34507c6",
+      "name": "Atualizar last_triggered",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        760,
+        200
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE market_alerts SET last_triggered_at = NOW() WHERE id = $1",
+        "options": {
+          "queryReplacement": "={{ $json.alert_id }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "aJKw8OGZ2pzPHt0E",
+          "name": "NeoVertex Postgres"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "A cada 2 min": {
+      "main": [
+        [
+          {
+            "node": "Ler alertas ativos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler alertas ativos": {
+      "main": [
+        [
+          {
+            "node": "Avaliar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avaliar": {
+      "main": [
+        [
+          {
+            "node": "Enviar Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Registrar evento",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Atualizar last_triggered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
