@@ -37,7 +37,7 @@
         "promptType": "define",
         "text": "={{ $json.message.text }}",
         "options": {
-          "systemMessage": "Você é o assistente de mercado da Neo Vertex no Telegram. Responde em português, conciso e direto, sobre criptomoedas e ativos. Para PREÇO ou variação, use SEMPRE a ferramenta 'cotacao_binance' e nunca invente números. Para fundamentos/projeto de um ativo, explique de forma clara e curta. Sem emoji decorativo. A watchlist principal é BTC, ETH, SOL, SUI, XRP. Se pedirem algo fora de mercado, redirecione gentilmente."
+          "systemMessage": "Você é o assistente de mercado da Neo Vertex no Telegram. Responde em português, conciso e direto, sobre criptomoedas e ativos.\nFerramentas:\n- 'cotacao_binance': preço e variação 24h. Use para preço/cotação; nunca invente números.\n- 'entrada_liquida': entrada líquida do dia (compra agressiva menos venda agressiva, em USDT), % de compra, variação e volume. Use SEMPRE que perguntarem sobre entrada, fluxo, quanto entrou ou saiu, pressão compradora/vendedora ou movimento de baleia de um ativo.\nAo explicar entrada líquida: positivo = predominou compra agressiva (pressão compradora); negativo = predominou venda. % de compra acima de 50% indica comprador dominante. Explique de forma simples.\nWatchlist principal: BTC, ETH, SOL, SUI, XRP. Sem emoji decorativo. Se pedirem algo fora de mercado, redirecione gentilmente."
         }
       }
     },
@@ -170,6 +170,30 @@
           "name": "NeoVertex Postgres"
         }
       }
+    },
+    {
+      "id": "2b8c635d-3c77-4c89-92cc-a86a5c65645d",
+      "name": "entrada_liquida",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        360
+      ],
+      "parameters": {
+        "toolDescription": "Retorna a ENTRADA LÍQUIDA do dia de uma cripto (compra agressiva menos venda agressiva, em USDT) + % de compra, variação e volume. Use para perguntas sobre entrada, fluxo, quanto entrou/saiu, pressão compradora ou baleia. Informe o símbolo base, ex.: SUI.",
+        "method": "GET",
+        "url": "https://n8n.neovertexia.com/webhook/entrada-liquida-865e05c7?symbol={symbol}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "symbol",
+              "description": "Símbolo base da cripto em maiúsculas, ex.: SUI",
+              "type": "string"
+            }
+          ]
+        }
+      }
     }
   ],
   "connections": {
@@ -234,6 +258,17 @@
       ]
     },
     "cotacao_binance": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Mercado",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "entrada_liquida": {
       "ai_tool": [
         [
           {

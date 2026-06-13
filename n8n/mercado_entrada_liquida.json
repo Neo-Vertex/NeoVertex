@@ -1,0 +1,52 @@
+{
+  "name": "NeoVertex Mercado - Entrada Liquida (tool)",
+  "nodes": [
+    {
+      "id": "141b6f54-8056-4cbe-994f-ade7a17cc3ea",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "entrada-liquida-865e05c7",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "409843da-c1cd-43c7-997c-bd026b2250c9"
+    },
+    {
+      "id": "77221713-ca48-4a5b-8ca9-b9cb46e60db5",
+      "name": "Calcular",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst sym = String(($json.query && $json.query.symbol) || 'BTC').replace('USDT','').toUpperCase();\nconst k = await this.helpers.httpRequest({ url: `https://api.binance.com/api/v3/klines?symbol=${sym}USDT&interval=1d&limit=1`, json: true });\nconst c = k[0];\nconst quoteVol = parseFloat(c[7]);\nconst takerBuy = parseFloat(c[10]);\nconst netInflow = takerBuy - (quoteVol - takerBuy);\nconst buyPct = quoteVol > 0 ? (takerBuy / quoteVol * 100) : 0;\nconst open = parseFloat(c[1]); const close = parseFloat(c[4]);\nconst changePct = open ? ((close - open) / open * 100) : 0;\nreturn [{ json: { symbol: sym, entrada_liquida_usdt: Math.round(netInflow), pct_compra: Number(buyPct.toFixed(1)),\n  variacao_pct: Number(changePct.toFixed(2)), volume_total_usdt: Math.round(quoteVol), periodo: 'candle diario UTC' } }];\n"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Calcular",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
