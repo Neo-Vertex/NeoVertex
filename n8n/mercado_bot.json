@@ -1,0 +1,221 @@
+{
+ "name": "NeoVertex Mercado - Bot",
+ "nodes": [
+  {
+   "id": "29adade7-b9d5-49e5-bd64-be323d6572b3",
+   "name": "Telegram Trigger",
+   "type": "n8n-nodes-base.telegramTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "updates": [
+     "message"
+    ],
+    "additionalFields": {}
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "JshBGRby8HIJowz3",
+     "name": "Telegram NeoVertex Mercado"
+    }
+   }
+  },
+  {
+   "id": "93fda6f8-ea0a-4c0a-8403-ae0b0c3861b0",
+   "name": "Agente Mercado",
+   "type": "@n8n/n8n-nodes-langchain.agent",
+   "typeVersion": 2.2,
+   "position": [
+    280,
+    0
+   ],
+   "parameters": {
+    "promptType": "define",
+    "text": "={{ $json.message.text }}",
+    "options": {
+     "systemMessage": "Você é o assistente de mercado da Neo Vertex no Telegram. Responde em português, conciso e direto, sobre criptomoedas e ativos. Para PREÇO ou variação, use SEMPRE a ferramenta 'cotacao_binance' e nunca invente números. Para fundamentos/projeto de um ativo, explique de forma clara e curta. Sem emoji decorativo. A watchlist principal é BTC, ETH, SOL, SUI, XRP. Se pedirem algo fora de mercado, redirecione gentilmente."
+    }
+   }
+  },
+  {
+   "id": "1b93fad3-38bf-4dde-a7ff-d6f5504bfe0f",
+   "name": "Responder Telegram",
+   "type": "n8n-nodes-base.telegram",
+   "typeVersion": 1.2,
+   "position": [
+    620,
+    0
+   ],
+   "parameters": {
+    "resource": "message",
+    "operation": "sendMessage",
+    "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+    "text": "={{ $json.output }}",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "telegramApi": {
+     "id": "JshBGRby8HIJowz3",
+     "name": "Telegram NeoVertex Mercado"
+    }
+   }
+  },
+  {
+   "id": "915b4a63-91b8-423b-a423-74b1bdc20417",
+   "name": "GPT-4.1",
+   "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+   "typeVersion": 1.2,
+   "position": [
+    160,
+    220
+   ],
+   "parameters": {
+    "model": {
+     "__rl": true,
+     "value": "gpt-4.1",
+     "mode": "list"
+    },
+    "options": {}
+   },
+   "credentials": {
+    "openAiApi": {
+     "id": "TWq7uLhF8YDLwDmB",
+     "name": "OpenAI account"
+    }
+   }
+  },
+  {
+   "id": "5b6f53f3-27a8-41a7-b51b-639466305472",
+   "name": "Memória",
+   "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+   "typeVersion": 1.3,
+   "position": [
+    320,
+    220
+   ],
+   "parameters": {
+    "sessionIdType": "customKey",
+    "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+    "tableName": "nv_mercado_memoria",
+    "contextWindowLength": 30
+   },
+   "credentials": {
+    "postgres": {
+     "id": "aJKw8OGZ2pzPHt0E",
+     "name": "NeoVertex Postgres"
+    }
+   }
+  },
+  {
+   "id": "3b87f767-eced-40b6-a4e7-277dcdda37bb",
+   "name": "Refletir",
+   "type": "@n8n/n8n-nodes-langchain.toolThink",
+   "typeVersion": 1.1,
+   "position": [
+    470,
+    220
+   ],
+   "parameters": {
+    "description": "Use para raciocinar antes de responder sobre mercado."
+   }
+  },
+  {
+   "id": "74442bd9-da82-48cd-9c56-73f5dacbdc61",
+   "name": "cotacao_binance",
+   "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+   "typeVersion": 1.1,
+   "position": [
+    620,
+    220
+   ],
+   "parameters": {
+    "toolDescription": "Retorna preço atual e variação de 24h de uma cripto na Binance. Informe o símbolo base em maiúsculas (ex.: BTC, ETH, SOL, SUI, XRP).",
+    "method": "GET",
+    "url": "https://api.binance.com/api/v3/ticker/24hr?symbol={symbol}USDT",
+    "placeholderDefinitions": {
+     "values": [
+      {
+       "name": "symbol",
+       "description": "Símbolo base da cripto em maiúsculas, ex.: BTC",
+       "type": "string"
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Telegram Trigger": {
+   "main": [
+    [
+     {
+      "node": "Agente Mercado",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Agente Mercado": {
+   "main": [
+    [
+     {
+      "node": "Responder Telegram",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "GPT-4.1": {
+   "ai_languageModel": [
+    [
+     {
+      "node": "Agente Mercado",
+      "type": "ai_languageModel",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Memória": {
+   "ai_memory": [
+    [
+     {
+      "node": "Agente Mercado",
+      "type": "ai_memory",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Refletir": {
+   "ai_tool": [
+    [
+     {
+      "node": "Agente Mercado",
+      "type": "ai_tool",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "cotacao_binance": {
+   "ai_tool": [
+    [
+     {
+      "node": "Agente Mercado",
+      "type": "ai_tool",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "settings": {
+  "executionOrder": "v1"
+ }
+}
