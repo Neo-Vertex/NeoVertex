@@ -13,6 +13,7 @@ const sectionLabels: Record<string, string> = {
   'settings-associates': 'Lista de Associados',
   crm: 'Gestão de Leads',
   'financial-records': 'Financeiro',
+  market: 'Mercado',
   agenda: 'Agenda',
   messages: 'Solicitações',
   'settings-products': 'Produtos',

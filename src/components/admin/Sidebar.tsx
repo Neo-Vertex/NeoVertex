@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   LayoutGrid, Users, CreditCard, Settings2, MessageSquare,
-  CalendarDays, ChevronRight, Power, X,
+  CalendarDays, ChevronRight, Power, X, LineChart,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,6 +34,7 @@ const menuItems: MenuItem[] = [
     ],
   },
   { id: 'financial-records',  label: 'Financeiro',    icon: CreditCard,   section: 'OPERAÇÕES' },
+  { id: 'market',             label: 'Mercado',       icon: LineChart },
   { id: 'agenda',             label: 'Agenda',        icon: CalendarDays },
   { id: 'messages',           label: 'Solicitações',  icon: MessageSquare },
   {

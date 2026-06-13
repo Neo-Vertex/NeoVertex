@@ -14,6 +14,7 @@ import ProductsManager from '../components/admin/ProductsManager';
 import LanguagesManager from '../components/admin/LanguagesManager';
 import CRMView from '../components/crm/CRMView';
 import AgendaView from '../components/admin/AgendaView';
+import MarketView from '../components/admin/market/MarketView';
 import AmbientBackground from '../components/AmbientBackground';
 import type { Associate, Project, FinancialRecord } from '../types';
 import type { CRMLead } from '../types/crm';
@@ -472,6 +473,8 @@ const AdminDashboard: React.FC = () => {
                         {activeSection === 'crm' && <CRMView onConvertLead={(lead) => { setLeadConversionData(lead); setActiveSection('create-associate'); }} />}
 
                         {activeSection === 'agenda' && <AgendaView />}
+
+                        {activeSection === 'market' && <MarketView />}
                     </div>
                 </main>
             </div>
