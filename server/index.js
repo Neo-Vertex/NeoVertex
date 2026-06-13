@@ -18,6 +18,9 @@ const pool = new Pool({
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
+// ── Market Module (camada /api/market/*) ───────────────────────────────────────
+app.use('/api/market', require('./routes/market'));
+
 // ── Auth Middleware ──────────────────────────────────────────────────────────
 
 app.use((req, _res, next) => {
@@ -87,6 +90,7 @@ const ALLOWED_TABLES = [
   'services', 'products', 'colab_brands', 'appointments', 'crm_pipelines',
   'crm_stages', 'crm_leads', 'crm_interactions', 'project_logs', 'languages',
   'expenses',
+  'market_watchlist', 'market_alerts', 'market_alert_events', 'telegram_subscribers',
 ];
 
 const SQL_OPS = { eq: '=', neq: '!=', gt: '>', lt: '<', gte: '>=', lte: '<=', like: 'LIKE', ilike: 'ILIKE' };
@@ -524,6 +528,58 @@ async function runMigrations() {
       `INSERT INTO profiles (id, email, role) VALUES ($1,$2,'admin') ON CONFLICT (id) DO UPDATE SET role='admin'`,
       [nelson.id, 'nelson@neovertex.com']
     );
+
+    // ── Tabelas do módulo Mercado ──────────────────────────────────────────────
+    await client.query(`CREATE TABLE IF NOT EXISTS market_watchlist (
+      id           UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      symbol       TEXT NOT NULL,
+      display_name TEXT NOT NULL,
+      kind         TEXT CHECK (kind IN ('crypto','stock')) NOT NULL,
+      source       TEXT,
+      sort_order   INTEGER DEFAULT 0,
+      active       BOOLEAN DEFAULT true,
+      created_at   TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+    )`);
+
+    await client.query(`CREATE TABLE IF NOT EXISTS market_alerts (
+      id                UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      kind              TEXT CHECK (kind IN ('price','institutional')) NOT NULL,
+      symbol            TEXT NOT NULL,
+      operator          TEXT CHECK (operator IN ('gte','lte')) DEFAULT 'gte',
+      target_value      NUMERIC,
+      params            JSONB DEFAULT '{}'::jsonb,
+      telegram_chat_id  TEXT,
+      active            BOOLEAN DEFAULT true,
+      last_triggered_at TIMESTAMP WITH TIME ZONE,
+      created_at        TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+    )`);
+
+    await client.query(`CREATE TABLE IF NOT EXISTS market_alert_events (
+      id         UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      alert_id   UUID REFERENCES market_alerts(id) ON DELETE CASCADE,
+      symbol     TEXT NOT NULL,
+      message    TEXT NOT NULL,
+      payload    JSONB DEFAULT '{}'::jsonb,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+    )`);
+
+    await client.query(`CREATE TABLE IF NOT EXISTS telegram_subscribers (
+      id         UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      chat_id    TEXT UNIQUE NOT NULL,
+      label      TEXT,
+      is_admin   BOOLEAN DEFAULT false,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+    )`);
+
+    await client.query(`INSERT INTO market_watchlist (symbol, display_name, kind, source, sort_order) VALUES
+      ('BTC','Bitcoin','crypto','binance',1),
+      ('ETH','Ethereum','crypto','binance',2),
+      ('SOL','Solana','crypto','binance',3),
+      ('SUI','Sui','crypto','binance',4),
+      ('XRP','XRP','crypto','binance',5),
+      ('NVDA','NVIDIA','stock','yahoo',6),
+      ('PETR4.SA','Petrobras','stock','yahoo',7)
+      ON CONFLICT DO NOTHING`);
 
     console.log('Migrations concluídas com sucesso.');
   } catch (err) {
