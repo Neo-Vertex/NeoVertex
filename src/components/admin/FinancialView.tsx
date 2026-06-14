@@ -5,6 +5,7 @@ import { supabase } from '../../services/supabase';
 import type { FinancialRecord, Associate, Project } from '../../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CashFlowChart, ProjectStatusChart, ExpenseBreakdownChart } from './charts/FinancialCharts';
+import CryptoTickerCard from './market/CryptoTickerCard';
 
 interface FinancialViewProps {
     records: FinancialRecord[]; // Received from parent (Should be filtered for Summary, or All for List?)
@@ -248,6 +249,11 @@ const FinancialView: React.FC<FinancialViewProps> = ({
                     )}
                 </button>
             </div>
+
+            {/* Cotações de cripto ao vivo */}
+            {showSummary && (
+                <CryptoTickerCard usdBrl={exchangeRates?.USDBRL?.bid ? parseFloat(exchangeRates.USDBRL.bid) : undefined} />
+            )}
 
             {/* Advanced Dashboard Grid */}
             <AnimatePresence>
