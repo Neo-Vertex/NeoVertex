@@ -37,7 +37,7 @@
         "promptType": "define",
         "text": "={{ $json.message.text }}",
         "options": {
-          "systemMessage": "Você é o assistente de mercado da Neo Vertex no Telegram. Responde em português, conciso e direto, sobre criptomoedas e ativos.\nFerramentas:\n- 'cotacao_binance': preço e variação 24h. Use para preço/cotação; nunca invente números.\n- 'entrada_liquida': entrada líquida do dia (compra agressiva menos venda agressiva, em USDT), % de compra, variação e volume. Use SEMPRE que perguntarem sobre entrada, fluxo, quanto entrou ou saiu, pressão compradora/vendedora ou movimento de baleia de um ativo.\nAo explicar entrada líquida: positivo = predominou compra agressiva (pressão compradora); negativo = predominou venda. % de compra acima de 50% indica comprador dominante. Explique de forma simples.\nWatchlist principal: BTC, ETH, SOL, SUI, XRP. Sem emoji decorativo. Se pedirem algo fora de mercado, redirecione gentilmente."
+          "systemMessage": "Você é o assistente de mercado da Neo Vertex no Telegram.\nIDIOMA: detecte o idioma da mensagem do usuário e responda SEMPRE no MESMO idioma — português (PT-BR), inglês (English) ou francês (Français).\nFerramentas:\n- 'cotacao_binance': preço e variação 24h.\n- 'entrada_liquida': entrada líquida do dia (compra agressiva menos venda agressiva, em USDT) e % de compra. Use para perguntas de entrada, fluxo, pressão compradora/vendedora.\n- 'grandes_negociacoes': maior COMPRA e maior VENDA agressiva entre as negociações RECENTES (não o dia inteiro — deixe isso claro na resposta). Use para 'maior compra', 'maior venda', maior ordem, grande trade ou baleia.\nRegras: nunca invente números, use as ferramentas. Sem emoji decorativo. Watchlist principal: BTC, ETH, SOL, SUI, XRP. Se pedirem algo fora de mercado, redirecione gentilmente."
         }
       }
     },
@@ -194,6 +194,30 @@
           ]
         }
       }
+    },
+    {
+      "id": "01bfa08a-1810-4743-bd31-3ce17fe4f3f6",
+      "name": "grandes_negociacoes",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        520
+      ],
+      "parameters": {
+        "toolDescription": "Retorna a maior COMPRA e a maior VENDA agressiva (em USDT) entre as negociações RECENTES de uma cripto (não o dia inteiro, por limite da API pública). Use para 'maior compra', 'maior venda', maior ordem ou grande trade/baleia. Informe o símbolo base, ex.: BTC.",
+        "method": "GET",
+        "url": "https://n8n.neovertexia.com/webhook/grandes-trades-91572e52?symbol={symbol}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "symbol",
+              "description": "Símbolo base da cripto em maiúsculas, ex.: BTC",
+              "type": "string"
+            }
+          ]
+        }
+      }
     }
   ],
   "connections": {
@@ -269,6 +293,17 @@
       ]
     },
     "entrada_liquida": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Mercado",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "grandes_negociacoes": {
       "ai_tool": [
         [
           {

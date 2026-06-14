@@ -1,0 +1,52 @@
+{
+  "name": "NeoVertex Mercado - Grandes Negociacoes (tool)",
+  "nodes": [
+    {
+      "id": "6717efd4-bbc7-4816-b751-7f96129d5189",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "grandes-trades-91572e52",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "785bde8b-99f5-441d-ad2b-eb63f9bb419a"
+    },
+    {
+      "id": "9874ca0a-9591-4d7c-b82e-56a4083fde3f",
+      "name": "Calcular",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst sym = String(($json.query && $json.query.symbol) || 'BTC').replace('USDT','').toUpperCase();\nconst trades = await this.helpers.httpRequest({ url: `https://api.binance.com/api/v3/aggTrades?symbol=${sym}USDT&limit=1000`, json: true });\nlet maxBuy=null, maxSell=null;\nfor (const t of trades) {\n  const price=parseFloat(t.p), qty=parseFloat(t.q), quote=price*qty;\n  if (t.m===false) { if(!maxBuy||quote>maxBuy.q){maxBuy={q:quote,price,qty};} }\n  else { if(!maxSell||quote>maxSell.q){maxSell={q:quote,price,qty};} }\n}\nreturn [{ json: {\n  symbol: sym,\n  maior_compra_usdt: maxBuy?Math.round(maxBuy.q):0,\n  maior_compra_qtd: maxBuy?Number(maxBuy.qty.toFixed(4)):0,\n  maior_venda_usdt: maxSell?Math.round(maxSell.q):0,\n  maior_venda_qtd: maxSell?Number(maxSell.qty.toFixed(4)):0,\n  negociacoes_analisadas: trades.length,\n  janela: 'negociacoes recentes (ultimas ~'+trades.length+' trades, nao o dia inteiro)'\n} }];\n"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Calcular",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
