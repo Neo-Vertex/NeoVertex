@@ -1,0 +1,61 @@
+{
+  "name": "NeoVertex Mercado - Criar Alerta (tool)",
+  "nodes": [
+    {
+      "id": "b0c366f5-5a6d-43f5-a9be-4d580b3bcd13",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "criar-alerta-96132836",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "53fdb4b5-083e-485c-bc3f-1709d5b0a604"
+    },
+    {
+      "id": "e8aaf417-88a1-4a63-94f4-8e6b8736c08b",
+      "name": "Inserir alerta",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO market_alerts (kind, symbol, operator, target_value) VALUES ($1, $2, $3, $4) RETURNING id, kind, symbol, operator, target_value",
+        "options": {
+          "queryReplacement": "={{ $json.body.kind }},{{ $json.body.symbol }},{{ $json.body.operator }},{{ $json.body.target }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "aJKw8OGZ2pzPHt0E",
+          "name": "NeoVertex Postgres"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Inserir alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
