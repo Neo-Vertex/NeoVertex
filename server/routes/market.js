@@ -13,6 +13,12 @@ router.get('/price', async (req, res) => {
   } catch (e) { res.status(502).json({ message: e.message }); }
 });
 
+router.get('/usdt-brl', async (_req, res) => {
+  try {
+    res.json(await binance.getUsdtBrl());
+  } catch (e) { res.status(502).json({ message: e.message }); }
+});
+
 router.get('/inflow-rank', async (req, res) => {
   try {
     const limit = Math.min(parseInt(req.query.limit) || 20, 50);

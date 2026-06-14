@@ -70,4 +70,11 @@ async function getInflowRank(limit = 20, scan = 150) {
   return rows.slice(0, limit);
 }
 
-module.exports = { computeNetInflow, getPrices, getInflowRank };
+async function getUsdtBrl() {
+  const ck = 't:USDTBRL';
+  let d = cache.get(ck);
+  if (!d) { d = await getJSON('/api/v3/ticker/24hr?symbol=USDTBRL'); cache.set(ck, d); }
+  return { price: Number(d.lastPrice), changePct: Number(d.priceChangePercent) };
+}
+
+module.exports = { computeNetInflow, getPrices, getInflowRank, getUsdtBrl };

@@ -8,6 +8,7 @@ const authHeaders = (): Record<string, string> => {
 };
 
 export interface PriceRow { symbol: string; price: number; changePct: number; quoteVolume: number; }
+export interface UsdtBrl { price: number; changePct: number; }
 export interface InflowRow { symbol: string; netInflow: number; buyPct: number; changePct: number; quoteVolume: number; }
 export interface StockRow { symbol: string; price: number; currency: string; changePct: number; netFlow: number; turnover: number; proxy: boolean; }
 export interface Premium { premiumAbs: number; premiumPct: number; available: boolean; }
@@ -31,6 +32,7 @@ async function get<T>(path: string): Promise<T> {
 
 export const marketApi = {
   prices: (symbols: string[]) => get<PriceRow[]>(`/price?symbols=${encodeURIComponent(symbols.join(','))}`),
+  usdtBrl: () => get<UsdtBrl>('/usdt-brl'),
   inflowRank: (limit = 20) => get<InflowRow[]>(`/inflow-rank?limit=${limit}`),
   stock: (symbol: string) => get<StockRow>(`/stock?symbol=${encodeURIComponent(symbol)}`),
   institutional: (symbol: string) => get<Institutional>(`/institutional?symbol=${encodeURIComponent(symbol)}`),
