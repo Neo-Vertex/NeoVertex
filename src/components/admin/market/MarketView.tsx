@@ -47,6 +47,10 @@ const Aviso: React.FC<{ msg: string }> = ({ msg }) => (
   </div>
 );
 
+// Formata um preço em USDT (4 casas se < 1, senão 2).
+const fmtUsdt = (v: number) =>
+  `${v.toLocaleString('pt-BR', { minimumFractionDigits: v < 1 ? 4 : 2, maximumFractionDigits: v < 1 ? 4 : 2 })} USDT`;
+
 const MarketView: React.FC = () => {
   const [watchlist, setWatchlist] = useState<WatchItem[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>('watchlist');
@@ -54,6 +58,7 @@ const MarketView: React.FC = () => {
   // Watchlist data
   const [prices, setPrices] = useState<PriceRow[]>([]);
   const [stocks, setStocks] = useState<StockRow[]>([]);
+  const [usdtBrl, setUsdtBrl] = useState<number | null>(null);
   const [wlLoading, setWlLoading] = useState(false);
   const [wlError, setWlError] = useState('');
 
@@ -90,12 +95,14 @@ const MarketView: React.FC = () => {
     const cs = watchlist.filter(w => w.kind === 'crypto').map(w => w.symbol);
     const ss = watchlist.filter(w => w.kind === 'stock').map(w => w.symbol);
     try {
-      const [p, st] = await Promise.all([
+      const [p, st, ub] = await Promise.all([
         cs.length ? marketApi.prices(cs) : Promise.resolve([] as PriceRow[]),
         Promise.all(ss.map(s => marketApi.stock(s).catch(() => null))),
+        marketApi.usdtBrl().catch(() => null),
       ]);
       setPrices(p);
       setStocks(st.filter(Boolean) as StockRow[]);
+      setUsdtBrl(ub?.price ?? null);
     } catch (e) {
       setWlError((e as Error).message);
     } finally {
@@ -134,9 +141,16 @@ const MarketView: React.FC = () => {
           <h1 className="page-title flex items-center gap-2"><LineChart size={20} style={{ color: 'var(--color-primary)' }} /> Mercado</h1>
           <p className="page-subtitle" style={{ marginBottom: 0 }}>Cripto e ações — preço, entrada líquida, sinal institucional e notícias.</p>
         </div>
-        <button className="btn btn-secondary btn-sm" onClick={() => { loadWatchlist(); if (activeTab === 'ranking') loadRanking(); }}>
-          <RefreshCw size={14} /> Atualizar
-        </button>
+        <div className="flex items-center gap-3">
+          {usdtBrl && (
+            <span style={{ fontSize: 12, color: 'var(--color-text-soft)' }}>
+              <strong style={{ color: 'var(--color-primary)' }}>USDT/BRL</strong> {fmtPrice(usdtBrl, 'BRL')}
+            </span>
+          )}
+          <button className="btn btn-secondary btn-sm" onClick={() => { loadWatchlist(); if (activeTab === 'ranking') loadRanking(); }}>
+            <RefreshCw size={14} /> Atualizar
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -172,8 +186,15 @@ const MarketView: React.FC = () => {
                   const p = prices.find(x => x.symbol === w.symbol);
                   return (
                     <tr key={w.id}>
-                      <td><strong>{w.display_name}</strong> <span className="text-[var(--color-text-muted)]">{w.symbol}</span></td>
-                      <td style={{ textAlign: 'right' }}>{p ? fmtPrice(p.price) : '—'}</td>
+                      <td><strong>{w.display_name}</strong> <span className="text-[var(--color-text-muted)]">{w.symbol}/USDT</span></td>
+                      <td style={{ textAlign: 'right' }}>
+                        {p ? (
+                          <div>
+                            <div>{fmtUsdt(p.price)}</div>
+                            {usdtBrl && <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>≈ {fmtPrice(p.price * usdtBrl, 'BRL')}</div>}
+                          </div>
+                        ) : '—'}
+                      </td>
                       <td style={{ textAlign: 'right' }}>{p ? <Change pct={p.changePct} /> : '—'}</td>
                       <td style={{ textAlign: 'right' }}>{p ? fmtCompact(p.quoteVolume) : '—'}</td>
                       <td style={{ textAlign: 'right' }}><span className="badge badge-info">CRIPTO</span></td>
