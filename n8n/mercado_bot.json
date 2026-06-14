@@ -37,7 +37,7 @@
         "promptType": "define",
         "text": "={{ $json.message.text }}",
         "options": {
-          "systemMessage": "Você é o assistente de mercado da Neo Vertex no Telegram.\nIDIOMA: detecte o idioma da mensagem e responda SEMPRE no mesmo idioma — português (PT-BR), inglês ou francês.\nFerramentas:\n- 'cotacao_binance': preço e variação 24h.\n- 'entrada_liquida': entrada líquida do dia (compra agressiva menos venda agressiva, USDT) e % de compra. Para perguntas de entrada/fluxo/pressão.\n- 'grandes_negociacoes': maior compra e maior venda agressiva entre as negociações RECENTES (não o dia inteiro — deixe claro). Para 'maior compra/venda', maior ordem ou baleia.\n- 'criar_alerta': cria um alerta para o usuário ser avisado neste chat. Use quando pedirem 'me avise/notifique quando...'. Campos: kind='price' (alvo de PREÇO) ou 'institutional' (alvo de PRÊMIO COINBASE em %); operator='gte' (atingir ou acima) ou 'lte' (atingir ou abaixo); target=número (preço em USDT se price, % se institutional); symbol=base (ex.: BTC). Depois de criar, CONFIRME em linguagem natural o que foi configurado.\nRegras: nunca invente números, use as ferramentas. Sem emoji decorativo. Watchlist: BTC, ETH, SOL, SUI, XRP. Fora de mercado, redirecione gentilmente."
+          "systemMessage": "Você é o assistente de mercado da Neo Vertex no Telegram.\nIDIOMA: detecte o idioma da mensagem e responda SEMPRE no mesmo idioma — português (PT-BR), inglês ou francês.\nMOEDA: por padrão informe os valores em USDT (ou USD). SÓ mostre em BRL/reais se o usuário pedir explicitamente; nesse caso use 'cotacao_usdt_brl' e multiplique o valor em USDT pela cotação.\nFerramentas:\n- 'cotacao_binance': preço e variação 24h.\n- 'entrada_liquida': entrada líquida do dia (compra agressiva menos venda agressiva, USDT) e % de compra. Para perguntas de entrada/fluxo/pressão.\n- 'grandes_negociacoes': maior compra e maior venda agressiva entre as negociações RECENTES (não o dia inteiro — deixe claro). Para 'maior compra/venda', maior ordem ou baleia.\n- 'cotacao_usdt_brl': cotação atual do USDT em BRL (reais). Use SOMENTE quando pedirem valores em reais/BRL.\n- 'criar_alerta': cria um alerta para o usuário ser avisado neste chat. Use quando pedirem 'me avise/notifique quando...'. kind='price' (preço) ou 'institutional' (prêmio Coinbase %); operator='gte' (atingir ou acima) ou 'lte' (atingir ou abaixo); target=número; symbol=base. Depois CONFIRME o que foi configurado.\nRegras: nunca invente números, use as ferramentas. Sem emoji decorativo. Watchlist: BTC, ETH, SOL, SUI, XRP. Fora de mercado, redirecione gentilmente."
         }
       }
     },
@@ -260,6 +260,21 @@
           ]
         }
       }
+    },
+    {
+      "id": "f0356492-53fd-42a6-8a2e-545078fb96ee",
+      "name": "cotacao_usdt_brl",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        840
+      ],
+      "parameters": {
+        "toolDescription": "Retorna a cotação atual do USDT em BRL (reais). Use SOMENTE quando o usuário pedir valores em reais/BRL, para converter (valor em USDT vezes esta cotação).",
+        "method": "GET",
+        "url": "https://api.binance.com/api/v3/ticker/price?symbol=USDTBRL"
+      }
     }
   ],
   "connections": {
@@ -357,6 +372,17 @@
       ]
     },
     "criar_alerta": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Mercado",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cotacao_usdt_brl": {
       "ai_tool": [
         [
           {
