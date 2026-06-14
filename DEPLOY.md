@@ -26,20 +26,25 @@ O backend roda `runMigrations()` no boot (idempotente: `CREATE TABLE IF NOT EXIS
 O **bot do Telegram e o monitor de alertas (n8n) já estão no ar** e independem deste
 deploy — eles falam direto com Binance/Coinbase e com o Postgres.
 
+> **Arquivos de deploy já incluídos no repo:** `Dockerfile` (frontend: build Vite +
+> nginx com **fallback de SPA** para o react-router) e `server/Dockerfile` (backend).
+> Recomendado usar **Build Pack = Dockerfile** no Coolify.
+
 ## Serviço 1 — Frontend (Vite)
 
-- **Tipo Coolify:** Application (Nixpacks) apontando para a raiz do repo, branch nova.
-- **Build command:** `npm install && npm run build`
-- **Output / publish directory:** `dist`
-- **Variáveis de ambiente:**
+- **Tipo Coolify:** Application, **Build Pack = Dockerfile**, raiz do repo, branch nova.
+  (Alternativa: Nixpacks com build `npm install && npm run build`, publish `dist` — mas o
+  `Dockerfile` já resolve o roteamento SPA, evitando 404 em `/admin` ao recarregar.)
+- **Build args / variáveis (precisam existir no BUILD, pois o Vite as embute):**
   - `VITE_API_URL=https://api.SEUDOMINIO` (URL pública do backend — Serviço 2)
   - `VITE_RECAPTCHA_SITE_KEY=...` (formulário de contato)
+- **Porta interna:** 80
 - **Domínio:** `SEUDOMINIO` (ex.: app.neovertexia.com)
 
 ## Serviço 2 — Backend (Express)
 
-- **Tipo Coolify:** Application apontando para a subpasta `server/` (Base Directory: `server`).
-- **Install/Start:** `npm install` / `npm start` (= `node index.js`)
+- **Tipo Coolify:** Application, **Base Directory: `server`**, Build Pack = Dockerfile
+  (usa `server/Dockerfile`). Alternativa Nixpacks: start `npm start` (= `node index.js`).
 - **Porta:** `3001`
 - **Variáveis de ambiente:** ver `server/.env.example`
   - `DATABASE_URL=` (mesmo Postgres do n8n)
