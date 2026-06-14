@@ -10,12 +10,14 @@
 O projeto é uma **single-page application** estática que entrega:
 
 1. **Landing institucional** em PT-BR (hero, serviços, processo, cases, manifesto, formulário de contato).
-2. **Painel administrativo** privado (login local) com 6 módulos:
-   - **Leads (CRM)** — pipeline de prospects (Novo → Conversa → Proposta → Ganho/Perdido).
+2. **Painel administrativo** privado (login local) com 8 módulos:
    - **Clientes** — base ativa, com mensalidade, dia de vencimento e perfil completo.
+   - **Leads (CRM)** — pipeline de prospects (Novo → Conversa → Proposta → Ganho/Perdido).
+   - **Tarefas (Meus afazeres)** — afazeres pessoais e por cliente, com prioridade e prazo.
    - **Financeiro** — entradas e saídas, status pago/pendente, totais, MRR.
    - **Agenda** — compromissos com visões Lista e Mês.
-   - **Tarefas** — afazeres pessoais e por cliente, com prioridade e prazo.
+   - **Mercado** — cotação ao vivo de criptos (US$) e ativos (NVIDIA em R$), via APIs públicas gratuitas.
+   - **Inbox** — caixa de entrada das mensagens do formulário do site, com conversão em lead.
    - **Configurações** — atalho para abrir o painel do Umami Analytics em nova aba.
 
 Toda a informação do painel é persistida no **`localStorage`** do navegador — não há backend nesta versão.
@@ -115,6 +117,8 @@ Todas as chaves usam o padrão kebab-case versionado `nv-<entidade>-v1`. Os hook
 | `NV_TASKS` | `nv-tasks-v1` | tarefas pessoais e por cliente |
 | `NV_NOTES` | `nv-notes-v1` | mapa `{ [clienteId]: textoNota }` |
 | `NV_PROJECTS` | `nv-projects-v1` | timeline de entregas por cliente |
+| `NV_MENSAGENS` | `nv-mensagens-v1` | mensagens recebidas pelo formulário do site (Inbox) |
+| `NV_MERCADO` | `nv-mercado-v1` | cache da última cotação de mercado (preços + câmbio + timestamp) |
 
 > O script do Umami Analytics está hardcoded em `NeoVertex Landing.html` e `index.html` (apontando para `https://analytics.neovertexia.com`, websiteId `5fa6bb7e-cc68-4383-917b-23fba4a43e16`, domínio rastreado `neovertex.top`). A instância do Umami é hospedada num subdomínio próprio do `neovertexia.com` (com Let's Encrypt automático do Coolify) — o site rastreado continua sendo `neovertex.top`. A aba **Configurações** do painel apenas oferece um atalho para abrir o dashboard do Umami em nova aba — não há mais persistência em localStorage para essa integração.
 
@@ -210,7 +214,7 @@ Componente opcional (toolbar do editor) que permite:
 
 ## 6. Módulos do painel
 
-A ordem das abas no `.adm-topbar` é: **Clientes · Leads (CRM) · Meus afazeres · Financeiro · Agenda**.
+A ordem das abas no `.adm-topbar` é: **Clientes · Leads (CRM) · Meus afazeres · Financeiro · Agenda · Mercado · Inbox · Configurações**.
 
 ### 6.1 Leads (CRM) — chave `nv-leads-v1`
 - **Etapas**: `novo`, `conversa`, `proposta`, `ganho`, `perdido`.
@@ -251,6 +255,19 @@ A ordem das abas no `.adm-topbar` é: **Clientes · Leads (CRM) · Meus afazeres
 - **Filtros**: Hoje, Atrasadas, Todas pendentes, Concluídas.
 - **KPIs**: para hoje, atrasadas, pendentes (total), concluídas.
 - **Ordenação**: pendentes antes; entre pendentes, por prioridade (alta → baixa); empatadas, por data.
+
+### 6.6 Mercado — chave `nv-mercado-v1` (cache)
+Cotação ao vivo, **somente leitura** (não há CRUD). Os dados vêm de APIs públicas chamadas direto do navegador; a última resposta boa fica em `nv-mercado-v1` para abrir sem piscar.
+
+- **Ativos**: BTC, ETH, USDT, SOL, SUI, TAO (criptos, em **US$**); NVIDIA/NVDA (ação, em **R$**); SpaceX (selo fixo "sem cotação pública", pois é empresa privada).
+- **Fontes**:
+  - Criptos (preço + variação 24h): **CoinGecko** `simple/price` — sem chave, com CORS.
+  - NVIDIA (preço + variação): **Finnhub** `quote` — exige chave gratuita (constante `FINNHUB_KEY` no `admin.jsx`); só atualiza em horário de pregão dos EUA.
+  - Câmbio US$→R$ (converte a NVIDIA): **AwesomeAPI** `last/USD-BRL` — sem chave, com CORS.
+- **Atualização**: automática a cada 60s (`setInterval`) + botão "Atualizar agora". Falha de uma fonte mostra "—" naquele card; falha geral mantém o cache e exibe aviso discreto.
+- **KPIs**: câmbio US$→R$ atual, nº de ativos, horário da última atualização.
+- **Sem chave Finnhub**: as criptos funcionam normalmente; só a NVIDIA fica indisponível.
+- O bot Captador (n8n) tem uma ferramenta equivalente (`04_cotacao_mercado.json`) que usa as mesmas fontes pelo servidor — ver `n8n/README.md`, seção 4b.
 
 ---
 

@@ -10,6 +10,7 @@ const NV_TASKS = 'nv-tasks-v1';
 const NV_NOTES = 'nv-notes-v1';
 const NV_PROJECTS = 'nv-projects-v1';
 const NV_MENSAGENS = 'nv-mensagens-v1';
+const NV_MERCADO = 'nv-mercado-v1';
 const NV_CRED = { user: 'nelsinhololx', pass: '31577244' };
 
 const SEED_CLIENTES = [
@@ -1147,6 +1148,161 @@ function ConfigTab() {
   );
 }
 
+/* ── MERCADO TAB (cotação ao vivo) ── */
+/* Chave gratuita da Finnhub (cotação da NVIDIA). Gere a sua em finnhub.io/register
+   e cole entre as aspas. Sem ela, as criptos funcionam normalmente; só a NVIDIA fica "—". */
+const FINNHUB_KEY = '';
+
+/* Ativos acompanhados na aba Mercado.
+   - cripto  → exibido em US$ (fonte CoinGecko)
+   - acao    → exibido em R$  (fonte Finnhub, convertido pelo câmbio US$→R$)
+   - privada → sem cotação pública (SpaceX não é negociada em bolsa) */
+const MERCADO_ATIVOS = [
+  { sym: 'BTC',    nome: 'Bitcoin',   tipo: 'cripto',  cgId: 'bitcoin',   cor: 'var(--orange)' },
+  { sym: 'ETH',    nome: 'Ethereum',  tipo: 'cripto',  cgId: 'ethereum',  cor: 'var(--purple)' },
+  { sym: 'USDT',   nome: 'Tether',    tipo: 'cripto',  cgId: 'tether',    cor: 'var(--green)'  },
+  { sym: 'SOL',    nome: 'Solana',    tipo: 'cripto',  cgId: 'solana',    cor: 'var(--cyan)'   },
+  { sym: 'SUI',    nome: 'Sui',       tipo: 'cripto',  cgId: 'sui',       cor: 'var(--cyan)'   },
+  { sym: 'TAO',    nome: 'Bittensor', tipo: 'cripto',  cgId: 'bittensor', cor: 'var(--pink)'   },
+  { sym: 'NVDA',   nome: 'NVIDIA',    tipo: 'acao',    finnhub: 'NVDA',   cor: 'var(--green)'  },
+  { sym: 'SPACEX', nome: 'SpaceX',    tipo: 'privada',                    cor: 'var(--comment)'},
+];
+
+const fmtUSD = n => 'US$ ' + Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtPct = n => (n >= 0 ? '+' : '−') + Math.abs(Number(n || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+
+function MercadoTab() {
+  const cache = loadLS(NV_MERCADO, null);
+  const [quotes, setQuotes] = aUseState(() => (cache && cache.quotes) || {});
+  const [usdBrl, setUsdBrl] = aUseState(() => (cache && cache.usdBrl) || null);
+  const [updatedAt, setUpdatedAt] = aUseState(() => (cache && cache.ts) || null);
+  const [carregando, setCarregando] = aUseState(false);
+  const [erro, setErro] = aUseState(false);
+
+  const carregar = async () => {
+    setCarregando(true);
+    try {
+      const cgIds = MERCADO_ATIVOS.filter(a => a.tipo === 'cripto').map(a => a.cgId).join(',');
+      const [cgRes, fxRes] = await Promise.all([
+        fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cgIds}&vs_currencies=usd&include_24hr_change=true`),
+        fetch('https://economia.awesomeapi.com.br/last/USD-BRL'),
+      ]);
+      const cg = await cgRes.json();
+      const fx = await fxRes.json();
+      const cambio = Number(fx && fx.USDBRL && fx.USDBRL.bid) || null;
+
+      // NVIDIA via Finnhub (só se houver chave)
+      let nvda = null;
+      if (FINNHUB_KEY) {
+        try {
+          const r = await fetch(`https://finnhub.io/api/v1/quote?symbol=NVDA&token=${FINNHUB_KEY}`);
+          const j = await r.json();
+          if (j && j.c) nvda = { usd: j.c, variacao: j.dp };
+        } catch { /* mantém nvda = null */ }
+      }
+
+      const next = {};
+      MERCADO_ATIVOS.forEach(a => {
+        if (a.tipo === 'cripto') {
+          const d = cg[a.cgId];
+          if (d) next[a.sym] = { preco: d.usd, moeda: 'USD', variacao: d.usd_24h_change };
+        } else if (a.tipo === 'acao' && nvda && cambio) {
+          next[a.sym] = { preco: nvda.usd * cambio, moeda: 'BRL', variacao: nvda.variacao, precoUsd: nvda.usd };
+        }
+      });
+
+      setQuotes(next);
+      setUsdBrl(cambio);
+      const ts = Date.now();
+      setUpdatedAt(ts);
+      saveLS(NV_MERCADO, { quotes: next, usdBrl: cambio, ts });
+      setErro(false);
+    } catch {
+      setErro(true);
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  aUseEffect(() => {
+    carregar();
+    const id = setInterval(carregar, 60000);
+    return () => clearInterval(id);
+  }, []);
+
+  const horaUpdate = updatedAt
+    ? new Date(updatedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    : '—';
+
+  return (
+    <div className="adm-tab">
+      <div className="adm-kpis">
+        <div className="adm-kpi"><span>Câmbio US$ → R$</span><strong>{usdBrl ? fmtBRL(usdBrl) : '—'}</strong></div>
+        <div className="adm-kpi"><span>Ativos acompanhados</span><strong>{MERCADO_ATIVOS.length}</strong></div>
+        <div className="adm-kpi"><span>Atualizado às</span><strong style={{ fontSize: 20 }}>{horaUpdate}</strong></div>
+      </div>
+
+      <div className="adm-toolbar">
+        <div className="adm-sub" style={{ flex: 1, minWidth: 200 }}>
+          Cotações em tempo real · criptos em dólar, ações em real · atualiza sozinho a cada 60s
+        </div>
+        <button className="adm-btn-primary" onClick={carregar} disabled={carregando}>
+          {carregando ? 'Atualizando…' : 'Atualizar agora'}
+        </button>
+      </div>
+
+      {erro && (
+        <div className="adm-vence-alert future" style={{ marginBottom: 16 }}>
+          Não foi possível atualizar agora — mostrando a última cotação salva. Tentaremos de novo em instantes.
+        </div>
+      )}
+
+      <div className="adm-mercado-grid">
+        {MERCADO_ATIVOS.map(a => {
+          if (a.tipo === 'privada') {
+            return (
+              <div key={a.sym} className="adm-mercado-card privada">
+                <div className="adm-mercado-top">
+                  <span className="adm-mercado-sym" style={{ color: a.cor }}>{a.sym}</span>
+                  <span className="adm-mercado-nome">{a.nome}</span>
+                </div>
+                <div className="adm-mercado-preco indisponivel">Sem cotação pública</div>
+                <div className="adm-sub">Empresa privada — fora da bolsa</div>
+              </div>
+            );
+          }
+          const q = quotes[a.sym];
+          const emReal = a.moeda === 'BRL' || a.tipo === 'acao';
+          const subInfo = a.tipo === 'cripto' ? 'Cripto · dólar'
+            : (q && q.precoUsd ? `Ação · ${fmtUSD(q.precoUsd)}` : 'Ação · real');
+          return (
+            <div key={a.sym} className="adm-mercado-card">
+              <div className="adm-mercado-top">
+                <span className="adm-mercado-sym" style={{ color: a.cor }}>{a.sym}</span>
+                <span className="adm-mercado-nome">{a.nome}</span>
+              </div>
+              {q ? (
+                <>
+                  <div className="adm-mercado-preco">{emReal ? fmtBRL(q.preco) : fmtUSD(q.preco)}</div>
+                  <div className={`adm-mercado-var ${q.variacao >= 0 ? 'up' : 'down'}`}>
+                    {q.variacao >= 0 ? '▲' : '▼'} {fmtPct(q.variacao)} <span className="adm-mercado-jan">24h</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="adm-mercado-preco indisponivel">—</div>
+                  <div className="adm-sub">{a.tipo === 'acao' && !FINNHUB_KEY ? 'Configure a chave Finnhub' : 'Sem dados agora'}</div>
+                </>
+              )}
+              <div className="adm-sub">{subInfo}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 /* ── DASHBOARD SHELL ── */
 function AdminDashboard({ user, onLogout }) {
   const [tab, setTab] = aUseState('crm');
@@ -1196,6 +1352,7 @@ function AdminDashboard({ user, onLogout }) {
             ['tarefas', 'Meus afazeres'],
             ['fin', 'Financeiro'],
             ['agenda', 'Agenda'],
+            ['mercado', 'Mercado'],
             ['mensagens', `Inbox${naoLidasCount > 0 ? ` (${naoLidasCount})` : ''}`],
             ['config', 'Configurações']
           ].map(([k, l]) => (
@@ -1218,6 +1375,7 @@ function AdminDashboard({ user, onLogout }) {
         {tab === 'tarefas' && <TasksTab clientes={clientes}/>}
         {tab === 'fin' && <FinTab/>}
         {tab === 'agenda' && <AgendaTab/>}
+        {tab === 'mercado' && <MercadoTab/>}
         {tab === 'mensagens' && <MensagensTab mensagens={mensagens} setMensagens={setMensagens} onConvertLead={convertContactToLead}/>}
         {tab === 'config' && <ConfigTab/>}
       </div>

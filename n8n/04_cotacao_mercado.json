@@ -1,0 +1,78 @@
+{
+  "name": "04. Cotação de mercado - Neo Vertex",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "pergunta"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        420
+      ],
+      "id": "40000000-0001-4001-8001-000000000001",
+      "name": "Gatilho"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Cotacoes de mercado - Neo Vertex\n// Criptos via CoinGecko (US$), NVIDIA via Finnhub (convertida p/ R$), cambio via AwesomeAPI.\n// >>> Cole sua chave gratuita da Finnhub abaixo (finnhub.io/register).\n//     Sem ela, as criptos funcionam normalmente e a NVIDIA fica indisponivel.\nconst FINNHUB_KEY = 'SUA_CHAVE_FINNHUB';\n\nconst cgIds = 'bitcoin,ethereum,tether,solana,sui,bittensor';\nconst cg = await this.helpers.httpRequest({ url: 'https://api.coingecko.com/api/v3/simple/price?ids=' + cgIds + '&vs_currencies=usd&include_24hr_change=true', json: true });\nconst fx = await this.helpers.httpRequest({ url: 'https://economia.awesomeapi.com.br/last/USD-BRL', json: true });\nconst cambio = (fx && fx.USDBRL && Number(fx.USDBRL.bid)) || null;\n\nconst nomes = { bitcoin: 'Bitcoin (BTC)', ethereum: 'Ethereum (ETH)', tether: 'Tether (USDT)', solana: 'Solana (SOL)', sui: 'Sui (SUI)', bittensor: 'Bittensor (TAO)' };\nconst linhas = Object.keys(nomes).map(function (id) {\n  const d = cg[id];\n  if (!d) return nomes[id] + ': sem dado agora';\n  const v = Number(d.usd_24h_change || 0);\n  return nomes[id] + ': US$ ' + Number(d.usd).toFixed(2) + ' (' + (v >= 0 ? '+' : '') + v.toFixed(2) + '% em 24h)';\n});\n\nlet nvda = 'NVIDIA (NVDA): chave Finnhub nao configurada';\nif (FINNHUB_KEY && FINNHUB_KEY !== 'SUA_CHAVE_FINNHUB') {\n  try {\n    const q = await this.helpers.httpRequest({ url: 'https://finnhub.io/api/v1/quote?symbol=NVDA&token=' + FINNHUB_KEY, json: true });\n    if (q && q.c && cambio) {\n      const v = Number(q.dp || 0);\n      nvda = 'NVIDIA (NVDA): R$ ' + (q.c * cambio).toFixed(2) + ' (US$ ' + Number(q.c).toFixed(2) + ', ' + (v >= 0 ? '+' : '') + v.toFixed(2) + '% no dia)';\n    } else {\n      nvda = 'NVIDIA (NVDA): sem dado agora';\n    }\n  } catch (e) { nvda = 'NVIDIA (NVDA): sem dado agora'; }\n}\n\nconst texto = ['Cotacoes de mercado agora:']\n  .concat(linhas)\n  .concat([\n    nvda,\n    'SpaceX: sem cotacao publica (empresa privada, fora da bolsa)',\n    cambio ? ('Cambio US$ para R$: ' + cambio.toFixed(2)) : 'Cambio US$ para R$: indisponivel'\n  ])\n  .join('\\n');\n\nreturn [{ json: { resposta_mercado: texto } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        420
+      ],
+      "id": "40000000-0002-4002-8002-000000000002",
+      "name": "Buscar cotações"
+    },
+    {
+      "parameters": {
+        "content": "## 04. Cotacao de mercado (Neo Vertex)\n\nSub-workflow chamado como ferramenta pelo agente (01. Captador).\nBusca criptos no CoinGecko (US$ + variacao 24h), a NVIDIA no Finnhub (convertida p/ R$ pelo cambio da AwesomeAPI) e devolve um texto pronto em \"resposta_mercado\".\n\nANTES DE USAR: abra o node \"Buscar cotacoes\" e cole sua chave gratuita da Finnhub em FINNHUB_KEY. Sem a chave, as criptos funcionam e a NVIDIA fica indisponivel.",
+        "height": 320,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        120
+      ],
+      "id": "40000000-000b-400b-800b-00000000000b",
+      "name": "Sticky Note Header"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gatilho": {
+      "main": [
+        [
+          {
+            "node": "Buscar cotações",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "00000000-0000-4000-8000-000000000004",
+  "meta": {
+    "instanceId": "neovertex-instance"
+  },
+  "id": "NV04CotacaoMercadoId",
+  "tags": []
+}

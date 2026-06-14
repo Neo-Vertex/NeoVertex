@@ -666,3 +666,31 @@
   background: #1a1a2e !important;
   color: var(--fg) !important;
 }
+
+/* ── mercado (cotação ao vivo) ── */
+.adm-mercado-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+.adm-mercado-card {
+  padding: 18px 20px;
+  background: linear-gradient(180deg, rgba(248,248,242,0.025), rgba(248,248,242,0.01));
+  border: 1px solid rgba(248,248,242,0.08);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color .2s var(--ease), transform .2s var(--ease);
+}
+.adm-mercado-card:hover { border-color: rgba(189,147,249,0.30); transform: translateY(-2px); }
+.adm-mercado-card.privada { opacity: 0.7; }
+.adm-mercado-top { display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px; }
+.adm-mercado-sym { font: 800 16px/1 var(--mono); letter-spacing: 0.02em; }
+.adm-mercado-nome { font: 500 12px/1 var(--sans); color: var(--comment); }
+.adm-mercado-preco { font: 700 24px/1.1 var(--sans); letter-spacing: -0.02em; color: var(--fg); }
+.adm-mercado-preco.indisponivel { font-size: 16px; color: var(--comment); }
+.adm-mercado-var { font: 600 13px/1 var(--sans); display: inline-flex; align-items: center; gap: 5px; }
+.adm-mercado-var.up { color: var(--green); }
+.adm-mercado-var.down { color: var(--red); }
+.adm-mercado-jan { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--comment); }

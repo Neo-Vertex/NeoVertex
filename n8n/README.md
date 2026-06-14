@@ -32,13 +32,15 @@ Pendências do lado do usuário antes de ativar:
 | `01_captador_neovertex.json` | Webhook (POST) | Workflow principal. Recebe webhooks do Chatwoot, debounce, agente IA, responde no WhatsApp. |
 | `02_escalar_humano.json` | Sub-workflow | Pausa o agente para o lead, registra no CRM e dispara alerta no WhatsApp pessoal do Nelson. |
 | `03_quebrar_e_enviar_mensagens.json` | Sub-workflow | Divide a resposta longa em pedaços naturais e envia simulando digitação humana. |
+| `04_cotacao_mercado.json` | Sub-workflow | Ferramenta de cotação ao vivo: criptos (CoinGecko, US$), NVIDIA (Finnhub, convertida p/ R$) e câmbio US$→R$ (AwesomeAPI). Devolve um texto pronto pro agente. |
 
 ## Ordem de importação no n8n
 
 1. `03_quebrar_e_enviar_mensagens.json` (sub-workflow, sem dependências).
 2. `02_escalar_humano.json` (sub-workflow, sem dependências).
-3. `00_configuracoes_neovertex.json` (manual).
-4. `01_captador_neovertex.json` (workflow principal — depende dos dois sub-workflows e do `Sugerir_horario` que você cria à parte).
+3. `04_cotacao_mercado.json` (sub-workflow, sem dependências — opcional, só se quiser cotações no bot).
+4. `00_configuracoes_neovertex.json` (manual).
+5. `01_captador_neovertex.json` (workflow principal — depende dos sub-workflows e do `Sugerir_horario` que você cria à parte).
 
 ## Pré-requisitos
 
@@ -102,6 +104,22 @@ No workflow `01`, abra:
 - `Quebrar e enviar resposta` → ajustar `workflowId` para o ID real do `03_quebrar_e_enviar_mensagens`.
 
 (Os IDs dos JSONs entregues são placeholders — substitua todos.)
+
+### 4b. (Opcional) Ligar as cotações de mercado no agente
+
+O `04_cotacao_mercado.json` é um sub-workflow que devolve, em texto, a cotação ao vivo de criptos (BTC, ETH, USDT, SOL, SUI, TAO em US$), da NVIDIA (em R$) e do câmbio US$→R$. Para o agente do `01` poder responder "quanto tá o bitcoin?" e afins:
+
+1. **Importe** o `04_cotacao_mercado.json` (passo do item 1, ordem acima).
+2. **Configure a chave da Finnhub** (cotação da NVIDIA): abra o node `Buscar cotações`, ache `const FINNHUB_KEY = 'SUA_CHAVE_FINNHUB';` e cole sua chave gratuita de [finnhub.io/register](https://finnhub.io/register). **Sem a chave, as criptos funcionam normalmente e só a NVIDIA fica indisponível.** As demais fontes (CoinGecko e AwesomeAPI) não pedem chave.
+3. **Copie o ID** do workflow `04` importado (da URL `/workflow/<ID>`).
+4. No workflow `01. Captador Neo Vertex`, adicione um node **`Tool Workflow`** ligado ao **agente principal** (mesmo padrão do `Sugerir_horario`):
+   - **Name**: `Cotacao_mercado`
+   - **Description**: `Retorna as cotações de mercado ao vivo (Bitcoin, Ethereum, USDT, Solana, Sui, Bittensor em dólar; NVIDIA em real; câmbio do dólar). Use sempre que o lead perguntar preço/cotação de cripto, dólar ou NVIDIA. Não invente números — use esta ferramenta.`
+   - **Workflow**: selecione/ID = o ID do `04` (do passo 3). Sem inputs a mapear.
+5. **Atualize o prompt do agente** (node do agente, campo `systemMessage`): acrescente uma linha como
+   > "Se o lead perguntar cotação de cripto, dólar ou NVIDIA, use a ferramenta `Cotacao_mercado` e repasse os números que ela devolver. Nunca invente cotação."
+
+> Observação: cotação de mercado foge do escopo de captação de leads (os 6 serviços da Neo Vertex). Ative isto só se realmente quiser que o bot responda preço de mercado. A aba **Mercado** do painel admin funciona de forma independente, sem depender deste passo.
 
 ### 5. Configurar o webhook no Chatwoot
 
